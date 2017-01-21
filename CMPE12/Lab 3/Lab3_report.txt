@@ -1,0 +1,21 @@
+***********************
+**    Aaron Steele   **
+** atsteele@ucsc.edu ** 
+** Lab 3, Section 2  **
+***********************
+
+** Procedure **
+This lab had multiple parts that I will discuss.
+Part 1: Getting input
+The LC3 only has the option of getting 1 character at a time for input, so I had to figure out a way to get multiple digits of input. This turned out to just be checking if each character entered was equal to the Line Feed character. If not, store the ascii digit entered into the next location in memory.
+
+Part 2: Converting the input into an actual number
+Converting into an actual number was a fairly easy thing to do. All one has to do is read the input from the first character to the last, adding each number into the running sum, and then multiplying by 10 if there is another number following the last.
+This section is also where I checked if the first character was a negative sign, and if it was, set a specific memory location to 1.
+
+Part 3: Convert the decimal number to binary
+My first approach to this was to use 16 different bitmasks to extract each digit from the value. After doing the homework I realized this was not a good way to do it, and then I ran into a problem where the LC3 wouldn't find a label because of the 16 extra variables, so I switched how I extracted the digits from individual bitmasks to simply left-shifting the value to convert and ANDing with a bitmask of maximum value.
+
+
+Using a subroutine to perform the multiplication was quite helpful. Saved me a good amount of space in my main program, and it would also be quite easy to change the sub from multiplying by 10 to n, so it would be general.
+I didn't make my flowchart until after I finished the program, so it did not help me write the program at all. Looking at the included flowchar did help, though.

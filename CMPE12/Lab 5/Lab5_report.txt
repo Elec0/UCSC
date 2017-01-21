@@ -1,0 +1,19 @@
+***********************
+**    Aaron Steele   **
+** atsteele@ucsc.edu ** 
+** Lab 5, Section 2  **
+***********************
+
+** Procedure **
+For Part 1, I was able to get the Hello World up and running pretty easily. My challenge came from figuring out how to
+access the I/Os. Thankfully, after some Googling and the lecture I was able to understand TRISx and PORTx. Following that it wasn't
+too terribly challenging to get the values of each of the switches and buttons. The switches and three of the buttons are right
+next to each other in the register, so ANDing them with the register and enabling the LEDs that are spit out of the AND worked
+quite well.
+
+Part 2 was much faster, since I had the tools to atually communicate with the board. The longest time I spent on this 
+part was fuiguring out how to switch the shifting of the bits to enable the LEDs from left to right to bounce the lights back and
+forth. That is how I ended up doing the lighting up of the LEDs: taking a register with just 0b1 in it and left and right shifting
+it and putting that value into the PORTE register to light the LEDs up.
+I ended up using a flag variable to determine if the shifting was going left or right, and then used a BRQ to go to a certain
+branch to shift left or shift right, which worked quite well.

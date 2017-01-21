@@ -1,0 +1,22 @@
+***********************
+** Aaron Steele      **
+** atsteele@ucsc.edu ** 
+** Lab 1, Section 2  **
+***********************
+
+** Procedure **
+
+Part B was a simply duplicate the image, nothing hard.
+Part C I didn't know how to do and neither products of sum nor sums of products were mentioned in class, so I did research online and learned how to do Karaugh maps and basic boolean algebra to take the equation and simplify it:
+=A'B'+A'BC+ABC'
+=A'(B'+BC)+ABC'
+=A'(B'+C)+ABC' <- Via distributive property (B'+BC)=>(B'+B).(B'+C)=>(B'+C)
+
+Part D requires a check for equivalency. A bit of searching and I discovered that XNOR gates are what are used to check equivalency, at least at a basic level. After learning that, it was fairly trivial to wire up the random number generator and use the XNOR gates to check if the user correctly entered the number generated. I also put in debug lights for testing.
+
+
+** Question Answer **
+
+A digit display could be made with LEDs. A direct binary digit display, which would show the numbers in binary, not decimal. In multimedia logic I suppose you could wire up a large amount of LEDs to make a hex digit display, but that would require a large amount of complexity that a direct binary display would not.
+
+Random number generators are not, strictly speaking, random. They are called pseudorandom number generators, which is because the number generated can be regenerated with the proper seed. Generally this seed is the system time, which ensures a decent probability that the number generated will be random enough. The actual formulas for generating the random numbers are quite complicated.

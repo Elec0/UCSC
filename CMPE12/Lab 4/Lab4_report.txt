@@ -1,0 +1,21 @@
+***********************
+**    Aaron Steele   **
+** atsteele@ucsc.edu ** 
+** Lab 4, Section 2  **
+***********************
+
+** Procedure **
+For this lab I used Row Major storage, since it plays best with PUTS.
+Something I discovered early on was that allocating the memory for the array with .BULKW wasn't really going to work in any location not at the very bottom of the file. Because of this I decided to eschew .BULKW and instead just use a memory address (x4000) to start my array at. 
+The bulk of the work was getting the subs written and the encrypt sub written, the decrypt came quickly after that, since all I really needed to do was copy and paste and change a few things.
+
+Getting the number input for the cipher shift offset was effectively the same code as for the last lab, so I copied most of it from there and put it in a sub. I also had to bring in my sub to multiply numbers by 10 for the same reason as last time.
+
+The Save and Load subs gave me a bit of trouble, primarily because I didn't understand how row major storage was actually working, and I was incrementing my row instead of my column to try to store things. After getting some really strange data I delved into the math more and figured out what I was doing wrong. Once I started incrementing my column variable the subs started working how they were supposed to.
+
+Since the program has to be able to be run multiple times, I needed to make sure the last value in the array was 0 for PUTS, I wrote a sub that loops through and stores 0s at every value in the array. Thinking back, I probably could have just stored a 0 at the next array location after the user was done inputting their data. Ah well.
+
+For printing the array, since I used row major storage it was really easy. All I had to do was point R0 at the memory address for each row of the array and call PUTS.
+
+Encrypt and Decrypt took me the longest, since they had the most parts. The first problem was ignoring special characters. I did that by checking specific cases: input > 'z', input <'Z' && input >'a', input < 'A'
+Following those checks, then I do the shifting. Checking if there is over or underlap isn't too hard, it just requires a subtraction check, and if there is remove the excess and add it to the other end of the alphabet.

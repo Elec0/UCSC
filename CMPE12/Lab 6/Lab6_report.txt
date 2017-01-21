@@ -1,0 +1,15 @@
+***********************
+**    Aaron Steele   **
+** atsteele@ucsc.edu ** 
+** Lab 6, Section 2  **
+***********************
+
+** Procedure **
+To start, I copied the starter file and ran it, making sure I got the expected output.
+Following that, I effectively re-created the same logic from the LC3 decimal to binary converter.
+Although with mips it was much faster and easier. Especially the subtraction and multiplication
+made the lab much easier. 
+The primary difference in logic between the old lab and this one was that we weren't getting input from the user,
+rather reading from a string in memory. Because of this, I found it easier to write to the binary
+string from right-to-left, which required offsetting the starting address by 31 and decrementing
+as the loop looped.

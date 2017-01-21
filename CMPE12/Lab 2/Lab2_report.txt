@@ -1,0 +1,35 @@
+***********************
+**    Aaron Steele   **
+** atsteele@ucsc.edu ** 
+** Lab 2, Section 2  **
+***********************
+
+** Procedure **
+Part 1: Making the register was fairly simple, the most challenging part was learning how to work the flip-flops. After that was figured out, I hooked up the inputs to receivers and the clock to a clock receiver and pretty much didn't change it again.
+Part 2: I placed the keypad, and first hooked it up directly to the register. This worked nicely.
+Part 3: The adder was more challenging, because I didn't realize exactly how the 1-bit adder worked. I constructed it fine, but it took me a bit of research to actually understand what was being added.
+I constructed the adder after simplifying the algebra like so:
+Sum:
+AB'C'+A'B'C+ABC+A'BC'
+A(B'C'+BC)+A'(B'C+BC')
+A(B#C)'+A'(B#C)
+A#(B#C)
+
+Carry:
+A'BC+AB'C+ABC'+ABC
+BC(A'+A)+A(B'C+BC')
+BC+A(B#C)
+
+Note: # = XOR
+Part 4: I unhooked the keypad input from the register and passed each of the 4 bits through a mux that either inverted or didn't, depending on the input. Also if it was inverting, it put a 1 into the carry for the least significant bit.
+
+
+
+
+** Question Answers **
+When building the subtraction I realized that if the number is negative, the 5th and 6th bit also need to be inverted as well. I was ignoring that and instead just inverting the input's 4 bits.
+One of the issues I had building the circuit was that I didn't understand what the adder was adding, conceptually. It took me some time to realize that the A and B were the nth bits from each of the two numbers being added together. Once I realized that, the entire thing became much easier.
+I added a good number of LEDs along the way, some of which I left in the final product as well. Being able to see at a glance what some of the outputs are is extremely valuable for debugging and understanding the flow of the program.
+
+Subtracting a larger number from a smaller number doesn't output a number that makes sense in terms of the actual subtraction. For example, doing 10-01 gives 111111, which is obviously not the right answer for that question. 
+When adding a number that is larger than 6 bits, the overflow is simply discarded, which means the number abrubtly goes from quite large to very small, usually. 
