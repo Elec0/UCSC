@@ -1,0 +1,10 @@
+Aaron Steele, atsteele
+PA2
+
+Files:
+List.c - The integer list ADT.
+List.h - The header file for interface to the ADT.
+ListClient.c - The downloaded file to test the List ADT.
+Lex.c - The file to take input from arguments and lexigraphically sort it.
+Makefile - The file to make the project.
+README - This file.
