@@ -17,6 +17,7 @@
 
 (define *stderr* (current-error-port))
 
+
 ; Define the hash tables we need
 (define *function-table* (make-hash))
 (define *label-table* (make-hash))
@@ -39,15 +40,38 @@
         (hash-set! *variable-table* key value))
 
 ; *** BASIC functions definitions ***
+
+; Print out 
 (define (basic-print msg)
   (if (not (null? msg))
-      (begin (display msg) (newline))
-      (display "Error: Message is null.")
-      )
+      (begin (display msg)(newline))
+      (err-syntax #:msg "print expects 1 argument.~n")
+  )
   
 )
 
+; Jump to a different point in the program
+(define (basic-goto label program)
+	(if (null? label)
+		(err-syntax #:msg "goto expects 1 argument.~n")
+		(run-program program (- (label-get label) 1))
+	)
+)
+
 ; *** End BASIC functions ***
+
+
+; *** Error functions ***
+
+; Generic syntax error
+; Usage: (err-syntax) or (err-syntax #:msg "Message here")
+(define (err-syntax #:msg [message "Generic error"])
+	(printf "Syntax error: ~s~n" message)
+	(quit)
+)
+
+; *** End error functions ***
+
 
 ; Initialize all the functions we allow the BASIC program to have, at the start
 (for-each
@@ -72,6 +96,7 @@
         (log     ,log)
         (sqrt    ,sqrt)
         (print   ,basic-print)
+        (goto	 ,basic-goto)
 
      ))
 
@@ -105,6 +130,10 @@
 ; Display how to properly use the program
 (define (usage-exit)
     (die `("Usage: " ,*run-file* " filename"))
+)
+
+(define (quit)
+	(die `("Program ending..."))
 )
 
 ; I believe this is reading the program from a file
@@ -143,7 +172,7 @@
 			(when (not (null? (cdr 1st))) ; Make sure there are things in the cdr
 				
 				(when (symbol? (cadr 1st)); Does the line have a label?
-					(label-put! (cadr 1st) (car 1st))
+					(label-put! (cadr 1st) (+ (car 1st) 1))
 				)	
 			)
 		)
@@ -152,28 +181,63 @@
 )
 
 
-
-; Go through every line and execute each line
-; 
-(define (run-program program line-num)
-	(when (> (length program) line-num) ; Make sure we haven't run out of program to execute
+;((function-get 'print) "test")
+; Do the actual executing of the line
+(define (exec-line command program line-num)
+	(if (hash-has-key? *function-table* (car command))
+		(begin ; We need some special cases for some commands
 		
-		(let ((line (line-ref program line-num))) ; Get the element at line-num and parse it
+			(cond 
+				[(eqv? 'goto (car command)) ; Goto needs the entire program to be able to pass it back into run-program with a different line number
+					((function-get (car command)) (cadr command) program)]
+				
+				[else ((function-get (car command)) (cadr command))]
+			)
+		)
+		(begin 
+			(printf "Syntax error: ~s is not a command.~n" (car command))
+			(quit)
+		)
+	)
+)
+
+; Go through every line and parse the command out, then call exec-line
+(define (run-program program line-num)
+	(when (>= (length program) line-num) ; Make sure we haven't run out of program to execute
+		
+		(let ((line (list-ref program (- line-num 1)))) ; Get the element at line-num and parse it
 			; Parse and run the line
 			; The line number and label don't matter, the only thing that matters is the statement
 			
-			
+			(when (> (length line) 1) ; Check for just a line number
+
+				(begin ; There is more than just a line number
+
+					(when (equal? (length line) 2) ; If the line has 2 parts, which means there's 2 options for format
+
+						(when (pair? (second line)) ; If line # + cmd
+							(exec-line (second line) program line-num) ; Execute line
+
+							; Else, line # + label, so ignore
+						)
+					)
+					(when (equal? (length line) 3) ; The line has 3 parts, which is line # + label + command
+						(exec-line (third line) program line-num)
+					)
+				)
+			)
 		)
 		
 		(run-program program (+ line-num 1)) ; Recurse with the next line
 	)
+	(quit)
 )
 
 ; Where we do our actual new stuff
 ; program is the actual program we read in from the file
 (define (eval-program program)
 	(eval-labels program)
-	(run-program program 0)
+	(run-program program 1)
 	
 )
 
@@ -183,11 +247,11 @@
     (if (or (null? arglist) (not (null? (cdr arglist)))) ; If the arglist is null, or the cdr of the arglist is null, display how to use the program
         (usage-exit)
         (let* ((sbprogfile (car arglist)) ; Else, 
-               (program (readlist-from-inputfile sbprogfile)))
+              (program (readlist-from-inputfile sbprogfile)))
               (write-program-by-line sbprogfile program)
               (eval-program program)
-          )
         )
+	)
 )
 
 
