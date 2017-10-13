@@ -64,6 +64,7 @@
         (quot    ,(lambda (x y) (truncate (/ x y))))
         (rem     ,(lambda (x y) (- x (* ((function-get 'quot) x y) y))))
         (+       ,+)
+        (-		 ,-)
         (^       ,expt)
         (ceil    ,ceiling)
         (exp     ,exp)
@@ -134,12 +135,48 @@
          (else #f))
 )
 
-; Where we do our actual new stuff
-; program-text is the actual program we read in from the file. 
-(define (eval-program program-text)
-  ((function-get `print) "Test print")
-  
+; Run through and do all the stuff for the labels
+(define (eval-labels program)
+	(when (not (null? program))
+		(let ((1st (first program))) ; Get the first current line of the program
+		
+			(when (not (null? (cdr 1st))) ; Make sure there are things in the cdr
+				
+				(when (symbol? (cadr 1st)); Does the line have a label?
+					(label-put! (cadr 1st) (car 1st))
+				)	
+			)
+		)
+		(eval-labels (cdr program)) ; Recurse with the rest of the program
+	)
 )
+
+
+
+; Go through every line and execute each line
+; 
+(define (run-program program line-num)
+	(when (> (length program) line-num) ; Make sure we haven't run out of program to execute
+		
+		(let ((line (line-ref program line-num))) ; Get the element at line-num and parse it
+			; Parse and run the line
+			; The line number and label don't matter, the only thing that matters is the statement
+			
+			
+		)
+		
+		(run-program program (+ line-num 1)) ; Recurse with the next line
+	)
+)
+
+; Where we do our actual new stuff
+; program is the actual program we read in from the file
+(define (eval-program program)
+	(eval-labels program)
+	(run-program program 0)
+	
+)
+
 
 ; Define the main function
 (define (main arglist)
@@ -151,8 +188,17 @@
               (eval-program program)
           )
         )
-  )
+)
 
 
 ; The actual code to run first
 (main (vector->list (current-command-line-arguments)))
+
+
+; *** REFERENCE CODE ***
+; How to call a function in the table
+;((function-get 'print) "test")
+
+; Loop over a hashtable
+;(hash-for-each *label-table* (lambda (key value) (printf "~s = ~s~n" key value)))
+; OR, (printf "~s" *label-table*)
