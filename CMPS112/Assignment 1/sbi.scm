@@ -43,10 +43,19 @@
 
 ; Print out 
 (define (basic-print msg)
-  (if (not (null? msg))
-      (begin (display msg)(newline))
-      (err-syntax #:msg "print expects 1 argument.~n")
-  )
+	(printf "basic-print: ~s~n" msg)
+	(when (not (null? (car msg)))
+		(begin 
+			(if (string? (car msg))
+				(begin (display (car msg))(newline) )
+				; Else, eval the non-string
+				(begin (display (eval (car msg))(newline)) )
+			)
+			(when (not (null? cdr msg)) ; There's still things to print
+				(basic-print (cdr msg))
+			)
+		)
+	)
   
 )
 
@@ -56,6 +65,14 @@
 		(err-syntax #:msg "goto expects 1 argument.~n")
 		(run-program program (- (label-get label) 1))
 	)
+)
+
+(define (basic-dim)
+	(void)
+)
+
+(define (basic-let)
+	(void)
 )
 
 ; *** End BASIC functions ***
@@ -97,6 +114,9 @@
         (sqrt    ,sqrt)
         (print   ,basic-print)
         (goto	 ,basic-goto)
+        (dim	 ,basic-dim)
+        (let	 ,basic-let)
+        
 
      ))
 
@@ -133,7 +153,7 @@
 )
 
 (define (quit)
-	(die `("Program ending..."))
+	(newline)(die `("Program ending..."))
 )
 
 ; I believe this is reading the program from a file
@@ -181,7 +201,6 @@
 )
 
 
-;((function-get 'print) "test")
 ; Do the actual executing of the line
 (define (exec-line command program line-num)
 	(if (hash-has-key? *function-table* (car command))
@@ -191,7 +210,7 @@
 				[(eqv? 'goto (car command)) ; Goto needs the entire program to be able to pass it back into run-program with a different line number
 					((function-get (car command)) (cadr command) program)]
 				
-				[else ((function-get (car command)) (cadr command))]
+				[else ((function-get (car command)) (cdr command))]
 			)
 		)
 		(begin 
