@@ -23,6 +23,7 @@
 (define *label-table* (make-hash))
 (define *variable-table* (make-hash))
 
+
 ; Function table imperatives
 (define (function-get key)
         (hash-ref *function-table* key))
@@ -39,24 +40,34 @@
 (define (variable-put! key value)
         (hash-set! *variable-table* key value))
 
+; The function evalexpr outlines how to evaluate a list recursively.
+(define (evalexpr expr)
+	(cond ((number? expr) expr)
+		;((symbol? expr) (hash-ref *function-table* expr #f)) ; Call the function with a false second parameter if there is only one parameter
+		((pair? expr)   (apply (hash-ref *function-table* (car expr))
+							(map evalexpr (cdr expr))))
+		(else (variable-get expr))
+	)
+)
+
 ; *** BASIC functions definitions ***
 
 ; Print out 
 (define (basic-print msg)
-	(printf "basic-print: ~s~n" msg)
-	(when (not (null? (car msg)))
-		(begin 
+	(if (null? msg) ; Handle (print)
+		(newline)
+		(when (not (null? (car msg))) ; Make sure there's actually something to do
 			(if (string? (car msg))
-				(begin (display (car msg))(newline) )
+				(display (car msg))
 				; Else, eval the non-string
-				(begin (display (eval (car msg))(newline)) )
+				(printf "~s " (evalexpr (car msg)))
 			)
-			(when (not (null? cdr msg)) ; There's still things to print
+			(if (not (null? (cdr msg))) ; There's still things to print
 				(basic-print (cdr msg))
+				(newline) ; We're out of things to print, so newline to end the print statement
 			)
 		)
 	)
-  
 )
 
 ; Jump to a different point in the program
@@ -67,13 +78,50 @@
 	)
 )
 
-(define (basic-dim)
+; Create an array: dim a 10 created an array stored in a of 10 0s
+(define (basic-dim param)
+	(when (not (null? param))
+		(let ((pa (car param)))
+			(variable-put! (car pa) (make-vector (+ (evalexpr (cadr pa)) 1) 0))
+			(function-put! (car pa) (lambda (x) (vector-ref (variable-get (car pa)) x)))
+		)
+	)
+)
+
+; Set variable to value, or set array to value
+(define (basic-let param)
+	(when (not (null? param))
+		(if (pair? (car param))
+			; The param is a pair, which means we're accessing an index of an array
+			; Set the vector at index to the value
+			(vector-set! (variable-get  (caar param)) (evalexpr (cadar param)) (evalexpr (cadr param)))
+			
+			; Else, set variable to value
+			(variable-put! (car param) (evalexpr (cadr param)))	
+		)
+	)
+)
+
+
+; The if statement definition
+(define (basic-if param program)
+	(when (not (null? param))
+		(when (evalexpr (car param)) ; Eval the if statement
+			; If it's true, goto to the label
+			(basic-goto (cadr param) program)
+		)
+	)
+)
+
+
+; Input definition
+; Can only input numbers
+; Can have n number of parameters, and each time enter is pressed that variable gets set and the function moves on to the next one
+; If CTRL-D is pressed before all variables are inputted, set inputcount to -1.
+(define (basic-input param)
 	(void)
 )
 
-(define (basic-let)
-	(void)
-)
 
 ; *** End BASIC functions ***
 
@@ -104,20 +152,37 @@
         (mod     ,(lambda (x y) (- x (* ((function-get 'div) x y) y))))
         (quot    ,(lambda (x y) (truncate (/ x y))))
         (rem     ,(lambda (x y) (- x (* ((function-get 'quot) x y) y))))
-        (+       ,+)
-        (-		 ,-)
+        (+       ,(case-lambda ((x y) (+ x y))
+				   ((x) (+ x 0.0))))
+        (-		 ,(case-lambda ((x y) (- x y))
+				   ((x) (- 0.0 x))))
+        (/	 	 ,(lambda (x y) (/ (+ x 0.0) (+ y 0.0))))
+        (*		 ,(lambda (x y) (* (+ x 0.0) (+ y 0.0))))
         (^       ,expt)
         (ceil    ,ceiling)
         (exp     ,exp)
         (floor   ,floor)
-        (log     ,log)
+        (log     ,(lambda (x) (if (eq? x 0) (/ (- 1) (+ x 0.0)) (log x)))) ; Return -inf.0 if log of 0
         (sqrt    ,sqrt)
+        (atan	 ,atan)
+        (sin	 ,sin)
+        (cos	 ,cos)
+        (tan	 ,tan)
+        (acos	 ,acos)
+        (asin	 ,asin)
+        (abs	 ,abs)
+        (round	 ,round)
         (print   ,basic-print)
         (goto	 ,basic-goto)
         (dim	 ,basic-dim)
         (let	 ,basic-let)
-        
-
+        (if		 ,basic-if)
+        (=		 ,(lambda (x y) (eqv? x y)))
+        (<=		 ,(lambda (x y) (<= x y)))
+		(>=		 ,(lambda (x y) (>= x y)))
+		(<		 ,(lambda (x y) (< x y)))
+		(>		 ,(lambda (x y) (> x y)))
+        (<>		 ,(lambda (x y) (not (eqv? x y))))
      ))
 
 ; Initialize the variable table
@@ -125,8 +190,9 @@
      (lambda (pair)
           (variable-put! (car pair) (cadr pair)))
      `(
-        (e       2.718281828459045235360287471352662497757247093)
-        (pi      3.141592653589793238462643383279502884197169399)
+        (e       		2.718281828459045235360287471352662497757247093)
+        (pi      		3.141592653589793238462643383279502884197169399)
+        (inputcount 	0)
       )
 )
 
@@ -175,15 +241,6 @@
     (map (lambda (line) (printf "~s~n" line)) program)
     (printf ")~n"))
 
-; The function evalexpr outlines how to evaluate a list recursively.
-(define (evalexpr expr)
-   (cond ((number? expr) expr)
-         ((symbol? expr) (hash-ref *function-table* expr #f))
-         ((pair? expr)   (apply (hash-ref *function-table* (car expr))
-                                (map evalexpr (cdr expr))))
-         (else #f))
-)
-
 ; Run through and do all the stuff for the labels
 (define (eval-labels program)
 	(when (not (null? program))
@@ -205,11 +262,11 @@
 (define (exec-line command program line-num)
 	(if (hash-has-key? *function-table* (car command))
 		(begin ; We need some special cases for some commands
-		
 			(cond 
 				[(eqv? 'goto (car command)) ; Goto needs the entire program to be able to pass it back into run-program with a different line number
-					((function-get (car command)) (cadr command) program)]
-				
+					(basic-goto (cadr command) program)] ; No need to go through the function-get, just makes it harder to read
+				[(eqv? 'if (car command)) ; If needs the program so it can call goto if needed
+					(basic-if (cdr command) program)]
 				[else ((function-get (car command)) (cdr command))]
 			)
 		)
@@ -265,7 +322,7 @@
 (define (main arglist)
     (if (or (null? arglist) (not (null? (cdr arglist)))) ; If the arglist is null, or the cdr of the arglist is null, display how to use the program
         (usage-exit)
-        (let* ((sbprogfile (car arglist)) ; Else, 
+        (let* ((sbprogfile (car arglist)) ; Else,
               (program (readlist-from-inputfile sbprogfile)))
               (write-program-by-line sbprogfile program)
               (eval-program program)
@@ -276,7 +333,6 @@
 
 ; The actual code to run first
 (main (vector->list (current-command-line-arguments)))
-
 
 ; *** REFERENCE CODE ***
 ; How to call a function in the table
