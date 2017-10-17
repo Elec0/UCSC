@@ -1,0 +1,6 @@
+Assignment 1
+Aaron Steele (atsteele)
+
+Files:
+README - This file
+sbi.scm - Silly Basic Interpreter, takes in an argument for a .sbir file to interpret, then executes the file.

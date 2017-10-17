@@ -1,6 +1,7 @@
 #!/afs/cats.ucsc.edu/courses/cmps112-wm/usr/racket/bin/mzscheme -qr
-#!/usr/bin/racket
-#lang racket
+; atsteele
+; Aaron Steele
+;#lang racket
 
 ;; $Id: sbi.scm,v 1.3 2016-09-23 18:23:20-07 - - $
 ;;
@@ -60,7 +61,8 @@
 				(if (hash-has-key? *variable-table* expr)
 					(variable-get expr)
 					; Else
-					(err-syntax #:msg (string-append "Variable " (symbol->string expr) " not found."))
+					;(err-syntax #:msg (string-append "Variable " (symbol->string expr) " not found."))
+					0 ; Since un-init variables are supposed to be 0, I guess?
 				)
 			)
 		)

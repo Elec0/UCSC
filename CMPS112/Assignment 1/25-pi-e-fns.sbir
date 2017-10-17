@@ -24,7 +24,7 @@
 (
 (    1          )
 (    2          )
-(    3          (print pi e))
+(    3          (print pi ", " ee))
 (    4          (let pi (* 4 (atan 1))))
 (    5          (let e (exp 1)))
 (    6          (print "pi = " pi))
