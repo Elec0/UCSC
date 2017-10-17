@@ -1,4 +1,4 @@
-;#!/afs/cats.ucsc.edu/courses/cmps112-wm/usr/racket/bin/mzscheme -qr
+#!/afs/cats.ucsc.edu/courses/cmps112-wm/usr/racket/bin/mzscheme -qr
 ;#!/usr/bin/racket
 #lang racket
 
@@ -44,9 +44,26 @@
 (define (evalexpr expr)
 	(cond ((number? expr) expr)
 		;((symbol? expr) (hash-ref *function-table* expr #f)) ; Call the function with a false second parameter if there is only one parameter
-		((pair? expr)   (apply (hash-ref *function-table* (car expr))
-							(map evalexpr (cdr expr))))
-		(else (variable-get expr))
+		((pair? expr)   
+			(begin
+				(if (hash-has-key? *function-table* (car expr))
+					(apply (hash-ref *function-table* (car expr))
+						(map evalexpr (cdr expr)))
+					
+					; Else
+					(err-syntax #:msg (string-append "Command " (car expr) " not found."))
+				)
+			)
+		)
+		(else 
+			(begin
+				(if (hash-has-key? *variable-table* expr)
+					(variable-get expr)
+					; Else
+					(err-syntax #:msg (string-append "Variable " (symbol->string expr) " not found."))
+				)
+			)
+		)
 	)
 )
 
@@ -119,7 +136,19 @@
 ; Can have n number of parameters, and each time enter is pressed that variable gets set and the function moves on to the next one
 ; If CTRL-D is pressed before all variables are inputted, set inputcount to -1.
 (define (basic-input param)
-	(void)
+	(when (not (null? param))
+		(let ((in (read)))
+			(if (number? in) ; Make sure the input is numeric
+				(begin ; Now assign the variable to the input, and recuse if needed
+					(variable-put! (car param) in)
+					(when (not (null? (cdr param)))
+						(basic-input (cdr param))
+					)
+				)
+				(err-syntax #:msg "Only numeric input is accepted.")
+			)
+		)			
+	)
 )
 
 
@@ -177,6 +206,7 @@
         (dim	 ,basic-dim)
         (let	 ,basic-let)
         (if		 ,basic-if)
+		(input	 ,basic-input)
         (=		 ,(lambda (x y) (eqv? x y)))
         (<=		 ,(lambda (x y) (<= x y)))
 		(>=		 ,(lambda (x y) (>= x y)))
