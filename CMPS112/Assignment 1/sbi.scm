@@ -359,7 +359,7 @@
         (usage-exit)
         (let* ((sbprogfile (car arglist)) ; Else,
               (program (readlist-from-inputfile sbprogfile)))
-              (write-program-by-line sbprogfile program)
+              ;(write-program-by-line sbprogfile program)
               (eval-program program)
         )
 	)
@@ -370,8 +370,6 @@
 (main (vector->list (current-command-line-arguments)))
 
 ; *** REFERENCE CODE ***
-; How to call a function in the table
-;((function-get 'print) "test")
 
 ; Loop over a hashtable
 ;(hash-for-each *label-table* (lambda (key value) (printf "~s = ~s~n" key value)))
