@@ -40,7 +40,7 @@
 ;;  39: 	let i = i + 1
 ;;  40: 	if i <= max goto sortlp
 ;;  41: 	goto stop
-;;  42: error:	print "Invalid input"
+;;  42: error:	print "Invalid input " inputcount
 ;;  43: stop:
 (
 (    1          )
@@ -55,7 +55,7 @@
 (   10          (let max 0))
 (   11 read     (input x))
 (   12          (if (= inputcount (- 1)) eof))
-(   13          (if (< inputcount 1) error))
+(   13          (if (= inputcount 0) error))
 (   14          (let max (+ max 1)))
 (   15          (let (a max) x))
 (   16          (if (< max size) read))
@@ -85,5 +85,10 @@
 (   40          (if (<= i max) sortlp))
 (   41          (goto stop))
 (   42 error    (print "Invalid input"))
-(   43 stop     )
+(   43  	    (print inputcount))
+(	44			(if (= inputcount (- 1)) test))
+(	45			(print "Not -1"))
+(	46			(goto stop))
+(	47 test		(print "Is -1"))
+(	48 stop		)
 )

@@ -1,5 +1,5 @@
 #!/afs/cats.ucsc.edu/courses/cmps112-wm/usr/racket/bin/mzscheme -qr
-;#!/usr/bin/racket
+#!/usr/bin/racket
 #lang racket
 
 ;; $Id: sbi.scm,v 1.3 2016-09-23 18:23:20-07 - - $
@@ -77,7 +77,7 @@
 			(if (string? (car msg))
 				(display (car msg))
 				; Else, eval the non-string
-				(printf "~s " (evalexpr (car msg)))
+				(printf "~s" (evalexpr (car msg)))
 			)
 			(if (not (null? (cdr msg))) ; There's still things to print
 				(basic-print (cdr msg))
@@ -111,7 +111,7 @@
 		(if (pair? (car param))
 			; The param is a pair, which means we're accessing an index of an array
 			; Set the vector at index to the value
-			(vector-set! (variable-get  (caar param)) (evalexpr (cadar param)) (evalexpr (cadr param)))
+			(vector-set! (variable-get (caar param)) (exact-floor (evalexpr (cadar param))) (evalexpr (cadr param)))
 			
 			; Else, set variable to value
 			(variable-put! (car param) (evalexpr (cadr param)))	
@@ -134,20 +134,27 @@
 ; Input definition
 ; Can only input numbers
 ; Can have n number of parameters, and each time enter is pressed that variable gets set and the function moves on to the next one
-; If CTRL-D is pressed before all variables are inputted, set inputcount to -1.
-(define (basic-input param)
+; If CTRL-D is pressed, set inputcount to -1 and end
+(define (basic-input param #:cnt [count 1])
 	(when (not (null? param))
-		(let ((in (read)))
-			(if (number? in) ; Make sure the input is numeric
-				(begin ; Now assign the variable to the input, and recuse if needed
+		(let ((in (read)))			
+			(if (eof-object? in) ; If CRTL-D
+				(variable-put! 'inputcount -1)
+				(begin ; Else, do the actual function
+			
+				(if (number? in) ; Make sure the input is numeric
+					; Now assign the variable to the input, and recuse if needed
 					(variable-put! (car param) in)
-					(when (not (null? (cdr param)))
-						(basic-input (cdr param))
-					)
+					
+					; Else, number isn't numeric, put nan into the variable
+					(variable-put! (car param) +nan.0)
 				)
-				(err-syntax #:msg "Only numeric input is accepted.")
-			)
-		)			
+				(if (not (null? (cdr param))) ; Add 1 to count and recurse if there's more variables
+					(basic-input (cdr param) #:cnt (+ 1 count))
+					(variable-put! 'inputcount count) ; If not, just put the count into inputcount
+				)
+			))
+		)		
 	)
 )
 
@@ -155,16 +162,13 @@
 ; *** End BASIC functions ***
 
 
-; *** Error functions ***
 
 ; Generic syntax error
-; Usage: (err-syntax) or (err-syntax #:msg "Message here")
+; Usage: (err-syntax) or (err-syntax #:msg "Error here")
 (define (err-syntax #:msg [message "Generic error"])
 	(printf "Syntax error: ~s~n" message)
 	(quit)
 )
-
-; *** End error functions ***
 
 
 ; Initialize all the functions we allow the BASIC program to have, at the start
@@ -207,12 +211,12 @@
         (let	 ,basic-let)
         (if		 ,basic-if)
 		(input	 ,basic-input)
-        (=		 ,(lambda (x y) (eqv? x y)))
+        (=		 ,(lambda (x y) (= x y)))
         (<=		 ,(lambda (x y) (<= x y)))
 		(>=		 ,(lambda (x y) (>= x y)))
 		(<		 ,(lambda (x y) (< x y)))
 		(>		 ,(lambda (x y) (> x y)))
-        (<>		 ,(lambda (x y) (not (eqv? x y))))
+        (<>		 ,(lambda (x y) (not (= x y))))
      ))
 
 ; Initialize the variable table
@@ -297,6 +301,7 @@
 					(basic-goto (cadr command) program)] ; No need to go through the function-get, just makes it harder to read
 				[(eqv? 'if (car command)) ; If needs the program so it can call goto if needed
 					(basic-if (cdr command) program)]
+				
 				[else ((function-get (car command)) (cdr command))]
 			)
 		)
