@@ -66,6 +66,15 @@ module Bigint = struct
         then Bigint (neg1, add' value1 value2 0)
         else zero
 	
+	(* Actually do the subtraction *)
+    let rec sub' list1 list2 carry = match (list1, list2, carry) with
+        | list1, [], 0       -> list1
+        | [], list2, 0       -> list2
+        | list1, [], carry   -> sub' list1 [carry] 0
+        | [], list2, carry   -> sub' [carry] list2 0
+        | car1::cdr1, car2::cdr2, carry ->
+          let sum = car1 + car2 + carry
+          in  sum mod radix :: add' cdr1 cdr2 (sum / radix)	
 	(* Determine if subtracting or adding should be done *)
     let sub = add
 
