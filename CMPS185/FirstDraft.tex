@@ -1,4 +1,4 @@
-\documentclass[11pt,twocolumn]{article}
+\documentclass[12pt,twocolumn]{article}
 \usepackage{url}
 \usepackage{listings}
 \usepackage{textcomp}
@@ -6,20 +6,52 @@
 \usepackage[T1]{fontenc} % Turns quotes straight
 \bibliographystyle{ieeetr}
 
-\newcommand{\sig}{$\sigma \ $}
-\newcommand{\Sig}{$\Sigma \ $}
-\newcommand{\eps}{$\epsilon \ $}
+\newcommand\blfootnote[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
 
-\title{Conference Paper \\ \large First Draft}
+
+\title{Quality-controlling real-time crowdsourced data \\ \large First Draft}
 
 \author{Aaron Steele}
 \date{}
 
 
-% Papers
-%
-%
 \begin{document}
 	\maketitle
 	
+	\blfootnote{Source1: }
+	\blfootnote{Source2: }
+	
+	% Outline
+	% I. Quality controlling normal crowdsourced data [1st paper]
+	%	1. Web-based crowdsourcing
+	%	2. QC of standard crowdsourcing
+	%	3. Taxonomy of quality in crowdsourcing systems
+	%		1. Worker: Reputation & Expertise
+	%		2. Task: Definition, User Interface, Granluarity, Compensation Policy
+	%	4. Quality control approaches [table] (Contribuitor evaulation?)
+	% II. Intro to real-time QC
+	%	1. Definition of UB QC
+	%	2. Problems with dynamic crowds and UB data
+	%	3. Participatory sensing
+	% III. The credibility-weight and proposed approach
+	%	1. Using mobility patterns
+	%	2. Defining POIs via tuples
+	%	3. Regularity function (how regularly a user visits a place)
+	%	4. Trustworthiness score, or reputation
+	%	5. Final formula and explanation
+	
+	\section*{Abstract}
+	
+	\section*{Introduction}
+	
+	\section*{Body}
+	
+	\section*{Related Works}
+	
+	\section*{Conclusion}
 \end{document}
