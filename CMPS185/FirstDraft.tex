@@ -55,10 +55,25 @@
 	    %Recreate and include the taxonomy diagram?
 	    
 	\section*{Body}
-	    Thanks to the rise of smartphones being abundant, a new type of crowdsourcing has been created. Ubiquitous crowdsourcing is smartphone owners contributing data about their outside world, such as GPS location, or ambient noise level. 
+	    Thanks to the rise of smartphones being abundant, a new type of crowdsourcing has been created. Ubiquitous crowdsourcing is smartphone owners contributing data about their outside world, such as GPS location, or ambient noise level. For example, Google Maps, or Waze, both rely on crowdsourced data to give information about traffic conditions, wrecks, and other events that happen on the road. 
+	    
+	    A major issue that faces developers who wish to use ubiquitous crowdsourcing is quality control. Just like in crowdsourced processing, the data gathered from ubiquitous applications must be controlled for quality. For ubiquitous systems, quality control is even more important than processing systems, in a lot of cases. On top of dealing with outright malicious users submitting bad data, the "fuzziness" of the real world requires us to deal with a truly huge amount of possible edge cases. Getting usable data out of the mess is what this paper will be discussing.
+	    
+	    Two other issues that ubiquitous crowdsourcing faces that crowdsourced processing doesn't have to deal with are Real-time Events, and Dynamic Crowds.
+	    \begin{itemize}
+	        \item \emph{Real-time Events}: ubiquitous crowdsourcing inherently deals with real-time events. The data is gathered in real time, and in many instances, real-time processing of the data is expected as well. %Example? Bus stop and location logging?
+	        In crowdsourced processing, on the other hand, quality control can often be delayed by some amount of time, if needed, to be checked and flagged by an authorized or more credible user. 
+	        
+	        
+	        \item \emph{Dynamic Crowds}: since ubiquitous crowdsourcing deals in real-time, the crowd itself is also often dynamic. People start and stop driving all the time, for example. The challenge of a dynamic crowd is that there are times when the number of contributors might not reach critical mass. Having too few points of data makes quality control even more important, on top of increasing the challenge of getting the proper results from the program.
+	    \end{itemize}
+	    
+	    Participatory sensing is the concept of communities (or other groups of people) contributing sensory information to form a body of knowledge. %cite https://www.wilsoncenter.org/sites/default/files/participatory_sensing.pdf
+	    
 	    
 	\section*{Related Works}
-	    
+	    % Web-based crowdsourcing, or crowdsourced processing
+	    % 
 	    
 	\section*{Conclusion}
 	    TODO
