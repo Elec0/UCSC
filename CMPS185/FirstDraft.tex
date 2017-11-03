@@ -82,21 +82,24 @@
 	%	5. Final formula and explanation
 	    
 	    Our proposed method is to track the users' mobility patterns. Studies have shown that data can be very consistent when cross-referencing with a users' commute. For example, there is a high degree of regularity in a weekday commute; most people tend to make a schedule and stick to it when traveling. [] %Cite the article [18]
-	    We look at taking a public bus, and users' traveling patterns to determine when the busses will arrive at given stops. First we define, for each user, Points of Interest (POIs) with tuples, $T(loc_{POI_x}, t_i)$. $loc_{POI}$ is the specific point where the contribution was submitted. $t_i$ is a logical time as opposed to a timestamp. We define a logical time as something applicatioin-relevant, such as \emph{morning}, \emph{afternoon}, or \emph{late night}.
+	    We look at taking a public bus, and users' traveling patterns to determine when the busses will arrive at given stops. First we define, for each user, Points of Interest (POIs) with tuples, $T(loc_{POI_x}, t_i)$. $loc_{POI}$ is the specific point where the contribution was submitted. $t_i$ is a logical time as opposed to a timestamp. We define a logical time as something application-relevant, such as \emph{morning}, \emph{afternoon}, or \emph{late night}.
+	    While processing the data, we consider patterns differently for weekdays vs. weekends, since people generally have more regular schedules on the weekdays. %Include figure?
 	    
+	    Based on this, and with this framework, we define a regularity function $Reg(T_j)$ whose value is determined based on implicit location readings from the user's device. %This is copied directly, change it
+	    While there is obviously no history data from the start of the logging process, after just a few days of logging data we can beign to put together a fairly accurate regularity function for the user. We start to define POIs for the user as \emph{local}, \emph{familiar}, and \emph{stranger}. 
 	    
+	    On top of the regularity function, we also define a reputation score. When the user submits data, it is checked against other users submissions and also their own regularity function to determine a trustworthiness score, $Trust(u_i)$. For crowdsourced processing, this kind of trust function is usually created by reviews on the users' input from experts, but in ubiquitous crowdsourcing the rating must be different, as there is both too much data and not enough time for \'experts\' to rate each user. On top of that, using the formula we created, it is still possible to use data from locations where the user-submitted data is very sparse. Based on the regularity and trust functions, we can compute a credibility weight for user $u_i$:
 	    
-	    \\
-	    The formula we created: 
-	    $\text{credibility weight} (T_j) = \alpha \cdot Reg(T_j) + (1 - \alpha) \cdot Trust(u_i)$
+	    $$\text{credibility weight} (T_j) = $$ $$\alpha \cdot Reg(T_j) + (1 - \alpha) \cdot Trust(u_i)$$
 	    
+        $\alpha$ can be adjusted on the fly to give more weight to either the trust or regularity functions for the overall credibility weight. For example, if there is an area with a large amount of submissions, the regularity function of each user might not be as important as the trust score, and visa-versa in low-data areas.
 	    
 	\section*{Related Works}
 	    % Web-based crowdsourcing, or crowdsourced processing
-	    % 
+	    WIP: Wikipedia, Reddit, Slashdot, IMDB, Voluntary Geographical Information (VGI). In [14] Authors are investigating the quality of voluntarily submitted POIs.
 	    
 	\section*{Conclusion}
-	    TODO
+	    WIP: The authors are creating an Android-based app to give more accurate bus-tracking data. The app also includes a game-like element, which tends to increase user engagement and participation [source?]. 
 	
 	\bibliography{FirstDraft}
 \end{document}
