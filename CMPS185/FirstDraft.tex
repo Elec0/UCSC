@@ -23,7 +23,7 @@
 \begin{document}
 	\maketitle
 	
-	\blfootnote{Conference: }
+	\blfootnote{Conference: UbiComp'11 (\url{https://dl.acm.org/citation.cfm?id=2030100&picked=prox}) }
 	\blfootnote{Papers: \cite{UB-QC-CC}\cite{QC-CC}}
 	
 	% Outline
@@ -68,7 +68,27 @@
 	        \item \emph{Dynamic Crowds}: since ubiquitous crowdsourcing deals in real-time, the crowd itself is also often dynamic. People start and stop driving all the time, for example. The challenge of a dynamic crowd is that there are times when the number of contributors might not reach critical mass. Having too few points of data makes quality control even more important, on top of increasing the challenge of getting the proper results from the program.
 	    \end{itemize}
 	    
-	    Participatory sensing is the concept of communities (or other groups of people) contributing sensory information to form a body of knowledge. %cite https://www.wilsoncenter.org/sites/default/files/participatory_sensing.pdf
+	    Participatory sensing is the concept of communities (or other groups of people) contributing sensory information to form a body of knowledge. %\cite https://www.wilsoncenter.org/sites/default/files/participatory_sensing.pdf
+	    A common problem with participatory sensing is data corruption, or malicious users intentionally sending invalid or fallacious data. The paper %cite [17]
+	    [] shows a new concept of controlling for this by allowing consumers of the crowdsourced data to assign trust scores to specific sources of data. 
+	    
+	    The only other paper that is related to our work is []. %cite [8]
+	    In that paper, the authors consider the scenario where users deliberately try to confuse the sensor and send false data. The solution the authors propose is using a trust-based rating system, where each contributor has a reputation, or trust, rating and processed the data sent from users based on this rating. While their system shows an improvement over other trust-based systems, we propose an improvement to that system.
+	    	% III. The credibility-weight and proposed approach
+	%	1. Using mobility patterns
+	%	2. Defining POIs via tuples
+	%	3. Regularity function (how regularly a user visits a place)
+	%	4. Trustworthiness score, or reputation
+	%	5. Final formula and explanation
+	    
+	    Our proposed method is to track the users' mobility patterns. Studies have shown that data can be very consistent when cross-referencing with a users' commute. For example, there is a high degree of regularity in a weekday commute; most people tend to make a schedule and stick to it when traveling. [] %Cite the article [18]
+	    We look at taking a public bus, and users' traveling patterns to determine when the busses will arrive at given stops. First we define, for each user, Points of Interest (POIs) with tuples, $T(loc_{POI_x}, t_i)$. $loc_{POI}$ is the specific point where the contribution was submitted. $t_i$ is a logical time as opposed to a timestamp. We define a logical time as something applicatioin-relevant, such as \emph{morning}, \emph{afternoon}, or \emph{late night}.
+	    
+	    
+	    
+	    \\
+	    The formula we created: 
+	    $\text{credibility weight} (T_j) = \alpha \cdot Reg(T_j) + (1 - \alpha) \cdot Trust(u_i)$
 	    
 	    
 	\section*{Related Works}
