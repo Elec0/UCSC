@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.19)  1 NOV 2017 11:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.19)  12 NOV 2017 13:10
 entering extended mode
 **./FirstDraft.tex
 (FirstDraft.tex
@@ -6,8 +6,8 @@ LaTeX2e <2017/01/01> patch level 1
 Babel <3.9r> and hyphenation patterns for 75 language(s) loaded.
 ("D:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
-("D:\Program Files\MiKTeX 2.9\tex\latex\base\size12.clo"
-File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+("D:\Program Files\MiKTeX 2.9\tex\latex\base\size10.clo"
+File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@section=\count80
@@ -223,28 +223,53 @@ File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    ... okay on input line 23.
 \c@lstlisting=\count107
- [1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 26.
+
+("D:\Program Files\MiKTeX 2.9\tex\latex\base\t1cmtt.fd"
+File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+Underfull \hbox (badness 10000) in paragraph at lines 26--26
+[][]\T1/cmr/m/n/8 Conference: Ubi-Comp'11 ($\T1/cmtt/m/n/8 https : / / dl . acm
+ . org /
+ []
 
 
+Underfull \hbox (badness 1168) in paragraph at lines 62--63
+\T1/cmr/m/n/10 faces that crowd-sourced pro-cess-ing doesn't have
+ []
+
+[1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}
+
+
+] (FirstDraft.bbl
+[2]) [3
 
 ] (FirstDraft.aux) ) 
 Here is how much of TeX's memory you used:
- 2806 strings out of 493333
- 36818 string characters out of 3139194
- 89180 words of memory out of 3000000
- 6353 multiletter control sequences out of 15000+200000
- 14785 words of font info for 40 fonts, out of 3000000 for 9000
+ 2834 strings out of 493333
+ 37475 string characters out of 3139194
+ 95161 words of memory out of 3000000
+ 6371 multiletter control sequences out of 15000+200000
+ 15740 words of font info for 40 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 27i,8n,32p,256b,219s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 27i,8n,32p,772b,266s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\j
-knappen\ec\dpi600\ecrm1200.pk> <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\p
-k\ljfour\jknappen\ec\dpi600\ecrm1000.pk> <C:\Users\Aaron\AppData\Local\MiKTeX\2
-.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1728.pk> <C:\Users\Aaron\AppData\Loca
-l\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1440.pk> <C:\Users\Aaron\Ap
-pData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm2074.pk>
-Output written on FirstDraft.pdf (1 page, 27558 bytes).
+knappen\ec\dpi600\ecti1000.pk> <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\p
+k\ljfour\jknappen\ec\dpi600\tcrm1000.pk> <C:\Users\Aaron\AppData\Local\MiKTeX\2
+.9\fonts\pk\ljfour\jknappen\ec\dpi600\ectt0800.pk> <C:\Users\Aaron\AppData\Loca
+l\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0800.pk> <C:\Users\Aaron\Ap
+pData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1000.pk> <C:\User
+s\Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1440.pk
+> <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\e
+crm1200.pk> <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\e
+c\dpi600\ecrm1728.pk><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
+m/cmmi10.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi5.
+pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><D:/P
+rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on FirstDraft.pdf (3 pages, 125390 bytes).
 PDF statistics:
- 89 PDF objects out of 1000 (max. 8388607)
+ 280 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
