@@ -16,6 +16,7 @@
 \usepackage{tabularx}
 \usepackage{adjustbox}
 \usepackage{multirow}
+\usepackage{cleveref}
 \bibliographystyle{ieeetr}
 
 \newcommand\blfootnote[1]{%
@@ -26,7 +27,7 @@
 }
 
 
-\title{Quality-controlling real-time crowdsourced data}
+\title{Quality controlling real-time crowdsourced data}
 
 \author{Aaron Steele}
 \date{}
@@ -61,7 +62,6 @@
 	
 	\section*{Abstract}
 	TODO: Write last
-	\cite{UB-QC-CC}
 	\section*{Introduction}
 	Crowdsourcing has become a much more popular way of both getting and processing data in recent years. In processing data, crowdsourcing is primarily helpful for tasks which are easy for humans to do but hard to machines. %\cite
 	Getting data, on the other hand, is a very different process. With the advent of the ubiquity of smartphones, it has become much easier to gather various types of data from the crowd, as it were.
@@ -79,36 +79,58 @@
 	%		2. Task: Definition, User Interface, Granluarity, Compensation Policy
 	%	4. Quality control approaches [table]
 	
+	\subsection*{Web-based Crowdsourcing}
+		
+	Crowdsourcing has been on the rise in recent years. Websites like Wikipedia and StackOverflow are prominent in their use of crowdsourcing. These websites provide excellent services, and show how powerful properly leveraged and utilized crowdsourcing can be. Of course, an inherent factor in these websites is that the contributors might be of wildly differing levels of knowledge or skill on any given topic. This means the quality of any given submission cannot be assumed to be correct or up to the standard the developers require. Which means all user submissions must be controlled for quality. Quality controlling is also required for another reason: malicious submissions. It is known that the guise of anonymity can bring out the worst in many people (just read through the comments of a website like Youtube.) This means that often people will attempt to submit malicious or incorrect data on purpose, to bring down the overall quality of the service, or even try to totally discredit the service as valuable.
 	
+	To talk about quality control we must define and categorize it. First, the creator of the task, or the \emph{requestor}, goes on to a given crowdsourcing platform and creates a task. That task could be asking a question on StackOverflow, or using MTurk to have people fill out a survey. The \emph{workers} do the task and submit their contributions via the crowdsourcing platform. Then, once all or some of the results are in, the requester assesses the quality of the submissions. Quality is, of course, subjective to each requester. 
+	
+	For this paper we will be using Crosby's definition of quality. \cite{crosby1996quality} He emphasizes `conformance to requirements' as the best principle to design quality control models with. This means we define the standard of quality for submissions by \\
+	"the extent to which the provided outcome fulfills the requirements of the requester."
+	
+	We then characterize the quality of submissions based on two main factors: worker profiles and task design. We have proposed a taxonomy for quality in crowdsourcing systems, as \cref{fig-taxonomy} shows.
 	
 	\begin{figure*}
-		\label{fig-taxonomy}
 		\includegraphics[width=\textwidth]{taxonomy}
 		\caption{Taxonomy of quality in web-based crowdsourced systems.}
+		\label{fig-taxonomy}
 	\end{figure*}
+
+	
+	% Worker profiles
+	%	Reputation
+	%	Expertise
+	% Task design
+	% 	Task definition
+	%	User interface
+	%	Granluarity
+	%	Compensation policy
+	
+	
+	% Quality control approaches
+	% Design time and runtime (see tables)
+	% Why approaches are needed even for highly-skilled users
+	% Requesters must specify runtime approaches
 	
 	\begin{figure*}
-	\label{fig-tbl1}
-	\caption{Existing quality-control design-time approaches.}
 	\rowcolors{2}{gray!25}{white}
-	\begin{tabularx}{\textwidth}{||XlXl|}		
+	\begin{tabularx}{\textwidth}{|XlXl|}		
 		\rowcolor{gray!50}
 		\hline
 		Quality-control approach & Subcategories & Description & Sample application\\
-		Effective task preparation & Defensive design & Provides an unambiguous description of the task;
-		task design is defensive---that is, cheating isn't easier than doing the task; defines evaluation and compensation criteria
-		&  \\
-		Worker selection & Open to all & Allows everybody to contribute to the task & ESP Game, Thredless.com \\
+		Effective task preparation & Defensive design & Provides an unambiguous description of the task; task design is defensive---that is, cheating isn't easier than doing the task; defines evaluation and compensation criteria &  \\
+		Worker selection & Open to all & Allows everybody to contribute to the task & ESP Game, Threadless.com \\
 										  & Reputation-based & Lets only workers with prespecified reputation levels contribute to the task & Mturk, StackOverflow \\
 										  & Credential-based & Allows only workers with prespecified credentials to do the task & Wikipedia, StackOverflow \\ \hline
 	\end{tabularx}
+	\caption{Existing quality-control design-time approaches.}
+	\label{fig-tbl1}
 	\end{figure*}
 	
 	\begin{figure*}
-		\label{fig-tbl2}
-		\caption{Existing quality-control runtime approaches.}
+
 		\rowcolors{2}{gray!25}{white}
-		\begin{tabularx}{\textwidth}{||lXX|}
+		\begin{tabularx}{\textwidth}{|lXX|}
 			\rowcolor{gray!50}
 			\hline
 			Quality-control approach & Description & Sample application \\
@@ -123,12 +145,22 @@
 			Workflow management 	& Designs a suitable workflow for a complex task; workflow is monitored to control quality, cost, and so on, on the fly. & \\
 			 \hline
 		\end{tabularx}
+	\caption{Existing quality-control runtime approaches.}
+	\label{fig-tbl2}
 	\end{figure*}
 	
-	Thanks to the rise of smartphones being abundant, a new type of crowdsourcing has been created. Ubiquitous crowdsourcing is smartphone owners contributing data about their outside world, such as GPS location, or ambient noise level. For example, Google Maps, or Waze, both rely on crowdsourced data to give information about traffic conditions, wrecks, and other events that happen on the road. 
+	\subsection*{Ubiquitous Crowdsourcing}
+	
+	Thanks to the rise of smartphones, a new type of crowdsourcing has been created. Ubiquitous crowdsourcing is smartphone owners contributing data about their outside world, such as GPS location, or ambient noise level. For example, Google Maps, or Waze, both rely on crowdsourced data to give information about traffic conditions, wrecks, and other events that happen on the road. 
 	
 	A major issue that faces developers who wish to use ubiquitous crowdsourcing is quality control. Just like in web-based crowdsourced, the data gathered from ubiquitous applications must be controlled for quality. For ubiquitous systems, quality control is even more important than web-based systems, in a lot of cases. On top of dealing with outright malicious users submitting bad data, the "fuzziness" of the real world requires us to deal with a truly huge amount of possible edge cases. Getting usable data out of the mess is what this paper will be discussing.
 	
+	\begin{figure}
+		\centering \includegraphics[width=0.7\columnwidth]{maps-traffic}
+		\label{fig-traffic}
+		\caption{A popular use of ubiquitous crowdsourcing: Google Maps' traffic data}
+	\end{figure}
+
 	Two other issues that ubiquitous crowdsourcing faces that web-based crowdsourcing doesn't have to deal with are Real-time Events, and Dynamic Crowds.
 	\begin{itemize}
 		\item \emph{Real-time Events}: ubiquitous crowdsourcing inherently deals with real-time events. The data is gathered in real time, and in many instances, real-time processing of the data is expected as well. %Example? Bus stop and location logging?
@@ -158,6 +190,12 @@
 	Based on this, and with this framework, we define a regularity function $Reg(T_j)$ whose values are calculated based on location readings from the users GPS.
 	While there is obviously no history data from the start of the logging process, after just a few days of logging data we can begin to put together a fairly accurate regularity function for the user. We start to define POIs for the user as \emph{local}, \emph{familiar}, and \emph{stranger}. 
 	
+	\begin{figure}
+		\includegraphics[width=\columnwidth]{freq-dist}
+		\caption{Frequency distributions for regularity function for a given user}
+		\label{fig-freq}
+	\end{figure}
+	
 	On top of the regularity function, we also define a reputation score. When the user submits data, it is checked against other users submissions and also their own regularity function to determine a trustworthiness score, $Trust(u_i)$. For web-based crowdsourcing, this kind of trust function is usually created by reviews on the users' input from experts, but in ubiquitous crowdsourcing the rating must be different, as there is both too much data and not enough time for \'experts\' to rate each user. On top of that, using the formula we created, it is still possible to use data from locations where the user-submitted data is very sparse. Based on the regularity and trust functions, we can compute a credibility weight for user $u_i$:
 	
 	$$\text{credibility weight} (T_j) = $$ 
@@ -165,19 +203,16 @@
 	
 	$\alpha$ can be adjusted on the fly to give more weight to either the trust or regularity functions for the overall credibility weight. For example, if there is an area with a large amount of submissions, the regularity function of each user might not be as important as the trust score, and visa-versa in low-data areas.
 	
-	\section*{Related Works}
-	% Web-based crowdsourcing, or web-based crowdsourcing
-	WIP: Wikipedia, Reddit, Slashdot, IMDB, Voluntary Geographical Information (VGI). In [14] Authors are investigating the quality of voluntarily submitted POIs.
-	
-	Many websites are crowdsourced-based. The most popular is Wikipedia, the entirely user-submitted encyclopedia. Wikipedia is obviously not ubiquitous crowdsourcing, rather the first type of web-based crowdsourcing/data entry we mentioned, and so has different requirements for ensuring quality control than our formula, but it is still an excellent platform to look at.
+	\section*{Related Works}	
+	Many websites are crowdsourced-based. The most popular is Wikipedia, the entirely user-submitted encyclopedia. Wikipedia is obviously not ubiquitous crowdsourcing, rather the first type of web-based crowdsourcing/data entry we mentioned, and so has different requirements for ensuring quality control than our formula, but it is still an excellent platform to look at. Many other such platforms exist, and often they use drastically different quality control methods. StackOverflow, for example, relies on a combination of explicit user ratings and also authorized moderators to police responses and questions. It is easy to see the design time strategies versus the runtime strategies the creators of StackOverflow have put into place. 
 	
 	
 	
 	
-	\section*{Conclusion}
-	WIP: The authors are creating an Android-based app to give more accurate bus-tracking data. The app also includes a game-like element, which tends to increase user engagement and participation [source?]. 
+	\section*{Conclusion}	
+	We are creating an Android-based application that will give more accurate crowdsourced data about bus locations, based on the formula of this paper. We believe ubiquitous crowdsourcing has only just started to come into real force, and we want to show that its power is larger than was previously believed. Along with being powerful, we want to show the data is reliable, hopefully attracting many people to our application, giving more reliable data about bus positions. 
 	
-	We are creating an Android-based app that will give more accurate crowdsourced data about bus locations, based on the formula of this paper. We believe ubiquitous crowdsourcing has only just started to come into real force, and we want to show that its power is larger than was previously believed. Along with being powerful, we want to show the data is reliable, hopefully attracting many people to our app, giving more reliable data about bus positions. 
+	We are paying special attention to the runtime factors of our quality control algorithms and designs. We hope our research encourages more people to develop crowdsourced applications and programs, allowing them to accurately and more easily be able to control for quality in their user submissions.
 	
 	\bibliography{FirstDraft}
 \end{document}
