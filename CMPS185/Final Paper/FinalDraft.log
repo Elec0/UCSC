@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.19)  18 NOV 2017 22:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.19)  5 DEC 2017 14:16
 entering extended mode
-**./FirstDraft.tex
-(FirstDraft.tex
+**./FinalDraft.tex
+(FinalDraft.tex
 LaTeX2e <2017/01/01> patch level 1
 Babel <3.9r> and hyphenation patterns for 75 language(s) loaded.
 ("D:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
@@ -337,8 +337,8 @@ Package cleveref Info: `listings' support loaded on input line 2950.
 LaTeX Warning: Unused global option(s):
     [9pt].
 
-(FirstDraft.aux)
-\openout1 = `FirstDraft.aux'.
+(FinalDraft.aux)
+\openout1 = `FinalDraft.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 36.
 LaTeX Font Info:    ... okay on input line 36.
@@ -429,7 +429,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 39--39
  []
 
 
-Underfull \hbox (badness 2020) in paragraph at lines 84--85
+Underfull \vbox (badness 1776) has occurred while \output is active []
+
+
+Underfull \hbox (badness 2020) in paragraph at lines 65--66
 \T1/cmr/m/n/10 Web-sites like Wikipedia and Stack-Over-flow are
  []
 
@@ -437,83 +440,120 @@ Underfull \hbox (badness 2020) in paragraph at lines 84--85
 
 
 ]
-<images/taxonomy.png, id=13, 1258.7025pt x 569.87906pt>
+<images/taxonomy.png, id=12, 1258.7025pt x 569.87906pt>
 File: images/taxonomy.png Graphic file (type png)
 
 <use images/taxonomy.png>
-Package pdftex.def Info: images/taxonomy.png used on input line 94.
+Package pdftex.def Info: images/taxonomy.png used on input line 75.
 (pdftex.def)             Requested size: 469.0pt x 212.3389pt.
 
-Underfull \hbox (badness 3514) in paragraph at lines 125--125
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[2] [3 <./images/taxonomy.png>]
+Underfull \hbox (badness 1552) in paragraph at lines 117--118
+\T1/cmr/m/n/10 in con-junc-tion with design-time ap-proaches.
+ []
+
+
+Underfull \hbox (badness 3514) in paragraph at lines 130--130
 \T1/cmr/m/n/10 that is, cheat-ing isn't
  []
 
 
-Underfull \hbox (badness 5147) in paragraph at lines 125--125
+Underfull \hbox (badness 5147) in paragraph at lines 130--130
 \T1/cmr/m/n/10 eas-ier than do-ing the
  []
 
 
-Underfull \hbox (badness 1052) in paragraph at lines 125--125
+Underfull \hbox (badness 1052) in paragraph at lines 130--130
 \T1/cmr/m/n/10 task; de-fines eval-u-a-tion
  []
 
 
-Underfull \hbox (badness 1112) in paragraph at lines 125--125
+Underfull \hbox (badness 1112) in paragraph at lines 130--130
 []|\T1/cmr/m/n/10 Lets only work-ers with
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 125--125
+Underfull \hbox (badness 10000) in paragraph at lines 130--130
 \T1/cmr/m/n/10 pre-spec-i-fied rep-u-ta-tion
  []
 
-<images/maps-traffic.png, id=15, 542.025pt x 707.64375pt>
-File: images/maps-traffic.png Graphic file (type png)
 
-<use images/maps-traffic.png>
-Package pdftex.def Info: images/maps-traffic.png used on input line 159.
-(pdftex.def)             Requested size: 160.64929pt x 209.73569pt.
- [2] [3 <./images/taxonomy.png>] [4]
-<images/freq-dist.png, id=31, 1300.86pt x 734.745pt>
+Underfull \hbox (badness 10000) in paragraph at lines 151--151
+[]|\T1/cmr/m/n/10 Academic con-fer-ences and jour-nals,
+ []
+
+
+Overfull \hbox (46.90286pt too wide) in paragraph at lines 151--152
+[][] 
+ []
+
+<images/freq-dist.png, id=24, 1300.86pt x 734.745pt>
 File: images/freq-dist.png Graphic file (type png)
 
 <use images/freq-dist.png>
-Package pdftex.def Info: images/freq-dist.png used on input line 194.
-(pdftex.def)             Requested size: 229.5pt x 129.62494pt.
+Package pdftex.def Info: images/freq-dist.png used on input line 157.
+(pdftex.def)             Requested size: 469.0pt x 264.90039pt.
 
-Underfull \vbox (badness 1715) has occurred while \output is active []
 
- [5 <./images/maps-traffic.png> <./images/freq-dist.png>] (FirstDraft.bbl) [6
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-]
-(FirstDraft.aux) ) 
+[4]
+Underfull \vbox (badness 4995) has occurred while \output is active []
+
+
+<images/maps-traffic.png, id=28, 542.025pt x 707.64375pt>
+File: images/maps-traffic.png Graphic file (type png)
+
+<use images/maps-traffic.png>
+Package pdftex.def Info: images/maps-traffic.png used on input line 195.
+(pdftex.def)             Requested size: 160.64929pt x 209.73569pt.
+
+Underfull \vbox (badness 4995) has occurred while \output is active []
+
+ [5]
+[6] [7 <./images/freq-dist.png>] (FinalDraft.bbl
+Underfull \hbox (badness 1609) in paragraph at lines 14--17
+[]\T1/cmr/m/n/10 R. Khaz-ankin, D. Schall, and S. Dust-dar,
+ []
+
+
+Underfull \hbox (badness 2790) in paragraph at lines 34--38
+[]\T1/cmr/m/n/10 M. Al-lah-bakhsh, B. Be-na-tal-lah, A. Ign-ja-
+ []
+
+[8 <./images/maps-traffic.png>]) [9
+
+] (FinalDraft.aux) ) 
 Here is how much of TeX's memory you used:
- 6929 strings out of 493333
- 108286 string characters out of 3139194
- 199842 words of memory out of 3000000
- 10343 multiletter control sequences out of 15000+200000
- 16516 words of font info for 41 fonts, out of 3000000 for 9000
+ 6944 strings out of 493333
+ 108583 string characters out of 3139194
+ 198842 words of memory out of 3000000
+ 10357 multiletter control sequences out of 15000+200000
+ 17292 words of font info for 42 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,11n,37p,1038b,289s stack positions out of 5000i,500n,10000p,200000b,50000s
- <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jkn
-appen\ec\dpi600\tcrm1000.pk> <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\
-ljfour\jknappen\ec\dpi600\ecti1000.pk> <C:\Users\Aaron\AppData\Local\MiKTeX\2.9
-\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1200.pk> <C:\Users\Aaron\AppData\Local\
-MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ectt0800.pk> <C:\Users\Aaron\AppD
-ata\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0800.pk> <C:\Users\
-Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1000.pk> 
-<C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecb
-x1440.pk> <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\
-dpi600\ecrm1200.pk> <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jk
-nappen\ec\dpi600\ecrm1728.pk><D:/Program Files/MiKTeX 2.9/fonts/type1/public/am
-sfonts/cm/cmmi10.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
-m/cmmi5.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.p
-fb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/Pr
-ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on FirstDraft.pdf (6 pages, 839399 bytes).
+ 41i,11n,37p,1038b,286s stack positions out of 5000i,500n,10000p,200000b,50000s
+ <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\j
+knappen\ec\dpi600\ecbx1000.pk> <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\p
+k\ljfour\jknappen\ec\dpi600\tcrm1000.pk> <C:\Users\Aaron\AppData\Local\MiKTeX\2
+.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecti1000.pk> <C:\Users\Aaron\AppData\Loca
+l\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1200.pk> <C:\Users\Aaron\Ap
+pData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ectt0800.pk> <C:\User
+s\Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0800.pk
+> <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\e
+crm1000.pk> <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\e
+c\dpi600\ecbx1440.pk> <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\
+jknappen\ec\dpi600\ecrm1200.pk> <C:\Users\Aaron\AppData\Local\MiKTeX\2.9\fonts\
+pk\ljfour\jknappen\ec\dpi600\ecrm1728.pk><D:/Program Files/MiKTeX 2.9/fonts/typ
+e1/public/amsfonts/cm/cmmi10.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/publi
+c/amsfonts/cm/cmmi5.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfont
+s/cm/cmmi7.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr1
+0.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on FinalDraft.pdf (9 pages, 865491 bytes).
 PDF statistics:
- 344 PDF objects out of 1000 (max. 8388607)
+ 402 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

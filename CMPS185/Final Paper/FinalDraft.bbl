@@ -1,0 +1,85 @@
+\begin{thebibliography}{10}
+
+\bibitem{burke2006participatory}
+J.~A. Burke, D.~Estrin, M.~Hansen, A.~Parker, N.~Ramanathan, S.~Reddy, and
+  M.~B. Srivastava, ``Participatory sensing,'' {\em Center for Embedded Network
+  Sensing}, 2006.
+
+\bibitem{crosby1996quality}
+P.~B. Crosby, {\em Quality is still free: making quality certain in uncertain
+  times}.
+\newblock McGraw-Hill Companies, 1996.
+
+\bibitem{khazankin2012predicting}
+R.~Khazankin, D.~Schall, and S.~Dustdar, ``Predicting qos in scheduled
+  crowdsourcing,'' in {\em Advanced Information Systems Engineering},
+  pp.~460--472, Springer, 2012.
+
+\bibitem{de2011reputation}
+L.~De~Alfaro, A.~Kulshreshtha, I.~Pye, and B.~T. Adler, ``Reputation systems
+  for open collaboration,'' {\em Communications of the ACM}, vol.~54, no.~8,
+  pp.~81--87, 2011.
+
+\bibitem{schall2012expert}
+D.~Schall, F.~Skopik, and S.~Dustdar, ``Expert discovery and interactions in
+  mixed service-oriented systems,'' {\em IEEE Transactions on services
+  computing}, vol.~5, no.~2, pp.~233--245, 2012.
+
+\bibitem{chen2011opportunities}
+J.~J. Chen, N.~J. Menezes, A.~D. Bradley, and T.~North, ``Opportunities for
+  crowdsourcing research on amazon mechanical turk,'' {\em Interfaces}, vol.~5,
+  no.~3, 2011.
+
+\bibitem{allahbakhsh2013quality}
+M.~Allahbakhsh, B.~Benatallah, A.~Ignjatovic, H.~R. Motahari-Nezhad,
+  E.~Bertino, and S.~Dustdar, ``Quality control in crowdsourcing systems:
+  Issues and directions,'' {\em IEEE Internet Computing}, vol.~17, no.~2,
+  pp.~76--81, 2013.
+
+\bibitem{kittur2011crowdforge}
+A.~Kittur, B.~Smus, S.~Khamkar, and R.~E. Kraut, ``Crowdforge: Crowdsourcing
+  complex work,'' in {\em Proceedings of the 24th annual ACM symposium on User
+  interface software and technology}, pp.~43--52, ACM, 2011.
+
+\bibitem{scekic2012modeling}
+O.~Scekic, H.~L. Truong, and S.~Dustdar, ``Modeling rewards and incentive
+  mechanisms for social bpm.,'' in {\em BPM}, pp.~150--155, Springer, 2012.
+
+\bibitem{dow2012shepherding}
+S.~Dow, A.~Kulkarni, S.~Klemmer, and B.~Hartmann, ``Shepherding the crowd
+  yields better work,'' in {\em Proceedings of the ACM 2012 conference on
+  Computer Supported Cooperative Work}, pp.~1013--1022, ACM, 2012.
+
+\bibitem{mason2010financial}
+W.~Mason and D.~J. Watts, ``Financial incentives and the performance of
+  crowds,'' {\em ACM SigKDD Explorations Newsletter}, vol.~11, no.~2,
+  pp.~100--108, 2010.
+
+\bibitem{wilsondefinition}
+B.~E. H. R. R. S. S.~W. Goldman, Shilton, ``Participatory sensing, a
+  citizen-powered approach to illuminating the patterns that shape our world,''
+  2009.
+
+\bibitem{reddy2009mobisense}
+S.~Reddy, V.~Samanta, J.~Burke, D.~Estrin, M.~Hansen, and M.~Srivastava,
+  ``Mobisense—mobile network services for coordinated participatory
+  sensing,'' in {\em Autonomous Decentralized Systems, 2009. ISADS'09.
+  International Symposium on}, pp.~1--6, IEEE, 2009.
+
+\bibitem{huang2010you}
+K.~L. Huang, S.~S. Kanhere, and W.~Hu, ``Are you contributing trustworthy
+  data?: the case for a reputation system in participatory sensing,'' in {\em
+  Proceedings of the 13th ACM international conference on Modeling, analysis,
+  and simulation of wireless and mobile systems}, pp.~14--22, ACM, 2010.
+
+\bibitem{rhee2011levy}
+I.~Rhee, M.~Shin, S.~Hong, K.~Lee, S.~J. Kim, and S.~Chong, ``On the levy-walk
+  nature of human mobility,'' {\em IEEE/ACM transactions on networking (TON)},
+  vol.~19, no.~3, pp.~630--643, 2011.
+
+\bibitem{doan2011crowdsourcing}
+A.~Doan, R.~Ramakrishnan, and A.~Y. Halevy, ``Crowdsourcing systems on the
+  world-wide web,'' {\em Communications of the ACM}, vol.~54, no.~4,
+  pp.~86--96, 2011.
+
+\end{thebibliography}
