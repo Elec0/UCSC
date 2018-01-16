@@ -1,0 +1,5 @@
+CWD=`pwd`
+cp ~/.bashrc ~/.bashrc.save.lab1
+cat ~/.bashrc | sed '/pintos\/src\/util/d' > fred
+echo "export PATH=\$PATH:$CWD/pintos/src/utils" >> fred
+mv fred ~/.bashrc
