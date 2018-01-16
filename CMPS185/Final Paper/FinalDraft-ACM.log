@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.19)  5 DEC 2017 14:27
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.19)  10 DEC 2017 19:21
 entering extended mode
 **./FinalDraft-ACM.tex
 (FinalDraft-ACM.tex
@@ -430,24 +430,24 @@ Package cleveref Info: `listings' support loaded on input line 2950.
 (FinalDraft-ACM.aux)
 \openout1 = `FinalDraft-ACM.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 53.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 53.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 54.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 54.
  ("D:\Program Files\MiKTeX 2.9\tex\latex\base\ts1cmr.fd"
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 53.
+LaTeX Font Info:    ... okay on input line 54.
 
 ("D:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -505,116 +505,157 @@ G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 )
 \c@lstlisting=\count130
-LaTeX Font Info:    Try loading font information for U+msa on input line 54.
+LaTeX Font Info:    Try loading font information for U+msa on input line 55.
 
 ("D:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 54.
+LaTeX Font Info:    Try loading font information for U+msb on input line 55.
 
 ("D:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+lasy on input line 54.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 55.
 
 ("D:\Program Files\MiKTeX 2.9\tex\latex\base\ulasy.fd"
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 54.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 55.
 
 ("D:\Program Files\MiKTeX 2.9\tex\latex\psnfss\t1ptm.fd"
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 )
-Underfull \hbox (badness 3000) in paragraph at lines 56--56
-[][]\T1/aer/m/n/9 Conference: Ubi-Comp'11 ($https : / / dl . acm . org / citati
-on .
+Underfull \hbox (badness 10000) in paragraph at lines 57--57
+[][]\T1/aer/m/n/10 Conference: Ubi-Comp'11 ($https : / / dl . acm . org /
  []
 
 
-Overfull \hbox (4.63976pt too wide) in paragraph at lines 65--66
-\T1/aer/m/n/9 ap-pli-ca-tions, are called ubiq-ui-tously crowd-sourced. The pro
-b-
+Overfull \hbox (1.3598pt too wide) in paragraph at lines 71--72
+\T1/aer/m/n/10 Un-like web-based ap-pli-ca-tions, which can have
  []
 
 [1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
 ]
-<images/taxonomy.png, id=12, 1258.7025pt x 569.87906pt>
+<images/taxonomy.png, id=14, 1258.7025pt x 569.87906pt>
 File: images/taxonomy.png Graphic file (type png)
 
 <use images/taxonomy.png>
-Package pdftex.def Info: images/taxonomy.png used on input line 92.
+Package pdftex.def Info: images/taxonomy.png used on input line 89.
 (pdftex.def)             Requested size: 504.0pt x 228.18236pt.
+
+Overfull \hbox (1.4276pt too wide) in paragraph at lines 100--101
+\T1/aer/m/n/10 those up or down votes get col-lected and added
+ []
+
+
+Overfull \hbox (27.50676pt too wide) in paragraph at lines 129--130
+\T1/aer/m/n/10 doesn't have to be (see Stack-Over-flow or Wikipedia.)
+ []
+
+[2]
+Overfull \hbox (3.00693pt too wide) in paragraph at lines 139--140
+\T1/aer/m/n/10 then pro-cess and re-turn the data quickly. Web-
+ []
+
+
+Overfull \hbox (1.21907pt too wide) in paragraph at lines 139--140
+\T1/aer/m/n/10 quested, whereas ubiq-ui-tous ap-pli-ca-tions must
+ []
+
+<images/maps-traffic.png, id=19, 542.025pt x 707.64375pt>
+File: images/maps-traffic.png Graphic file (type png)
+
+<use images/maps-traffic.png>
+Package pdftex.def Info: images/maps-traffic.png used on input line 153.
+(pdftex.def)             Requested size: 167.99927pt x 219.3349pt.
+ [3 <./images/taxonomy.png>]
+Overfull \hbox (1.7872pt too wide) in paragraph at lines 176--177
+\T1/aer/m/n/10 han-dle ver-i-fi-ca-tion so the re-questers don't have
+ []
+
+
+Overfull \hbox (5.58034pt too wide) in paragraph at lines 182--183
+\T1/aer/m/n/10 user in-ter-face, gran-u-lar-ity, and com-pen-sa-tion pol-icy. (
+See
+ []
+
+[4 <./images/maps-traffic.png>]
+Underfull \hbox (badness 1048) in paragraph at lines 224--224
+\T1/aer/m/n/10 scrip-tion of the task; task
+ []
+
+
+Underfull \hbox (badness 4168) in paragraph at lines 224--224
+[]|\T1/aer/m/n/10 Allows ev-ery-body to con-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 224--224
+\T1/aer/m/n/10 spec-i-fied rep-u-ta-tion lev-els
+ []
+
+
+Overfull \hbox (50.40308pt too wide) in paragraph at lines 245--246
+[][] 
+ []
+
+<images/freq-dist.png, id=28, 1300.86pt x 734.745pt>
+File: images/freq-dist.png Graphic file (type png)
+
+<use images/freq-dist.png>
+Package pdftex.def Info: images/freq-dist.png used on input line 251.
+(pdftex.def)             Requested size: 504.0pt x 284.6659pt.
+
+<images/foursquare.jpg, id=29, 922.19531pt x 688.07062pt>
+File: images/foursquare.jpg Graphic file (type jpg)
+
+<use images/foursquare.jpg>
+Package pdftex.def Info: images/foursquare.jpg used on input line 258.
+(pdftex.def)             Requested size: 240.0pt x 179.06212pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Overfull \hbox (11.76201pt too wide) in paragraph at lines 122--123
-[]\T1/aer/m/n/9 Intrinsic com-pen-sa-tion comes from in-side the worker,
+[5]
+Overfull \hbox (5.72739pt too wide) in paragraph at lines 270--271
+\T1/aer/m/n/10 qual-ity con-trol can of-ten be de-layed by some amount
  []
 
-[2]
-Overfull \hbox (50.40308pt too wide) in paragraph at lines 168--169
-[][] 
- []
-
-<images/freq-dist.png, id=19, 1300.86pt x 734.745pt>
-File: images/freq-dist.png Graphic file (type png)
-
-<use images/freq-dist.png>
-Package pdftex.def Info: images/freq-dist.png used on input line 174.
-(pdftex.def)             Requested size: 504.0pt x 284.6659pt.
-
-Overfull \hbox (1.38446pt too wide) in paragraph at lines 185--187
-[]\T1/aer/m/n/9 Real-time Events: ubiq-ui-tous crowd-sourc-ing in-her-ently
- []
-
-
-Overfull \hbox (2.36555pt too wide) in paragraph at lines 188--189
-[]\T1/aer/m/n/9 Dynamic Crowds: since ubiq-ui-tous crowd-sourc-ing deals
- []
-
-[3 <./images/taxonomy.png>]
-<images/maps-traffic.png, id=24, 542.025pt x 707.64375pt>
-File: images/maps-traffic.png Graphic file (type png)
-
-<use images/maps-traffic.png>
-Package pdftex.def Info: images/maps-traffic.png used on input line 212.
-(pdftex.def)             Requested size: 167.99927pt x 219.3349pt.
-
+[6]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [4]
-(FinalDraft-ACM.bbl
-Underfull \vbox (badness 10000) has occurred while \output is active []
+ [7 <./images/freq-dist.png>]
+Overfull \hbox (14.80869pt too wide) in paragraph at lines 302--303
+\T1/aer/m/n/10 sourc-ing, rather the first type of web-based crowd-sourcing/-
+ []
 
- [5 <./images/freq-dist.png> <./images/maps-traffic.png>]) [6] (FinalDraft-ACM.
-aux) ) 
+[8 <./images/foursquare.jpg>] (FinalDraft-ACM.bbl) [9] (FinalDraft-ACM.aux) ) 
 Here is how much of TeX's memory you used:
- 7514 strings out of 493333
- 115228 string characters out of 3139194
- 209185 words of memory out of 3000000
- 10866 multiletter control sequences out of 15000+200000
- 56830 words of font info for 78 fonts, out of 3000000 for 9000
+ 7522 strings out of 493333
+ 115410 string characters out of 3139194
+ 212201 words of memory out of 3000000
+ 10875 multiletter control sequences out of 15000+200000
+ 56441 words of font info for 78 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,12n,37p,1042b,475s stack positions out of 5000i,500n,10000p,200000b,50000s
-{D:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<D:/Program File
-s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx9.pfb><D:/Program Files/MiKTeX 
-2.9/fonts/type1/public/amsfonts/cm/cmmi5.pfb><D:/Program Files/MiKTeX 2.9/fonts
-/type1/public/amsfonts/cm/cmmi6.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/pu
-blic/amsfonts/cm/cmmi9.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsf
-onts/cm/cmr8.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
-r9.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb><D
-:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti9.pfb><D:/Program
- Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><D:/Program Files/MiKTeX 
-2.9/fonts/type1/urw/helvetic/uhvr8a.pfb><D:/Program Files/MiKTeX 2.9/fonts/type
-1/urw/times/utmb8a.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8
-a.pfb>
-Output written on FinalDraft-ACM.pdf (6 pages, 862887 bytes).
+ 41i,12n,37p,1042b,483s stack positions out of 5000i,500n,10000p,200000b,50000s
+{D
+:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<D:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><D:/Program Files/MiKTeX 2.9/fon
+ts/type1/public/amsfonts/cm/cmmi10.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1
+/public/amsfonts/cm/cmmi5.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/a
+msfonts/cm/cmmi7.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
+m/cmr10.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pf
+b><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><D:/Program Fi
+les/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><D:/Program Files/MiKTeX 2.9
+/fonts/type1/urw/helvetic/uhvr8a.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/u
+rw/times/utmb8a.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.p
+fb>
+Output written on FinalDraft-ACM.pdf (9 pages, 1189737 bytes).
 PDF statistics:
- 77 PDF objects out of 1000 (max. 8388607)
+ 89 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
