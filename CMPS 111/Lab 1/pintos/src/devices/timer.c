@@ -100,16 +100,14 @@ timer_sleep (int64_t ticks)
    int64_t start = timer_ticks ();
 
    // 1. Save wakeup time (start + ticks) in current thread
-   
-   // 1.1 Add a new field to thread structure
-   // 1.2 Set that new field here
+   thread_set_wakeup(start + ticks);
    
    
    // Gotten from lecture
    // 2. Call whatever function puts the current thread to sleep
    intr_disable(); // Must have interrupts off to use thread_block
-   thread_block();
-   intr_enable(); // Turn it back on
+   thread_block(); // Put the thread to sleep
+   intr_enable(); // Turn interrupts back on
 
 }
 
