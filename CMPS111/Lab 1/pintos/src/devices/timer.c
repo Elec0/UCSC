@@ -95,20 +95,19 @@ timer_elapsed (int64_t then)
  * Sleeps for approximately TICKS timer ticks.
  */
 void
-timer_sleep (int64_t ticks) 
+timer_sleep (int64_t ticks)
 {
-   int64_t start = timer_ticks ();
+   int64_t start = timer_ticks();
 
    // 1. Save wakeup time (start + ticks) in current thread
-   thread_set_wakeup(start + ticks);
-   
+   thread_set_wakeup(start+ticks);
+   // Add this thread to a list
    
    // Gotten from lecture
    // 2. Call whatever function puts the current thread to sleep
    intr_disable(); // Must have interrupts off to use thread_block
    thread_block(); // Put the thread to sleep
    intr_enable(); // Turn interrupts back on
-
 }
 
 /* 
@@ -202,7 +201,11 @@ static void
 timer_interrupt (struct intr_frame *args UNUSED)
 {
    ticks++;
-   thread_tick ();
+   
+   // Check the list for threads whose wakeup timer is finished
+   
+   
+   thread_tick();
 }
 
 /* 
@@ -210,7 +213,7 @@ timer_interrupt (struct intr_frame *args UNUSED)
  * tick, false otherwise. 
  */
 static bool
-too_many_loops (unsigned loops) 
+too_many_loops (unsigned loops)
 {
    /* Wait for a timer tick. */
    int64_t start = ticks;

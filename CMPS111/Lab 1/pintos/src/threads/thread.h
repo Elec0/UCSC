@@ -138,7 +138,7 @@ void thread_set_priority (int);
 
 // The getter and setters for our wakeup variable
 int thread_get_wakeup(void);
-void thread_set_priority(uint32_t);
+void thread_set_wakeup(uint32_t);
 
 int thread_get_nice (void);
 void thread_set_nice (int);
