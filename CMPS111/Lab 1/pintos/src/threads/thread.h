@@ -136,10 +136,6 @@ void thread_foreach (thread_action_func *, void *);
 int thread_get_priority (void);
 void thread_set_priority (int);
 
-// The getter and setters for our wakeup variable
-int thread_get_wakeup(void);
-void thread_set_wakeup(uint32_t);
-
 int thread_get_nice (void);
 void thread_set_nice (int);
 int thread_get_recent_cpu (void);

@@ -3,6 +3,7 @@
 #include <inttypes.h>
 #include <round.h>
 #include <stdio.h>
+#include <kernel/list.h>
 #include "devices/pit.h"
 #include "threads/interrupt.h"
 #include "threads/synch.h"
@@ -17,6 +18,13 @@
 #error TIMER_FREQ <= 1000 recommended
 #endif
 
+/* A linked list element. (From tests/internal/list.c) */
+struct value 
+  {
+    struct list_elem elem;      /* List element. */
+    struct thread* value;        /* Item value. */
+  };
+  
 // Number of timer ticks since OS booted.
 static int64_t ticks;
 
@@ -29,6 +37,10 @@ static intr_handler_func timer_interrupt;
 static void real_time_delay (int64_t num, int32_t denom);
 static void real_time_sleep (int64_t num, int32_t denom);
 
+static struct list list;
+
+
+
 /* 
  * Sets up the timer to interrupt TIMER_FREQ times per second,
  * and registers the corresponding interrupt. 
@@ -36,6 +48,8 @@ static void real_time_sleep (int64_t num, int32_t denom);
 void 
 timer_init (void) 
 {
+   list_init(&list);
+   
    pit_configure_channel (0, 2, TIMER_FREQ);
    intr_register_ext (0x20, timer_interrupt, "8254 Timer");
 }
@@ -91,6 +105,20 @@ timer_elapsed (int64_t then)
    return timer_ticks () - then;
 }
 
+/* Returns true if the ticks the thread should wake up in A > B
+   Taken from the test file list.c
+*/
+static bool
+value_less (const struct list_elem *a_, const struct list_elem *b_,
+            void *aux UNUSED)
+{
+  const struct thread *a = list_entry (a_, struct thread, elem);
+  const struct thread *b = list_entry (b_, struct thread, elem);
+  
+  return a->wakeup < b->wakeup;
+}
+
+
 /* 
  * Sleeps for approximately TICKS timer ticks.
  */
@@ -99,9 +127,17 @@ timer_sleep (int64_t ticks)
 {
    int64_t start = timer_ticks();
 
+   // For alarm-negative
+   if(ticks <= 0)
+      return;
+   
    // 1. Save wakeup time (start + ticks) in current thread
-   thread_set_wakeup(start+ticks);
+   thread_current()->wakeup = start + ticks;
+   
    // Add this thread to a list
+   // Order this by wakeup so it's easy to check and things can be popped
+   //    if they're finished
+   list_insert_ordered(&list, &thread_current()->elem, value_less, NULL);
    
    // Gotten from lecture
    // 2. Call whatever function puts the current thread to sleep
@@ -201,9 +237,36 @@ static void
 timer_interrupt (struct intr_frame *args UNUSED)
 {
    ticks++;
+
    
    // Check the list for threads whose wakeup timer is finished
+   struct list_elem *e;
+   struct thread *t;
    
+   // Pulled from list.h example comments
+   while(!list_empty(&list))
+   {
+      // Don't pop it because it might not be finished yet
+      e = list_front(&list);
+      t = list_entry(e, struct thread, elem);
+      
+      // If it isn't time for the first thread to wake up,
+      // then it's not time for any of them to wake up.
+      // Also we need to stop the loop here otherwise it's infinite
+      if(t->wakeup > ticks)
+         break;
+      // If we get here then obviously the prior condition is false, no need for another
+      // Also remove it from the list
+      // NOTE: It is safe to remove the element while iterating over the list
+      //    this is because e.tail is still pointing to the same place, just
+      //    e.tail.head is no longer e, which is fine for our purposes.
+      list_remove(e);
+      
+      // Apparently the OS throws a hissy fit if you remove the thread from the list
+      // BEFORE you unblock it. Who would have guessed.
+      thread_unblock(t);
+
+   }
    
    thread_tick();
 }

@@ -352,18 +352,6 @@ thread_get_priority (void)
    return thread_current ()->priority;
 }
 
-// Sets thread's wakeup time
-void thread_set_wakeup(uint32_t new_wakeup)
-{
-    thread_current()->wakeup = new_wakeup;
-}
-
-// Returns thread's current wakeup time
-int thread_get_wakeup(void)
-{
-    return thread_current()->wakeup;
-}
-
 /* Sets the current thread's nice value to NICE. */
 void
 thread_set_nice (int nice UNUSED) 
