@@ -92,10 +92,11 @@ def depthFirstSearch(problem):
    path = []
    fringe = []
    
-   #S.push(problem.startingState())
+   
    for f in problem.successorStates(problem.startingState()):
       fringe.append(f)
-      
+   
+   # Algorithm taken from Wikipedia's DFS page
    while len(fringe) > 0:
       curState = fringe[len(fringe)-1]
       # if we haven't visited the state yet
@@ -104,6 +105,7 @@ def depthFirstSearch(problem):
          visited.append(curState[0])
          path.append(curState)
          # if we have found the goal state
+         # Source: https://www.geeksforgeeks.org/applications-of-depth-first-search/
          if problem.isGoal(curState[0]):
             actionPath = []
             # get the actions from the path
@@ -129,11 +131,111 @@ def depthFirstSearch(problem):
       
 def breadthFirstSearch(problem):
    "Search the shallowest nodes in the search tree first. [p 81]"
-   util.raiseNotDefined()
+   from game import Directions
+   from util import Queue
+   
+   print "Start", problem.startingState()
+   
+   # The algorithm for BFS from the book, p.82
+   frontier = util.Queue()
+   # Populate the frontier the same way as in DFS
+   for f in problem.successorStates(problem.startingState()):
+      frontier.push(f)
+   
+   explored = []
+   path = []
+   prev = {}
+   
+   while True:
+      if frontier.isEmpty():
+        break # idk, fail
+      
+      node = frontier.pop() # Shallowest node
+      explored.append(node[0])
+      path.append(node)
+      
+      for state in problem.successorStates(node[0]):
+         child = state[0]
+         # If the child hasn't been expanded yet, do so.
+         # The second condition won't actually ever happen but it works fine anyway, I guess
+         if (child not in explored) and (child not in frontier.list): 
+            
+            if problem.isGoal(child):
+               print "Goal found"
+               
+               pathList = [state[1]]
+               # Backtrack over the prev list
+               curState = node # Start at the node prior to this one
+               
+               while True:
+                  pathList.insert(0, curState[1]) # Insert this in reverse order
+                  if curState in prev:
+                     curState = prev[curState] # Do the actual backtracking
+                  else: #Done
+                     break
+               return pathList
+               
+            else: # State isn't a goal
+               frontier.push(state)
+               prev[state] = node # record where we came from
+   
+   return []
          
 def uniformCostSearch(problem):
    "Search the node of least total cost first. "
-   util.raiseNotDefined()
+   from util import PriorityQueue
+   
+   print "Start", problem.startingState()
+   
+   # The UCS algorithm from the book, p.84
+   frontier = util.PriorityQueue()
+   # Populate the starting fringe
+   for f in problem.successorStates(problem.startingState()):
+      frontier.push(f, f[2])
+      
+   explored = []
+   prev = {} # Use a dictionary for the backtracking, it's just easier
+   # Doing it this way is probably less efficient than keeping track of the path as we go along
+   
+   while True:
+      if frontier.isEmpty():
+         break # fail
+      
+      node = frontier.pop() # Lowest-cost node in frontier
+      
+      if problem.isGoal(node[0]):
+         print "Found goal"
+         actionList = []
+         curState = node
+         # As we did in BFS, create the action list by backtracking
+         while True:
+            actionList.insert(0, curState[1])
+            if curState in prev:
+               curState = prev[curState]
+            else: # Done
+               break
+         return actionList
+         
+      else:
+         explored.append(node[0])
+         
+         # Loop every edge
+         for child in problem.successorStates(node[0]):
+            if child[0] not in explored: 
+               if child not in frontier.heap:
+                  frontier.push(child, child[2])
+                  prev[child] = node # set the predecessor node
+               # if the child is in the frontier, and the new child has a lower cost than the old
+               elif child in frontier.heap:
+                  # So this doesn't actually do anything that I've found, although it's in the algorithms for UCS.
+                  # If the print statement ever pops up I'll use that test case and add it, but idk what it's supposed to be doing
+                  print (True in [(loc==child[0] and action==child[1] and child[2] < cost) for loc,action,cost in frontier.heap])
+                  print "Replace existing node with child"
+                  # replace existing node with child
+                  # set child's predecessor to node
+            
+   
+   return []
 
 def nullHeuristic(state, problem=None):
    """
