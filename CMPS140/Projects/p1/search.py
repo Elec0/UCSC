@@ -263,7 +263,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
    frontier = PriorityQueue()
    # Populate the starting fringe
    for f in problem.successorStates(problem.startingState()):
-      frontier.push(f, f[2])
+      frontier.push(f, 0)
       
    explored = [problem.startingState()]
    prev = {} # Use a dictionary for the backtracking, it's just easier
@@ -271,44 +271,42 @@ def aStarSearch(problem, heuristic=nullHeuristic):
    
    
    while True:
-      print "************************"
       if frontier.isEmpty():
          break # fail
       
       (node, priority) = frontier.pop() # Lowest-cost node in frontier
-      
-      if problem.isGoal(node[0]):
-         # Goal found
-         actionList = []
-         curState = node
-         # As we did in BFS, create the action list by backtracking
-         while True:
-            actionList.insert(0, curState[1])
-            if curState in prev:
-               curState = prev[curState]
-            else: # Done
-               break
-         return actionList
-         
-      else: # The goal has not been found
-         explored.append(node[0])
-         
-         # Loop every edge
-         for child in problem.successorStates(node[0]):
-            print child
-            if child[0] not in explored:
-               if not (True in [child[0]==cur[0] for cur in frontier.heap]): # child not in frontier.heap
-                  # Properly push the priority on to the queue
-                  frontier.push(child, child[2] + priority + heuristic(child[0], problem))
-                  prev[child] = node # set the predecessor node
-               # if the child is in the frontier, and the new child has a lower cost than the old
-               else:
-                  # So this doesn't actually do anything that I've found, although it's in the algorithms for UCS.
-                  # If the print statement ever pops up I'll use that test case and add it, but idk what it's supposed to be doing
-                  print (True in [(loc==child[0] and action==child[1] and child[2] < cost) for loc,action,cost in frontier.heap])
-                  print "Replace existing node with child"
-                  # replace existing node with child
-                  # set child's predecessor to node
+      if node[0] not in explored: 
+         if problem.isGoal(node[0]):
+            # Goal found
+            actionList = []
+            curState = node
+            # As we did in BFS, create the action list by backtracking
+            while True:
+               actionList.insert(0, curState[1])
+               if curState in prev:
+                  curState = prev[curState]
+               else: # Done
+                  break
+            return actionList
+            
+         else: # The goal has not been found
+            explored.append(node[0])
+            
+            # Loop every edge
+            for child in problem.successorStates(node[0]):
+               if child[0] not in explored:
+                  if not (True in [child==cur for cur in frontier.heap]): # child not in frontier.heap
+                     # Properly push the priority on to the queue
+                     frontier.push(child, child[2] + priority + heuristic(child[0], problem))
+                     prev[child] = node # set the predecessor node
+                  # if the child is in the frontier, and the new child has a lower cost than the old
+                  else:
+                     # So this doesn't actually do anything that I've found, although it's in the algorithms for UCS.
+                     # If the print statement ever pops up I'll use that test case and add it, but idk what it's supposed to be doing
+                     print (True in [(loc==child[0] and action==child[1] and child[2] < cost) for loc,action,cost in frontier.heap])
+                     print "Replace existing node with child"
+                     # replace existing node with child
+                     # set child's predecessor to node
             
    return [] # Shouldn't happen
       
