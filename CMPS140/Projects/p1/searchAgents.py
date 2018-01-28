@@ -282,17 +282,32 @@ class CornersProblem(search.SearchProblem):
          if not startingGameState.hasFood(*corner):
             print 'Warning: no food in corner ' + str(corner)
       self._expanded = 0 # Number of search nodes expanded
+      self._visited, self._visitedlist = {}, []
       
       
    def startingState(self):
       "Returns the start state (in your state space, not the full Pacman state space)"
       # I guess we treat the state in BFS as generic, so we can change it here and treat it as changed for the 
       #     rest of the functions
+      # cornersHeuristic's comments imply that we should create a custom state for this search problem, so 
+      # I'll make this just a tuple of tuples. I was going to make it a list with a sublist, but apparently
+      # lists are unhashable but tuples aren't, and I really don't want to rewrite my algorithms to not use dictionaries
       return (self.startingPosition, (False, False, False, False))
 
    def isGoal(self, state):
       # Does this even work like this? Can we just give an arbitrary goal and the algorithms will just work towards it?
-      return (state[1][0] == True and state[1][1] == True and state[1][2] == True and state[1][3] == True)
+      # Apparently the answer is yes. The algorithms are smarter than I thought they were.
+      goal = (state[1][0] == True and state[1][1] == True and state[1][2] == True and state[1][3] == True)
+      
+      # For display purposes only
+      if goal:
+         self._visitedlist.append(state[0])
+         import __main__
+         if '_display' in dir(__main__):
+            if 'drawExpandedCells' in dir(__main__._display): #@UndefinedVariable
+               __main__._display.drawExpandedCells(self._visitedlist) #@UndefinedVariable
+               
+      return goal
           
    def successorStates(self, state):
       """
@@ -313,11 +328,25 @@ class CornersProblem(search.SearchProblem):
          nextx, nexty = int(x + dx), int(y + dy)
          if not self.walls[nextx][nexty]:
             # Need to make sure the data structure stays the same or everything has a fit
-            nextState = ((nextx, nexty), (False, False, False, False))
+            # The next state is just the new position, plus if the new position is in a corner or pacman has been in a corner before
+            # We can't just say if the (nextx,nexty) is in corners, then everything gets set to true at (1,1).
+            # Instead, we just say the first boolean is true if it's in the first corners location, and so on
+            nextState = ((nextx, nexty), 
+               (((nextx, nexty) == self.corners[0]) or (state[1][0] == True),
+               ((nextx, nexty) == self.corners[1]) or (state[1][1] == True),
+               ((nextx, nexty) == self.corners[2]) or (state[1][2] == True),
+               ((nextx, nexty) == self.corners[3]) or (state[1][3] == True)
+               ))
             cost = 1
             successors.append( ( nextState, action, cost) )
             
       self._expanded += 1
+      
+      # Make this work because I like pretty colors
+      if state[0] not in self._visited:
+         self._visited[state[0]] = True
+         self._visitedlist.append(state[0])
+         
       return successors
 
    def actionsCost(self, actions):
@@ -351,9 +380,13 @@ def cornersHeuristic(state, problem):
    corners = problem.corners # These are the corner coordinates
    walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
    
-   "*** Your Code Here ***"
+   #"The Manhattan distance heuristic for a PositionSearchProblem"
+   #xy1 = position
+   #xy2 = problem.goal
+   #return abs(xy1[0] - xy2[0]) + abs(xy1[1] - xy2[1])
    
-   return 0 # Default to trivial solution
+   
+   return 1 # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
    "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"

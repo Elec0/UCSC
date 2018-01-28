@@ -271,6 +271,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
    
    
    while True:
+      print "************************"
       if frontier.isEmpty():
          break # fail
       
@@ -289,12 +290,13 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                break
          return actionList
          
-      else:
+      else: # The goal has not been found
          explored.append(node[0])
          
          # Loop every edge
          for child in problem.successorStates(node[0]):
-            if child[0] not in explored: 
+            print child
+            if child[0] not in explored:
                if not (True in [child[0]==cur[0] for cur in frontier.heap]): # child not in frontier.heap
                   # Properly push the priority on to the queue
                   frontier.push(child, child[2] + priority + heuristic(child[0], problem))
