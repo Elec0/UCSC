@@ -134,8 +134,6 @@ def breadthFirstSearch(problem):
    from game import Directions
    from util import Queue
    
-   print "Start", problem.startingState()
-   
    # The algorithm for BFS from the book, p.82
    frontier = util.Queue()
    # Populate the frontier the same way as in DFS
@@ -269,13 +267,12 @@ def aStarSearch(problem, heuristic=nullHeuristic):
    prev = {} # Use a dictionary for the backtracking, it's just easier
    # Doing it this way is probably less efficient than keeping track of the path as we go along
    
+   while not frontier.isEmpty():
    
-   while True:
-      if frontier.isEmpty():
-         break # fail
+      node, priority = frontier.pop() # Lowest-cost node in frontier
       
-      (node, priority) = frontier.pop() # Lowest-cost node in frontier
-      if node[0] not in explored: 
+
+      if node[0] not in explored:
          if problem.isGoal(node[0]):
             # Goal found
             actionList = []
@@ -286,31 +283,28 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                if curState in prev:
                   curState = prev[curState]
                else: # Done
-                  break
+                  break                  
             return actionList
-            
+               
          else: # The goal has not been found
             explored.append(node[0])
-            
             # Loop every edge
-            for child in problem.successorStates(node[0]):
-               if child[0] not in explored:
-                  if not (True in [child==cur for cur in frontier.heap]): # child not in frontier.heap
+            for loc,action,cost in problem.successorStates(node[0]):
+               if loc not in explored:
+                  if not (True in [loc==cur[1][0] for cur in frontier.heap]): # child not in frontier.heap
                      # Properly push the priority on to the queue
-                     frontier.push(child, child[2] + priority + heuristic(child[0], problem))
-                     prev[child] = node # set the predecessor node
-                  # if the child is in the frontier, and the new child has a lower cost than the old
-                  else:
-                     # So this doesn't actually do anything that I've found, although it's in the algorithms for UCS.
-                     # If the print statement ever pops up I'll use that test case and add it, but idk what it's supposed to be doing
-                     print (True in [(loc==child[0] and action==child[1] and child[2] < cost) for loc,action,cost in frontier.heap])
-                     print "Replace existing node with child"
+                     newCost = cost + node[2]
+                     frontier.push((loc,action,newCost), newCost + heuristic(loc, problem))
+                     prev[(loc,action,newCost)] = node # set the predecessor node
+                     
+                  else: # if the child is in the frontier, and the new child has a lower cost than the old
+                     if (True in [(loc==curLoc and action==curAction and cost < curCost) for prio,(curLoc,curAction,curCost) in frontier.heap]):
+                        print "Replace existing node with child"
+                        
                      # replace existing node with child
                      # set child's predecessor to node
             
    return [] # Shouldn't happen
-      
-
    
 # Abbreviations
 bfs = breadthFirstSearch

@@ -28,6 +28,7 @@ project description for details.
 
 Good luck and happy searching!
 """
+
 from game import Directions
 from game import Agent
 from game import Actions
@@ -383,6 +384,7 @@ def cornersHeuristic(state, problem):
    #"The Manhattan distance heuristic for a PositionSearchProblem"
    dest1 = state[0]
    dest2 = ()
+   
    if not state[1][0]:
       dest2 = corners[0]
    elif not state[1][1]:
@@ -487,9 +489,23 @@ def foodHeuristic(state, problem):
    Subsequent calls to this heuristic can access problem.heuristicInfo['wallCount']
    """
    position, foodGrid = state
-   "*** Your Code Here ***"
-   return 0
-
+   
+   if len(foodGrid.asList()) == 0:
+      return 0
+   
+   dist = 999999
+   for pellet in foodGrid.asList():
+      temp = abs(position[0] - pellet[0]) + abs(position[1] - pellet[1])
+      if dist > temp:
+         dist = temp
+         
+      if dist < 2:
+         break
+   
+   
+   # Manhattan distance to the closest food pellet
+   return dist
+   
 def numFoodHeuristic(state, problem):
    return state[1].count()
 
