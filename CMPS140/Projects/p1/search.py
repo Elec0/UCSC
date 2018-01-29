@@ -136,27 +136,30 @@ def breadthFirstSearch(problem):
    
    # The algorithm for BFS from the book, p.82
    frontier = util.Queue()
-   # Populate the frontier the same way as in DFS
-   for f in problem.successorStates(problem.startingState()):
-      frontier.push(f)
-   
    explored = [problem.startingState()]
    path = []
    prev = {}
    
-   while True:
-      if frontier.isEmpty():
-        break # idk, fail
+   # Populate the frontier the same way as in DFS
+   for f in problem.successorStates(problem.startingState()):
+      frontier.push(f)
+      prev[f] = (problem.startingState(), "", 0)
+   
+   while not frontier.isEmpty():
       
       node = frontier.pop() # Shallowest node
       explored.append(node[0])
       path.append(node)
       
+      if problem.isGoal(node[0]):
+         return [node[1]]
+      
       for state in problem.successorStates(node[0]):
          child = state[0]
-         # If the child hasn't been expanded yet, do so.
          
+         # If the child hasn't been expanded yet, do so.         
          if (child not in explored) and not (True in [child==loc for loc,_,_ in frontier.list]): # child not in frontier.list
+         
             if problem.isGoal(child):
                # Goal found
                pathList = [state[1]]
@@ -164,7 +167,8 @@ def breadthFirstSearch(problem):
                curState = node # Start at the node prior to this one
                
                while True:
-                  pathList.insert(0, curState[1]) # Insert this in reverse order
+                  if curState[1] != '':
+                     pathList.insert(0, curState[1]) # Insert this in reverse order
                   if curState in prev:
                      curState = prev[curState] # Do the actual backtracking
                   else: #Done

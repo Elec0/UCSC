@@ -535,9 +535,8 @@ class ClosestDotSearchAgent(SearchAgent):
       food = gameState.getFood()
       walls = gameState.getWalls()
       problem = AnyFoodSearchProblem(gameState)
-
-      "*** Your Code Here ***"
-      util.raiseNotDefined()
+      
+      return search.ucs(problem)
       
    
 class AnyFoodSearchProblem(PositionSearchProblem):
@@ -570,11 +569,29 @@ class AnyFoodSearchProblem(PositionSearchProblem):
       """
       The state is Pacman's position. Fill this in with a goal test
       that will complete the problem definition.
+      
+      The goal should be is this the closest food pellet to pacman.
+      
+      No matter what search we use it will always start next to pacman,
+      so I think we can assume that if we find a food pellet, then we should just go towards it. 
+      The whole point is to be fast, so don't do the extra calculation
+      needed for actually finding the closest food pellet.
       """
       x,y = state
       
-      "*** Your Code Here ***"
-      util.raiseNotDefined()
+      return self.food[x][y] == True
+      
+      """dist = 99999
+      closest = ()
+      for i in range(0, self.food.width):
+         for j in range(0, self.food.height):
+            if self.food[i][j]:
+               curDist = abs(self.startState[0] - i) + abs(self.startState[1] - j)
+               if dist > curDist:
+                  dist = curDist
+                  closest = (i,j)
+                  
+      return x == closest[0] and y == closest[1]"""
 
 ##################
 # Mini-contest 1 #
