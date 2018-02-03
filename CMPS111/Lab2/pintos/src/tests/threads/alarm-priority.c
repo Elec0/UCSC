@@ -23,7 +23,7 @@ test_alarm_priority(void)
 
     wake_time = timer_ticks() + 5 * TIMER_FREQ;
     semaphore_init(&wait_sema, 0);
-
+   
     for (i = 0; i < 10; i++) {
         int priority = PRI_DEFAULT - (i + 5) % 10 - 1;
         char name[16];
@@ -52,7 +52,7 @@ alarm_priority_thread(void *aux UNUSED)
     timer_sleep(wake_time - timer_ticks());
 
     /* Print a message on wake-up. */
-    msg("Thread %s woke up!.", thread_name());
+    msg("Thread %s woke up.", thread_name());
 
     
     semaphore_up(&wait_sema);

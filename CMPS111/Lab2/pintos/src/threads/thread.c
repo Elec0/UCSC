@@ -209,7 +209,8 @@ thread_create(const char *name, int priority,
     enum intr_level old_level;
 
     ASSERT(function != NULL);
-
+   
+   
     /* Allocate thread. */
     t = palloc_get_page(PAL_ZERO);
     if (t == NULL)
@@ -266,6 +267,18 @@ thread_block(void)
     schedule();
 }
 
+/*
+   The comparison function for list_insert_ordered, based on priority
+*/
+static bool priority_less_sort (const struct list_elem *a_, const struct list_elem *b_,
+            void *aux UNUSED)
+{
+  const struct thread *a = list_entry (a_, struct thread, elem);
+  const struct thread *b = list_entry (b_, struct thread, elem);
+  
+  return a->priority > b->priority;
+}
+
 /* Transitions a blocked thread T to the ready-to-run state.
    This is an error if T is not blocked.  (Use thread_yield() to
    make the running thread ready.)
@@ -283,7 +296,8 @@ thread_unblock(struct thread *t)
 
     old_level = intr_disable();
     ASSERT(t->status == THREAD_BLOCKED);
-    list_push_back(&ready_list, &t->elem);
+    //list_push_back(&ready_list, &t->elem);
+    list_insert_ordered(&ready_list, &t->elem, priority_less_sort, NULL);
     t->status = THREAD_READY;
     intr_set_level(old_level);
 }
@@ -354,7 +368,10 @@ thread_yield(void)
 
     old_level = intr_disable();
     if (cur != idle_thread)
-        list_push_back(&ready_list, &cur->elem);
+    {
+        //list_push_back(&ready_list, &cur->elem);
+        list_insert_ordered(&ready_list, &cur->elem, priority_less_sort, NULL);
+    }
     cur->status = THREAD_READY;
     schedule();
     intr_set_level(old_level);
@@ -380,7 +397,8 @@ thread_foreach(thread_action_func *func, void *aux)
 void
 thread_set_priority(int new_priority)
 {
-    thread_current()->priority = new_priority;
+   thread_current()->priority = new_priority;
+   list_sort(&ready_list, priority_less_sort, NULL);
 }
 
 /* Returns the current thread's priority. */
@@ -521,17 +539,6 @@ alloc_frame(struct thread *t, size_t size)
     return t->stack;
 }
 
-/*
-   
-*/
-static bool priority_less_sort (const struct list_elem *a_, const struct list_elem *b_,
-            void *aux UNUSED)
-{
-  const struct thread *a = list_entry (a_, struct thread, elem);
-  const struct thread *b = list_entry (b_, struct thread, elem);
-  
-  return a->priority < b->priority;
-}
 
 /* Chooses and returns the next thread to be scheduled.  Should
    return a thread from the run queue, unless the run queue is
@@ -545,9 +552,7 @@ next_thread_to_run(void)
         return idle_thread;
     else
     {
-        list_sort(&ready_list, priority_less_sort, NULL);
         struct thread *e = list_entry(list_pop_front(&ready_list), struct thread, elem);
-        printf("THREAD PRIORITY: %d\n", e->priority);
         return e;
     }
 }
