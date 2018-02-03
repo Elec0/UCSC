@@ -37,6 +37,7 @@ test_alarm_priority(void)
         semaphore_down(&wait_sema);
 }
 
+
 static void
 alarm_priority_thread(void *aux UNUSED)
 {
@@ -52,11 +53,8 @@ alarm_priority_thread(void *aux UNUSED)
 
     /* Print a message on wake-up. */
     msg("Thread %s woke up!.", thread_name());
-   
-   struct pqueue my_list;
-   pqueue_init (&my_list);
-   
-    
+
     
     semaphore_up(&wait_sema);
 }
+
