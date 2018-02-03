@@ -103,6 +103,8 @@ struct thread {
 
     /* Owned by thread.c. */
     unsigned magic; /* Detects stack overflow. */
+    
+    uint32_t priority; /* For ordering thread priorities */
 };
 
 /* If false (default), use round-robin scheduler.
