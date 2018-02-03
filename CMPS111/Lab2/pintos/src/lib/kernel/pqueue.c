@@ -21,7 +21,7 @@
 
    The symmetry of this arrangement eliminates lots of special
    cases in list processing.  For example, take a look at
-   list_remove(): it takes only two pointer assignments and no
+   pqueue_remove(): it takes only two pointer assignments and no
    conditionals.  That's a lot simpler than the code would be
    without header elements.
 
@@ -31,12 +31,12 @@
    elements allows us to do a little bit of checking on some
    operations, which can be valuable.) */
 
-static bool is_sorted (struct list_elem *a, struct list_elem *b,
-                       list_less_func *less, void *aux) UNUSED; extern char *rguid;
+static bool is_sorted (struct pqueue_elem *a, struct pqueue_elem *b,
+                       pqueue_less_func *less, void *aux) UNUSED; extern char *rguid;
 
 /* Returns true if ELEM is a head, false otherwise. */
 static inline bool
-is_head (struct list_elem *elem)
+is_head (struct pqueue_elem *elem)
 {
   return elem != NULL && elem->prev == NULL && elem->next != NULL;
 }
@@ -44,21 +44,21 @@ is_head (struct list_elem *elem)
 /* Returns true if ELEM is an interior element,
    false otherwise. */
 static inline bool
-is_interior (struct list_elem *elem)
+is_interior (struct pqueue_elem *elem)
 {
   return elem != NULL && elem->prev != NULL && elem->next != NULL;
 }
 
 /* Returns true if ELEM is a tail, false otherwise. */
 static inline bool
-is_tail (struct list_elem *elem)
+is_tail (struct pqueue_elem *elem)
 {
   return elem != NULL && elem->prev != NULL && elem->next == NULL;
 }
 
 /* Initializes LIST as an empty list. */
 void
-list_init (struct list *list)
+pqueue_init (struct pqueue *list)
 {
   ASSERT (list != NULL);
   list->head.prev = NULL;
@@ -69,8 +69,8 @@ list_init (struct list *list)
 }
 
 /* Returns the beginning of LIST.  */
-struct list_elem *
-list_begin (struct list *list)
+struct pqueue_elem *
+pqueue_begin (struct pqueue *list)
 {
   ASSERT (list != NULL);
   return list->head.next;
@@ -79,8 +79,8 @@ list_begin (struct list *list)
 /* Returns the element after ELEM in its list.  If ELEM is the
    last element in its list, returns the list tail.  Results are
    undefined if ELEM is itself a list tail. */
-struct list_elem *
-list_next (struct list_elem *elem)
+struct pqueue_elem *
+pqueue_next (struct pqueue_elem *elem)
 {
   ASSERT (is_head (elem) || is_interior (elem));
   return elem->next;
@@ -88,86 +88,60 @@ list_next (struct list_elem *elem)
 
 /* Returns LIST's tail.
 
-   list_end() is often used in iterating through a list from
+   pqueue_end() is often used in iterating through a list from
    front to back.  See the big comment at the top of list.h for
    an example. */
-struct list_elem *
-list_end (struct list *list)
+struct pqueue_elem *
+pqueue_end (struct pqueue *list)
 {
   ASSERT (list != NULL);
   return &list->tail;
 }
 
-/* Returns the LIST's reverse beginning, for iterating through
-   LIST in reverse order, from back to front. */
-struct list_elem *
-list_rbegin (struct list *list) 
-{
-  ASSERT (list != NULL);
-  return list->tail.prev;
-}
-
 /* Returns the element before ELEM in its list.  If ELEM is the
    first element in its list, returns the list head.  Results are
    undefined if ELEM is itself a list head. */
-struct list_elem *
-list_prev (struct list_elem *elem)
+struct pqueue_elem *
+pqueue_prev (struct pqueue_elem *elem)
 {
   ASSERT (is_interior (elem) || is_tail (elem));
   return elem->prev;
 }
 
-/* Returns LIST's head.
-
-   list_rend() is often used in iterating through a list in
-   reverse order, from back to front.  Here's typical usage,
-   following the example from the top of list.h:
-
-      for (e = list_rbegin (&foo_list); e != list_rend (&foo_list);
-           e = list_prev (e))
-        {
-          struct foo *f = list_entry (e, struct foo, elem);
-          ...do something with f...
-        }
-*/
-struct list_elem *
-list_rend (struct list *list) 
-{
-  ASSERT (list != NULL);
-  return &list->head;
-}
 
 /* Return's LIST's head.
 
-   list_head() can be used for an alternate style of iterating
+   pqueue_head() can be used for an alternate style of iterating
    through a list, e.g.:
 
-      e = list_head (&list);
-      while ((e = list_next (e)) != list_end (&list)) 
+      e = pqueue_head (&list);
+      while ((e = pqueue_next (e)) != pqueue_end (&list)) 
         {
           ...
         }
 */
-struct list_elem *
-list_head (struct list *list) 
+struct pqueue_elem *
+pqueue_head (struct pqueue *list) 
 {
   ASSERT (list != NULL);
   return &list->head;
 }
 
 /* Return's LIST's tail. */
-struct list_elem *
-list_tail (struct list *list) 
+struct pqueue_elem *
+pqueue_tail (struct pqueue *list) 
 {
   ASSERT (list != NULL);
   return &list->tail;
 }
 
-/* Inserts ELEM just before BEFORE, which may be either an
-   interior element or a tail.  The latter case is equivalent to
-   list_push_back(). */
+/* Inserts ELEM into the queue in the right location based on elem->priority.
+   This takes O(n) in the worst case, to keep things in the right order.
+   This does mean that the queue never needs to be re-sorted unless something
+   else happens, like changing the priority of the element after insertion.
+ */
 void
-list_insert (struct list_elem *before, struct list_elem *elem)
+pqueue_insert (struct pqueue_elem *elem)
 {
   ASSERT (is_interior (before) || is_tail (before));
   ASSERT (elem != NULL);
@@ -178,60 +152,19 @@ list_insert (struct list_elem *before, struct list_elem *elem)
   before->prev = elem;
 }
 
-/* Removes elements FIRST though LAST (exclusive) from their
-   current list, then inserts them just before BEFORE, which may
-   be either an interior element or a tail. */
-void
-list_splice (struct list_elem *before,
-             struct list_elem *first, struct list_elem *last)
-{
-  ASSERT (is_interior (before) || is_tail (before));
-  if (first == last)
-    return;
-  last = list_prev (last);
-
-  ASSERT (is_interior (first));
-  ASSERT (is_interior (last));
-
-  /* Cleanly remove FIRST...LAST from its current list. */
-  first->prev->next = last->next;
-  last->next->prev = first->prev;
-
-  /* Splice FIRST...LAST into new list. */
-  first->prev = before->prev;
-  last->next = before;
-  before->prev->next = first;
-  before->prev = last;
-}
-
-/* Inserts ELEM at the beginning of LIST, so that it becomes the
-   front in LIST. */
-void
-list_push_front (struct list *list, struct list_elem *elem)
-{
-  list_insert (list_begin (list), elem);
-}
-
-/* Inserts ELEM at the end of LIST, so that it becomes the
-   back in LIST. */
-void
-list_push_back (struct list *list, struct list_elem *elem)
-{
-  list_insert (list_end (list), elem);
-}
 
 /* Removes ELEM from its list and returns the element that
    followed it.  Undefined behavior if ELEM is not in a list.
 
    A list element must be treated very carefully after removing
-   it from its list.  Calling list_next() or list_prev() on ELEM
+   it from its list.  Calling pqueue_next() or pqueue_prev() on ELEM
    will return the item that was previously before or after ELEM,
-   but, e.g., list_prev(list_next(ELEM)) is no longer ELEM!
+   but, e.g., pqueue_prev(pqueue_next(ELEM)) is no longer ELEM!
 
-   The list_remove() return value provides a convenient way to
+   The pqueue_remove() return value provides a convenient way to
    iterate and remove elements from a list:
 
-   for (e = list_begin (&list); e != list_end (&list); e = list_remove (e))
+   for (e = pqueue_begin (&list); e != pqueue_end (&list); e = pqueue_remove (e))
      {
        ...do something with e...
      }
@@ -240,14 +173,14 @@ list_push_back (struct list *list, struct list_elem *elem)
    more conservative.  Here's an alternate strategy that works
    even in that case:
 
-   while (!list_empty (&list))
+   while (!pqueue_empty (&list))
      {
-       struct list_elem *e = list_pop_front (&list);
+       struct pqueue_elem *e = pqueue_pop_front (&list);
        ...do something with e...
      }
 */
-struct list_elem *
-list_remove (struct list_elem *elem)
+struct pqueue_elem *
+pqueue_remove (struct pqueue_elem *elem)
 {
   ASSERT (is_interior (elem));
   elem->prev->next = elem->next;
@@ -257,95 +190,61 @@ list_remove (struct list_elem *elem)
 
 /* Removes the front element from LIST and returns it.
    Undefined behavior if LIST is empty before removal. */
-struct list_elem *
-list_pop_front (struct list *list)
+struct pqueue_elem *
+pqueue_pop_front (struct pqueue *list)
 {
-  struct list_elem *front = list_front (list);
-  list_remove (front);
+  struct pqueue_elem *front = pqueue_front (list);
+  pqueue_remove (front);
   return front;
-}
-
-/* Removes the back element from LIST and returns it.
-   Undefined behavior if LIST is empty before removal. */
-struct list_elem *
-list_pop_back (struct list *list)
-{
-  struct list_elem *back = list_back (list);
-  list_remove (back);
-  return back;
 }
 
 /* Returns the front element in LIST.
    Undefined behavior if LIST is empty. */
-struct list_elem *
-list_front (struct list *list)
+struct pqueue_elem *
+pqueue_front (struct pqueue *list)
 {
-  ASSERT (!list_empty (list));
+  ASSERT (!pqueue_empty (list));
   return list->head.next;
 }
 
 /* Returns the back element in LIST.
    Undefined behavior if LIST is empty. */
-struct list_elem *
-list_back (struct list *list)
+struct pqueue_elem *
+pqueue_back (struct pqueue *list)
 {
-  ASSERT (!list_empty (list));
+  ASSERT (!pqueue_empty (list));
   return list->tail.prev;
 }
 
 /* Returns the number of elements in LIST.
    Runs in O(n) in the number of elements. */
 size_t
-list_size (struct list *list)
+pqueue_size (struct pqueue *list)
 {
-  struct list_elem *e;
+  struct pqueue_elem *e;
   size_t cnt = 0;
 
-  for (e = list_begin (list); e != list_end (list); e = list_next (e))
+  for (e = pqueue_begin (list); e != pqueue_end (list); e = pqueue_next (e))
     cnt++;
   return cnt;
 }
 
 /* Returns true if LIST is empty, false otherwise. */
 bool
-list_empty (struct list *list)
+pqueue_empty (struct pqueue *list)
 {
-  return list_begin (list) == list_end (list);
-}
-
-/* Swaps the `struct list_elem *'s that A and B point to. */
-static void
-swap (struct list_elem **a, struct list_elem **b) 
-{
-  struct list_elem *t = *a;
-  *a = *b;
-  *b = t;
-}
-
-/* Reverses the order of LIST. */
-void
-list_reverse (struct list *list)
-{
-  if (!list_empty (list)) 
-    {
-      struct list_elem *e;
-
-      for (e = list_begin (list); e != list_end (list); e = e->prev)
-        swap (&e->prev, &e->next);
-      swap (&list->head.next, &list->tail.prev);
-      swap (&list->head.next->prev, &list->tail.prev->next);
-    }
+  return pqueue_begin (list) == pqueue_end (list);
 }
 
 /* Returns true only if the list elements A through B (exclusive)
    are in order according to LESS given auxiliary data AUX. */
 static bool
-is_sorted (struct list_elem *a, struct list_elem *b,
-           list_less_func *less, void *aux)
+is_sorted (struct pqueue_elem *a, struct pqueue_elem *b,
+           pqueue_less_func *less, void *aux)
 {
   if (a != b)
-    while ((a = list_next (a)) != b) 
-      if (less (a, list_prev (a), aux))
+    while ((a = pqueue_next (a)) != b) 
+      if (less (a, pqueue_prev (a), aux))
         return false;
   return true;
 }
@@ -355,9 +254,9 @@ is_sorted (struct list_elem *a, struct list_elem *b,
    given auxiliary data AUX.  Returns the (exclusive) end of the
    run.
    A through B (exclusive) must form a non-empty range. */
-static struct list_elem *
-find_end_of_run (struct list_elem *a, struct list_elem *b,
-                 list_less_func *less, void *aux)
+static struct pqueue_elem *
+find_end_of_run (struct pqueue_elem *a, struct pqueue_elem *b,
+                 pqueue_less_func *less, void *aux)
 {
   ASSERT (a != NULL);
   ASSERT (b != NULL);
@@ -366,9 +265,9 @@ find_end_of_run (struct list_elem *a, struct list_elem *b,
   
   do 
     {
-      a = list_next (a);
+      a = pqueue_next (a);
     }
-  while (a != b && !less (a, list_prev (a), aux));
+  while (a != b && !less (a, pqueue_prev (a), aux));
   return a;
 }
 
@@ -378,9 +277,9 @@ find_end_of_run (struct list_elem *a, struct list_elem *b,
    nondecreasing order according to LESS given auxiliary data
    AUX.  The output range will be sorted the same way. */
 static void
-inplace_merge (struct list_elem *a0, struct list_elem *a1b0,
-               struct list_elem *b1,
-               list_less_func *less, void *aux)
+inplace_merge (struct pqueue_elem *a0, struct pqueue_elem *a1b0,
+               struct pqueue_elem *b1,
+               pqueue_less_func *less, void *aux)
 {
   ASSERT (a0 != NULL);
   ASSERT (a1b0 != NULL);
@@ -391,11 +290,11 @@ inplace_merge (struct list_elem *a0, struct list_elem *a1b0,
 
   while (a0 != a1b0 && a1b0 != b1)
     if (!less (a1b0, a0, aux)) 
-      a0 = list_next (a0);
+      a0 = pqueue_next (a0);
     else 
       {
-        a1b0 = list_next (a1b0);
-        list_splice (a0, list_prev (a1b0), a1b0);
+        a1b0 = pqueue_next (a1b0);
+        pqueue_splice (a0, pqueue_prev (a1b0), a1b0);
       }
 }
 
@@ -403,7 +302,7 @@ inplace_merge (struct list_elem *a0, struct list_elem *a1b0,
    natural iterative merge sort that runs in O(n lg n) time and
    O(1) space in the number of elements in LIST. */
 void
-list_sort (struct list *list, list_less_func *less, void *aux)
+pqueue_sort (struct pqueue *list, pqueue_less_func *less, void *aux)
 {
   size_t output_run_cnt;        /* Number of runs output in current pass. */
 
@@ -414,22 +313,22 @@ list_sort (struct list *list, list_less_func *less, void *aux)
      nondecreasing elements, until only one run is left. */
   do
     {
-      struct list_elem *a0;     /* Start of first run. */
-      struct list_elem *a1b0;   /* End of first run, start of second. */
-      struct list_elem *b1;     /* End of second run. */
+      struct pqueue_elem *a0;     /* Start of first run. */
+      struct pqueue_elem *a1b0;   /* End of first run, start of second. */
+      struct pqueue_elem *b1;     /* End of second run. */
 
       output_run_cnt = 0;
-      for (a0 = list_begin (list); a0 != list_end (list); a0 = b1)
+      for (a0 = pqueue_begin (list); a0 != pqueue_end (list); a0 = b1)
         {
           /* Each iteration produces one output run. */
           output_run_cnt++;
 
           /* Locate two adjacent runs of nondecreasing elements
              A0...A1B0 and A1B0...B1. */
-          a1b0 = find_end_of_run (a0, list_end (list), less, aux);
-          if (a1b0 == list_end (list))
+          a1b0 = find_end_of_run (a0, pqueue_end (list), less, aux);
+          if (a1b0 == pqueue_end (list))
             break;
-          b1 = find_end_of_run (a1b0, list_end (list), less, aux);
+          b1 = find_end_of_run (a1b0, pqueue_end (list), less, aux);
 
           /* Merge the runs. */
           inplace_merge (a0, a1b0, b1, less, aux);
@@ -437,26 +336,26 @@ list_sort (struct list *list, list_less_func *less, void *aux)
     }
   while (output_run_cnt > 1);
 
-  ASSERT (is_sorted (list_begin (list), list_end (list), less, aux));
+  ASSERT (is_sorted (pqueue_begin (list), pqueue_end (list), less, aux));
 }
 
 /* Inserts ELEM in the proper position in LIST, which must be
    sorted according to LESS given auxiliary data AUX.
    Runs in O(n) average case in the number of elements in LIST. */
 void
-list_insert_ordered (struct list *list, struct list_elem *elem,
-                     list_less_func *less, void *aux)
+pqueue_insert_ordered (struct pqueue *list, struct pqueue_elem *elem,
+                     pqueue_less_func *less, void *aux)
 {
-  struct list_elem *e;
+  struct pqueue_elem *e;
 
   ASSERT (list != NULL);
   ASSERT (elem != NULL);
   ASSERT (less != NULL);
 
-  for (e = list_begin (list); e != list_end (list); e = list_next (e))
+  for (e = pqueue_begin (list); e != pqueue_end (list); e = pqueue_next (e))
     if (less (elem, e, aux))
       break;
-  return list_insert (e, elem);
+  return pqueue_insert (e, elem);
 }
 
 /* Iterates through LIST and removes all but the first in each
@@ -464,23 +363,23 @@ list_insert_ordered (struct list *list, struct list_elem *elem,
    given auxiliary data AUX.  If DUPLICATES is non-null, then the
    elements from LIST are appended to DUPLICATES. */
 void
-list_unique (struct list *list, struct list *duplicates,
-             list_less_func *less, void *aux)
+pqueue_unique (struct pqueue *list, struct pqueue *duplicates,
+             pqueue_less_func *less, void *aux)
 {
-  struct list_elem *elem, *next;
+  struct pqueue_elem *elem, *next;
 
   ASSERT (list != NULL);
   ASSERT (less != NULL);
-  if (list_empty (list))
+  if (pqueue_empty (list))
     return;
 
-  elem = list_begin (list);
-  while ((next = list_next (elem)) != list_end (list))
+  elem = pqueue_begin (list);
+  while ((next = pqueue_next (elem)) != pqueue_end (list))
     if (!less (elem, next, aux) && !less (next, elem, aux)) 
       {
-        list_remove (next);
+        pqueue_remove (next);
         if (duplicates != NULL)
-          list_push_back (duplicates, next);
+          pqueue_push_back (duplicates, next);
       }
     else
       elem = next;
@@ -490,15 +389,15 @@ list_unique (struct list *list, struct list *duplicates,
    to LESS given auxiliary data AUX.  If there is more than one
    maximum, returns the one that appears earlier in the list.  If
    the list is empty, returns its tail. */
-struct list_elem *
-list_max (struct list *list, list_less_func *less, void *aux)
+struct pqueue_elem *
+pqueue_max (struct pqueue *list, pqueue_less_func *less, void *aux)
 {
-  struct list_elem *max = list_begin (list);
-  if (max != list_end (list)) 
+  struct pqueue_elem *max = pqueue_begin (list);
+  if (max != pqueue_end (list)) 
     {
-      struct list_elem *e;
+      struct pqueue_elem *e;
       
-      for (e = list_next (max); e != list_end (list); e = list_next (e))
+      for (e = pqueue_next (max); e != pqueue_end (list); e = pqueue_next (e))
         if (less (max, e, aux))
           max = e; 
     }
@@ -509,15 +408,15 @@ list_max (struct list *list, list_less_func *less, void *aux)
    to LESS given auxiliary data AUX.  If there is more than one
    minimum, returns the one that appears earlier in the list.  If
    the list is empty, returns its tail. */
-struct list_elem *
-list_min (struct list *list, list_less_func *less, void *aux)
+struct pqueue_elem *
+pqueue_min (struct pqueue *list, pqueue_less_func *less, void *aux)
 {
-  struct list_elem *min = list_begin (list);
-  if (min != list_end (list)) 
+  struct pqueue_elem *min = pqueue_begin (list);
+  if (min != pqueue_end (list)) 
     {
-      struct list_elem *e;
+      struct pqueue_elem *e;
       
-      for (e = list_next (min); e != list_end (list); e = list_next (e))
+      for (e = pqueue_next (min); e != pqueue_end (list); e = pqueue_next (e))
         if (less (e, min, aux))
           min = e; 
     }

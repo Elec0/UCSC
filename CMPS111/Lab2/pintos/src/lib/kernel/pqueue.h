@@ -1,22 +1,22 @@
-#ifndef __LIB_KERNEL_LIST_H
-#define __LIB_KERNEL_LIST_H
+#ifndef __LIB_KERNEL_pqueue_H
+#define __LIB_KERNEL_pqueue_H
 
 /* Doubly linked list.
 
    This implementation of a doubly linked list does not require
    use of dynamically allocated memory.  Instead, each structure
-   that is a potential list element must embed a struct list_elem
+   that is a potential list element must embed a struct pqueue_elem
    member.  All of the list functions operate on these `struct
-   list_elem's.  The list_entry macro allows conversion from a
-   struct list_elem back to a structure object that contains it.
+   pqueue_elem's.  The pqueue_entry macro allows conversion from a
+   struct pqueue_elem back to a structure object that contains it.
 
    For example, suppose there is a needed for a list of `struct
-   foo'.  `struct foo' should contain a `struct list_elem'
+   foo'.  `struct foo' should contain a `struct pqueue_elem'
    member, like so:
 
       struct foo
         {
-          struct list_elem elem;
+          struct pqueue_elem elem;
           int bar;
           ...other members...
         };
@@ -24,20 +24,20 @@
    Then a list of `struct foo' can be be declared and initialized
    like so:
 
-      struct list foo_list;
+      struct pqueue foo_list;
 
-      list_init (&foo_list);
+      pqueue_init (&foo_list);
 
    Iteration is a typical situation where it is necessary to
-   convert from a struct list_elem back to its enclosing
+   convert from a struct pqueue_elem back to its enclosing
    structure.  Here's an example using foo_list:
 
-      struct list_elem *e;
+      struct pqueue_elem *e;
 
-      for (e = list_begin (&foo_list); e != list_end (&foo_list);
-           e = list_next (e))
+      for (e = pqueue_begin (&foo_list); e != pqueue_end (&foo_list);
+           e = pqueue_next (e))
         {
-          struct foo *f = list_entry (e, struct foo, elem);
+          struct foo *f = pqueue_entry (e, struct foo, elem);
           ...do something with f...
         }
 
@@ -54,27 +54,27 @@
    Glossary of list terms:
 
      - "front": The first element in a list.  Undefined in an
-       empty list.  Returned by list_front().
+       empty list.  Returned by pqueue_front().
 
      - "back": The last element in a list.  Undefined in an empty
-       list.  Returned by list_back().
+       list.  Returned by pqueue_back().
 
      - "tail": The element figuratively just after the last
        element of a list.  Well defined even in an empty list.
-       Returned by list_end().  Used as the end sentinel for an
+       Returned by pqueue_end().  Used as the end sentinel for an
        iteration from front to back.
 
      - "beginning": In a non-empty list, the front.  In an empty
-       list, the tail.  Returned by list_begin().  Used as the
+       list, the tail.  Returned by pqueue_begin().  Used as the
        starting point for an iteration from front to back.
 
      - "head": The element figuratively just before the first
        element of a list.  Well defined even in an empty list.
-       Returned by list_rend().  Used as the end sentinel for an
+       Returned by pqueue_rend().  Used as the end sentinel for an
        iteration from back to front.
 
      - "reverse beginning": In a non-empty list, the back.  In an
-       empty list, the head.  Returned by list_rbegin().  Used as
+       empty list, the head.  Returned by pqueue_rbegin().  Used as
        the starting point for an iteration from back to front.
 
      - "interior element": An element that is not the head or
@@ -87,95 +87,86 @@
 #include <stdint.h>
 
 /* List element. */
-struct list_elem 
+struct pqueue_elem 
   {
-    struct list_elem *prev;     /* Previous list element. */
-    struct list_elem *next;     /* Next list element. */
+    struct pqueue_elem *prev;     /* Previous list element. */
+    struct pqueue_elem *next;     /* Next list element. */
+    int priority;
   };
 
 /* List. */
-struct list 
+struct pqueue 
   {
-    struct list_elem head;      /* List head. */
-    struct list_elem tail;      /* List tail. */
+    struct pqueue_elem head;      /* List head. */
+    struct pqueue_elem tail;      /* List tail. */
   };
 
-/* Converts pointer to list element LIST_ELEM into a pointer to
-   the structure that LIST_ELEM is embedded inside.  Supply the
+/* Converts pointer to list element pqueue_elem into a pointer to
+   the structure that pqueue_elem is embedded inside.  Supply the
    name of the outer structure STRUCT and the member name MEMBER
    of the list element.  See the big comment at the top of the
    file for an example. */
-#define list_entry(LIST_ELEM, STRUCT, MEMBER)           \
-        ((STRUCT *) ((uint8_t *) &(LIST_ELEM)->next     \
+#define pqueue_entry(pqueue_elem, STRUCT, MEMBER)           \
+        ((STRUCT *) ((uint8_t *) &(pqueue_elem)->next     \
                      - offsetof (STRUCT, MEMBER.next)))
 
 /* List initialization.
 
-   A list may be initialized by calling list_init():
+   A list may be initialized by calling pqueue_init():
 
-       struct list my_list;
-       list_init (&my_list);
+       struct pqueue my_list;
+       pqueue_init (&my_list);
 
-   or with an initializer using LIST_INITIALIZER:
+   or with an initializer using pqueue_INITIALIZER:
 
-       struct list my_list = LIST_INITIALIZER (my_list); */
-#define LIST_INITIALIZER(NAME) { { NULL, &(NAME).tail }, \
+       struct pqueue my_list = pqueue_INITIALIZER (my_list); */
+#define pqueue_INITIALIZER(NAME) { { NULL, &(NAME).tail }, \
                                  { &(NAME).head, NULL } }
 
-void list_init (struct list *);
+void pqueue_init (struct pqueue *);
 
 /* List traversal. */
-struct list_elem *list_begin (struct list *);
-struct list_elem *list_next (struct list_elem *);
-struct list_elem *list_end (struct list *);
+struct pqueue_elem *pqueue_begin (struct pqueue *);
+struct pqueue_elem *pqueue_next (struct pqueue_elem *);
+struct pqueue_elem *pqueue_end (struct pqueue *);
 
-struct list_elem *list_rbegin (struct list *);
-struct list_elem *list_prev (struct list_elem *);
-struct list_elem *list_rend (struct list *);
+struct pqueue_elem *pqueue_prev (struct pqueue_elem *);
 
-struct list_elem *list_head (struct list *);
-struct list_elem *list_tail (struct list *);
+struct pqueue_elem *pqueue_head (struct pqueue *);
+struct pqueue_elem *pqueue_tail (struct pqueue *);
 
 /* List insertion. */
-void list_insert (struct list_elem *, struct list_elem *);
-void list_splice (struct list_elem *before,
-                  struct list_elem *first, struct list_elem *last);
-void list_push_front (struct list *, struct list_elem *);
-void list_push_back (struct list *, struct list_elem *);
+void pqueue_insert (struct pqueue_elem *, struct pqueue_elem *);
 
 /* List removal. */
-struct list_elem *list_remove (struct list_elem *);
-struct list_elem *list_pop_front (struct list *);
-struct list_elem *list_pop_back (struct list *);
+struct pqueue_elem *pqueue_remove (struct pqueue_elem *);
+struct pqueue_elem *pqueue_pop_front (struct pqueue *);
 
 /* List elements. */
-struct list_elem *list_front (struct list *);
-struct list_elem *list_back (struct list *);
+struct pqueue_elem *pqueue_front (struct pqueue *);
+struct pqueue_elem *pqueue_back (struct pqueue *);
 
 /* List properties. */
-size_t list_size (struct list *);
-bool list_empty (struct list *);
-
-/* Miscellaneous. */
-void list_reverse (struct list *);
+size_t pqueue_size (struct pqueue *);
+bool pqueue_empty (struct pqueue *);
 
 /* Compares the value of two list elements A and B, given
    auxiliary data AUX.  Returns true if A is less than B, or
    false if A is greater than or equal to B. */
-typedef bool list_less_func (const struct list_elem *a,
-                             const struct list_elem *b,
+typedef bool pqueue_less_func (const struct pqueue_elem *a,
+                             const struct pqueue_elem *b,
                              void *aux);
 
 /* Operations on lists with ordered elements. */
 void list_sort (struct list *,
                 list_less_func *, void *aux);
-void list_insert_ordered (struct list *, struct list_elem *,
-                          list_less_func *, void *aux);
-void list_unique (struct list *, struct list *duplicates,
-                  list_less_func *, void *aux);
+void pqueue_insert_ordered (struct pqueue *, struct pqueue_elem *,
+                          pqueue_less_func *, void *aux);
+void pqueue_unique (struct pqueue *, struct pqueue *duplicates,
+                  pqueue_less_func *, void *aux);
 
 /* Max and min. */
-struct list_elem *list_max (struct list *, list_less_func *, void *aux);
-struct list_elem *list_min (struct list *, list_less_func *, void *aux);
+struct pqueue_elem *pqueue_max (struct pqueue *, pqueue_less_func *, void *aux);
+struct pqueue_elem *pqueue_min (struct pqueue *, pqueue_less_func *, void *aux);
 
 #endif /* lib/kernel/list.h */

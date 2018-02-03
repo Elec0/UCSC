@@ -17,7 +17,7 @@ void
 test_alarm_priority(void)
 {
     int i;
-
+    
     /* This test does not work with the MLFQS. */
     ASSERT(!thread_mlfqs);
 
@@ -51,7 +51,12 @@ alarm_priority_thread(void *aux UNUSED)
     timer_sleep(wake_time - timer_ticks());
 
     /* Print a message on wake-up. */
-    msg("Thread %s woke up.", thread_name());
-
+    msg("Thread %s woke up!.", thread_name());
+   
+   struct pqueue my_list;
+   pqueue_init (&my_list);
+   
+    
+    
     semaphore_up(&wait_sema);
 }
