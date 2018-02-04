@@ -217,7 +217,9 @@ thread_create(const char *name, int priority,
         return TID_ERROR;
 
     /* Initialize thread. */
+    printf("thread_create, priority: %d\n", priority);
     init_thread(t, name, priority);
+    printf("after init_thread, thread_get_pri: %d\n", thread_get_priority());
     tid = t->tid = allocate_tid();
 
     /* Prepare thread for first run by initializing its stack.
@@ -481,7 +483,7 @@ static void
 kernel_thread(thread_func *function, void *aux)
 {
     ASSERT(function != NULL);
-
+   
     intr_enable(); /* The scheduler runs with interrupts off. */
     function(aux); /* Execute the thread function. */
     thread_exit(); /* If function() returns, kill the thread. */
