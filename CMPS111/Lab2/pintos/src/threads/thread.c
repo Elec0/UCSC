@@ -209,17 +209,14 @@ thread_create(const char *name, int priority,
     enum intr_level old_level;
 
     ASSERT(function != NULL);
-   
-   
+
     /* Allocate thread. */
     t = palloc_get_page(PAL_ZERO);
     if (t == NULL)
         return TID_ERROR;
 
     /* Initialize thread. */
-    printf("thread_create, priority: %d\n", priority);
     init_thread(t, name, priority);
-    printf("after init_thread, thread_get_pri: %d\n", thread_get_priority());
     tid = t->tid = allocate_tid();
 
     /* Prepare thread for first run by initializing its stack.
@@ -246,7 +243,8 @@ thread_create(const char *name, int priority,
 
     /* Add to run queue. */
     thread_unblock(t);
-
+	thread_yield();
+	
     return tid;
 }
 
@@ -298,8 +296,8 @@ thread_unblock(struct thread *t)
 
     old_level = intr_disable();
     ASSERT(t->status == THREAD_BLOCKED);
-    //list_push_back(&ready_list, &t->elem);
-    list_insert_ordered(&ready_list, &t->elem, priority_less_sort, NULL);
+    list_push_back(&ready_list, &t->elem);
+    //list_insert_ordered(&ready_list, &t->elem, priority_less_sort, NULL);
     t->status = THREAD_READY;
     intr_set_level(old_level);
 }
@@ -371,8 +369,8 @@ thread_yield(void)
     old_level = intr_disable();
     if (cur != idle_thread)
     {
-        //list_push_back(&ready_list, &cur->elem);
-        list_insert_ordered(&ready_list, &cur->elem, priority_less_sort, NULL);
+        list_push_back(&ready_list, &cur->elem);
+        //list_insert_ordered(&ready_list, &cur->elem, priority_less_sort, NULL);
     }
     cur->status = THREAD_READY;
     schedule();
@@ -400,7 +398,8 @@ void
 thread_set_priority(int new_priority)
 {
    thread_current()->priority = new_priority;
-   list_sort(&ready_list, priority_less_sort, NULL);
+   //list_sort(&ready_list, priority_less_sort, NULL);
+   thread_yield();
 }
 
 /* Returns the current thread's priority. */
@@ -554,6 +553,8 @@ next_thread_to_run(void)
         return idle_thread;
     else
     {
+		// Sort in here, and not anywhere else
+	    list_sort(&ready_list, priority_less_sort, NULL);
         struct thread *e = list_entry(list_pop_front(&ready_list), struct thread, elem);
         return e;
     }
