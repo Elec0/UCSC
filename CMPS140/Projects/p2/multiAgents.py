@@ -67,6 +67,7 @@ class ReflexAgent(Agent):
     oldFood = currentGameState.getFood()
     newGhostStates = successorGameState.getGhostStates()
     newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
+    oldScaredTimes = [ghostState.scaredTimer for ghostState in currentGameState.getGhostStates()]
 	
 	
     "*** YOUR CODE HERE ***"
@@ -79,8 +80,30 @@ class ReflexAgent(Agent):
     # Get the manhattan distance from pacman's new location to all of the ghosts
     for i in range(0, len(ghostPos)):
 		tempDist += abs(newPosition[0] - ghostPos[i][0]) + abs(newPosition[1] - ghostPos[i][1])
-		
-    return successorGameState.getScore() + tempDist
+    
+    foodDist = 0
+    # Get the manhattan distance from the new location to the closest food pellet
+    i = 0
+    closest = 99999
+    
+    for item in oldFood:
+        for j in range(0, len(oldFood[i])):
+            if oldFood[i][j] == True:
+                t = abs(newPosition[0] - i) + abs(newPosition[1] - j)
+                if closest > t:
+                    closest = t
+        i += 1
+    
+    # If the ghost is farther than 4 squares away we don't really need to worry about it, so decrease the impact
+    #   this variable has on the path picked
+    if tempDist > 4:
+        tempDist /= 2
+        
+    # If the ghosts aren't scared, worry about their location
+    if oldScaredTimes[0] == 0:
+        return successorGameState.getScore() + tempDist + (len(oldFood[0]) - closest)
+    else:
+        return (len(oldFood[0])*2 - closest)
 
 def scoreEvaluationFunction(currentGameState):
   """
@@ -139,6 +162,11 @@ class MinimaxAgent(MultiAgentSearchAgent):
     """
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
+    
+    
+    
+    
+    
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
   """
