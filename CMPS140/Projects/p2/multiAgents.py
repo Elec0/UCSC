@@ -312,10 +312,62 @@ def betterEvaluationFunction(currentGameState):
       Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
       evaluation function (question 5).
 
-      DESCRIPTION: <write something here so we know what you did>
+      DESCRIPTION: 
+      I took the evaulation code I had for part 1, which did pretty well, and tweaked it a small bit
+      to work with this situation. The general idea of my approach is to calculate manhattan distances
+      between the ghosts and the closest food pellet, then try to get to the food pellet. 
+      The ghosts distance is straight out ignored if they are farther than 4 squares away, and if they
+      are farther than 2 squares it's halved, because a lot can happen in 2 squares. When the ghost gets
+      within 1 square the getScore() part kicks in and makes pacman run away because of the large negative
+      point value for dying.
+      Finding the closest food I also changed from my q1. Instead of subtracting the width of the board, 
+      which was not giving values that were all that helpful, I use the reciprocal, to get higher values 
+      for closer food pellets. 
    """
    "*** YOUR CODE HERE ***"
-   util.raiseNotDefined()
+   # Useful information you can extract from a GameState (pacman.py)
+   newPosition = currentGameState.getPacmanPosition()
+   oldFood = currentGameState.getFood()
+   newGhostStates = currentGameState.getGhostStates()
+   newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
+
+
+   "*** YOUR CODE HERE ***"
+   ghostPos = [None] * len(newGhostStates)
+   
+   for i in range(0, len(newGhostStates)):
+      ghostPos[i] = newGhostStates[i].getPosition()
+   tempDist = 0
+   
+   # Get the manhattan distance from pacman's new location to all of the ghosts
+   for i in range(0, len(ghostPos)):
+      tempDist += abs(newPosition[0] - ghostPos[i][0]) + abs(newPosition[1] - ghostPos[i][1])
+   
+   # Get the manhattan distance from the new location to the closest food pellet
+   foodDistances = []
+   for pellet in oldFood.asList():
+      foodDistances.append(abs(newPosition[0] - pellet[0]) + abs(newPosition[1] - pellet[1]))
+         
+   # If the ghost is farther than 4 squares away we don't really need to worry about it, so decrease the impact
+   #    this variable has on the path picked
+   if tempDist > 2:
+      tempDist /= 2
+   if tempDist > 4:
+      tempDist = 0
+   
+   # Instead of trying to subtract the length of the board, get the 'reciprocal' of the distance.
+   # Except instead of 1 / n, we need a larger number to make the end value matter in terms of distance
+   #  to the ghosts.   
+   foodValue = 0
+   if len(foodDistances) > 0:
+      foodValue = 12 / min(foodDistances)
+   
+   # If the ghosts aren't scared, worry about their location
+   if newScaredTimes[0] == 0:
+      return currentGameState.getScore() + tempDist + foodValue
+   else:
+      return foodValue
+   
 
 # Abbreviation
 better = betterEvaluationFunction
