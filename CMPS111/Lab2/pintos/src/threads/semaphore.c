@@ -105,6 +105,17 @@ semaphore_try_down(struct semaphore *semaphore)
     return success;
 }
 
+/*
+   The comparison function for list_insert_ordered, based on priority
+*/
+static bool semaphore_less_sort (const struct list_elem *a_, const struct list_elem *b_,
+            void *aux UNUSED)
+{
+  const struct thread *a = list_entry (a_, struct thread, elem);
+  const struct thread *b = list_entry (b_, struct thread, elem);
+  return a->priority > b->priority;
+}
+
 /* 
  * Up or Dijkstra's "V" operation on a semaphore.  Increments SEMA's value
  * and wakes up one thread of those waiting for SEMA, if any.
@@ -120,9 +131,16 @@ semaphore_up(struct semaphore *semaphore)
 
     old_level = intr_disable();
     if (!list_empty(&semaphore->waiters)) {
+        // Sort the list so the semaphore we unblock has the highest priority
+        list_sort(&semaphore->waiters, semaphore_less_sort, NULL);
+        
         thread_unblock(list_entry(
             list_pop_front(&semaphore->waiters), struct thread, elem));
     }
     semaphore->value++;
     intr_set_level(old_level);
+    thread_yield();
 }
+
+
+
