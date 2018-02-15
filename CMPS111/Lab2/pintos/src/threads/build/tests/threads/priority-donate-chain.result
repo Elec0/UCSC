@@ -1,5 +1,0 @@
-FAIL
-Kernel panic in run: PANIC at ../../threads/lock.c:79 in lock_acquire(): assertion `lock != NULL' failed.
-Call stack: 0xc00274cc
-Translation of call stack:
-0xc00274cc: debug_panic (.../../lib/kernel/debug.c:38)
