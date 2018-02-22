@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.19)  19 FEB 2018 18:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.19)  21 FEB 2018 19:57
 entering extended mode
 **./HW4.tex
 (HW4.tex
@@ -287,49 +287,71 @@ Overfull \hbox (17.62482pt too wide) in paragraph at lines 24--25
 [1
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map} <./access-matrix.jpg>]
-<internal-fragmentation.png, id=8, 252.945pt x 390.70969pt>
+Overfull \hbox (3.17642pt too wide) in paragraph at lines 54--61
+[][] 
+ []
+
+[2]
+Overfull \hbox (3.17642pt too wide) in paragraph at lines 65--72
+[][] 
+ []
+
+
+Overfull \hbox (3.17642pt too wide) in paragraph at lines 76--83
+[][] 
+ []
+
+
+Overfull \hbox (3.17642pt too wide) in paragraph at lines 87--94
+[][] 
+ []
+
+<internal-fragmentation.png, id=11, 252.945pt x 390.70969pt>
 File: internal-fragmentation.png Graphic file (type png)
 
 <use internal-fragmentation.png>
-Package pdftex.def Info: internal-fragmentation.png used on input line 56.
+Package pdftex.def Info: internal-fragmentation.png used on input line 109.
 (pdftex.def)             Requested size: 117.00119pt x 180.72424pt.
-
-<external-fragmentation.png, id=10, 675.27281pt x 447.92343pt>
+ [3]
+<external-fragmentation.png, id=19, 675.27281pt x 447.92343pt>
 File: external-fragmentation.png Graphic file (type png)
 
 <use external-fragmentation.png>
-Package pdftex.def Info: external-fragmentation.png used on input line 63.
+Package pdftex.def Info: external-fragmentation.png used on input line 116.
 (pdftex.def)             Requested size: 312.00119pt x 206.96313pt.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 69.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 122.
+
 
 ("D:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 69.
- [2] [3 <./internal-fragmentation.png> <./external-fragmentation.png>]
-<paging-overview.png, id=20, 390.70969pt x 229.60782pt>
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 122.
+ [4 <./internal-fragmentation.png>] <paging-overview.png, id=24, 390.70969pt x 
+229.60782pt>
 File: paging-overview.png Graphic file (type png)
 
 <use paging-overview.png>
-Package pdftex.def Info: paging-overview.png used on input line 84.
+Package pdftex.def Info: paging-overview.png used on input line 137.
 (pdftex.def)             Requested size: 390.0pt x 229.20084pt.
- [4] [5 <./paging-overview.png>] (HW4.aux) ) 
+ [5 <./external-fragmentation.png>] [6 <./paging-overview.png>] (HW4.aux) ) 
 Here is how much of TeX's memory you used:
- 4543 strings out of 493333
- 66884 string characters out of 3139194
- 140458 words of memory out of 3000000
- 8031 multiletter control sequences out of 15000+200000
- 7078 words of font info for 26 fonts, out of 3000000 for 9000
+ 4560 strings out of 493333
+ 67057 string characters out of 3139194
+ 143458 words of memory out of 3000000
+ 8041 multiletter control sequences out of 15000+200000
+ 9933 words of font info for 36 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  39i,6n,32p,566b,240s stack positions out of 5000i,500n,10000p,200000b,50000s
-<D:/Program Files/MiKTeX 2.9/fonts/
-type1/public/amsfonts/cm/cmbx12.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/pu
-blic/amsfonts/cm/cmr12.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsf
-onts/cm/cmsy10.pfb>
-Output written on HW4.pdf (5 pages, 147365 bytes).
+<D:/
+Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><D:/Program 
+Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><D:/Program Files/Mi
+KTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><D:/Program Files/MiKTeX 2.9/
+fonts/type1/public/amsfonts/cm/cmr8.pfb><D:/Program Files/MiKTeX 2.9/fonts/type
+1/public/amsfonts/cm/cmsy10.pfb>
+Output written on HW4.pdf (6 pages, 168201 bytes).
 PDF statistics:
- 38 PDF objects out of 1000 (max. 8388607)
+ 49 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

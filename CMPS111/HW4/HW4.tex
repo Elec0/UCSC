@@ -43,11 +43,64 @@
 	
 	
 	\section*{Question 3}
+	Which hole is taken for successive segment requests of\\
+	12 MB, 10 MB, 9 MB?
 	
+	Note: The memory is from left to right, and a 0 in the Process line means nothing was placed there.
+			
+	\subsection*{(A)}
+	First fit - Go from left to right and place the process in the first location that has enough space for it to fit.
+	
+	\begin{tabular}[c]{| l | l | l | l | l | l | l | l | l |}
+		\hline
+		Holes & 10MB & 4MB & 20MB & 18MB & 7MB & 9MB & 12MB & 15MB \\
+		\hline
+		Process & 10MB & 0 & 12MB & 9MB & 0 & 0 & 0 & 0 \\
+		\hline
+	\end{tabular}
+	
+	\subsection*{(B)}
+	Best fit - Scan the list and place the process in the hole that has the closest amount of space to the process' requirement
+	
+	\begin{tabular}[c]{| l | l | l | l | l | l | l | l | l |}
+		\hline
+		Holes & 10MB & 4MB & 20MB & 18MB & 7MB & 9MB & 12MB & 15MB \\
+		\hline
+		Process & 10MB & 0 & 0 & 0 & 0 & 9MB & 12MB & 0 \\
+		\hline
+	\end{tabular}
+	
+	\subsection*{(C)}	
+	Worst fit - Scan the list and place the process in the hole that has the largest amount of memory
+	
+	\begin{tabular}[c]{| l | l | l | l | l | l | l | l | l |}
+		\hline
+		Holes & 10MB & 4MB & 20MB & 18MB & 7MB & 9MB & 12MB & 15MB \\
+		\hline
+		Process & 0 & 0 & 12MB & 10MB & 0 & 0 & 0 & 9MB \\
+		\hline
+	\end{tabular}
+	
+	\subsection*{(D)}
+	Next fit - Similar to first fit, but after the first run, continue scanning for the next hole that fits from the location of the last insertion.
+	
+	\begin{tabular}[c]{| l | l | l | l | l | l | l | l | l |}
+		\hline
+		Holes & 10MB & 4MB & 20MB & 18MB & 7MB & 9MB & 12MB & 15MB \\
+		\hline
+		Process & 0 & 0 & 12MB & 10MB & 0 & 9MB & 0 & 0 \\
+		\hline
+	\end{tabular}
 	
 	\section*{Question 4}
+	A computer with a 32-bit processor uses a two-level page lookup mechanism
+	consisting of page tables and a page table directory. Virtual Addresses consist of a 9-bit page table
+	directory field, an 11-bit page table field, and an offset. How large are the pages and how many are
+	there in the address space?
 	
-	
+	$$ 32 - \text{directory} - \text{pageTable} - \text{offset} = 32 - 9 - 11 = 12\text{-bit offset}$$
+	$$ 2^{12} = 4,096 \text{bits} = 4KB \text{ pages} $$
+	$$ 32 - 12 = 20 \text{bits for virtual pages. So, } 2^{20} \text{ pages} $$
 	
 	\section*{Question 5}	
 	\subsection*{(A)}
