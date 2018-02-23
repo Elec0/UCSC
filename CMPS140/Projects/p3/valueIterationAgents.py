@@ -40,7 +40,9 @@ class ValueIterationAgent(ValueEstimationAgent):
     [Enter a description of what you did here.]
     """
     """ YOUR CODE HERE """
-    util.raiseNotDefined()
+    
+    # For each iteration set every value to the best possible qvalue
+    
     """ END CODE """
 
   def getValue(self, state):
@@ -48,13 +50,6 @@ class ValueIterationAgent(ValueEstimationAgent):
       Return the value of the state (computed in __init__).
     """
     return self.values[state]
-
-    """Description:
-    [Enter a description of what you did here.]
-    """
-    """ YOUR CODE HERE """
-    util.raiseNotDefined()
-    """ END CODE """
 
   def getQValue(self, state, action):
     """
@@ -68,7 +63,14 @@ class ValueIterationAgent(ValueEstimationAgent):
     [Enter a description of what you did here.]
     """
     """ YOUR CODE HERE """
-    util.raiseNotDefined()
+    # Return the sums of the values of all the states, adjusted for their probabilitites
+    
+    # Transitions[0] is the new location, transitions[1] is the probability to move there
+    sum = 0
+    for t in self.mdp.getTransitionStatesAndProbs(state, action):
+        sum += self.getValue(t[0]) * t[1]
+    
+    return sum
     """ END CODE """
 
   def getPolicy(self, state):
@@ -84,9 +86,24 @@ class ValueIterationAgent(ValueEstimationAgent):
     [Enter a description of what you did here.]
     """
     """ YOUR CODE HERE """
-    util.raiseNotDefined()
+    # Return the action that has the highest qvalue
+    highest = None
+    
+    for action in self.mdp.getPossibleActions(state):
+        
+        temp = self.getQValue(state, action)
+        if highest == None: # If there is no current highest, set it to the first action, otherwise we get an error
+            highest = action
+        elif temp > self.getQValue(state, highest):
+            highest = action
+    
+    return highest
     """ END CODE """
 
   def getAction(self, state):
     "Returns the policy at the state (no exploration)."
     return self.getPolicy(state)
+
+    
+    
+    
