@@ -93,10 +93,12 @@ def question6():
   answerEpsilon = None
   answerLearningRate = None
   """Description:
-  [Enter a description of what you did here.]
+  I went through an tested a number of possible values for e and l and did not find one that would
+  ever visit the +10 node more than once. There just isn't a point in the algorithm braving the bridge
+  when there is a easily accessible +1 right next to it.
   """
   """ YOUR CODE HERE """
-
+  return "NOT POSSIBLE"
   """ END CODE """
   return answerEpsilon, answerLearningRate
   # If not possible, return 'NOT POSSIBLE'

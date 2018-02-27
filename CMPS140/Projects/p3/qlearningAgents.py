@@ -36,7 +36,9 @@ class QLearningAgent(ReinforcementAgent):
   def __init__(self, **args):
     "You can initialize Q-values here..."
     ReinforcementAgent.__init__(self, **args)
-
+    
+    # Do a 2D dictionary, since we need to be able to access multiple actions per state
+    self.stateDict = {}
 
 
   def getQValue(self, state, action):
@@ -49,7 +51,12 @@ class QLearningAgent(ReinforcementAgent):
     [Enter a description of what you did here.]
     """
     """ YOUR CODE HERE """
-    util.raiseNotDefined()
+    if not state in self.stateDict:
+        return 0.0
+    elif not action in self.stateDict[state]:
+        return 0.0
+    else:
+        return self.stateDict[state][action]
     """ END CODE """
 
 
@@ -65,7 +72,15 @@ class QLearningAgent(ReinforcementAgent):
     [Enter a description of what you did here.]
     """
     """ YOUR CODE HERE """
-    util.raiseNotDefined()
+    
+    # max is over legal actions.
+    maxScore = 0.0
+    for action in self.getLegalActions(state):
+        score = self.getQValue(state, action)
+        if score > maxScore:
+            maxScore = score
+    return maxScore
+    
     """ END CODE """
 
   def getPolicy(self, state):
@@ -78,7 +93,27 @@ class QLearningAgent(ReinforcementAgent):
     [Enter a description of what you did here.]
     """
     """ YOUR CODE HERE """
-    util.raiseNotDefined()
+    
+    # Find the best action based on the qValues. Effectively getValue but for action instead of score
+    if len(self.getLegalActions(state)) == 0:
+        return None
+    
+    bestAction = None
+    bestScore = None
+    ties = []
+    for action in self.getLegalActions(state):
+        curScore = self.getQValue(state, action)
+        if curScore > bestScore:
+            bestScore = curScore
+            bestAction = action
+        elif curScore == bestScore:
+            ties.append(action)
+    
+    if len(ties) == 0:
+        return bestAction
+    else:
+        return random.choice(ties)
+        
     """ END CODE """
 
   def getAction(self, state):
@@ -100,7 +135,16 @@ class QLearningAgent(ReinforcementAgent):
     [Enter a description of what you did here.]
     """
     """ YOUR CODE HERE """
-    util.raiseNotDefined()
+    if len(legalActions) == 0:
+        return None
+        
+    if random.random() < self.epsilon:
+        # Pick a random legal action
+        action = random.choice(legalActions)
+    else: # We don't pick a random action, instead pick the best action (which is Policy)
+        action = self.getPolicy(state)
+        
+    return action
     """ END CODE """
 
     return action
@@ -118,7 +162,14 @@ class QLearningAgent(ReinforcementAgent):
     [Enter a description of what you did here.]
     """
     """ YOUR CODE HERE """
-    util.raiseNotDefined()
+    
+    # We need to initialize the second dimension dictionary if we haven't seen this state value before
+    if not state in self.stateDict:
+        self.stateDict[state] = {}
+    
+    # Formula from the book from piazza
+    self.stateDict[state][action] = (self.alpha * (self.discountRate * self.getValue(nextState) + reward - self.getQValue(state, action)) + self.getQValue(state, action))
+
     """ END CODE """
 
 class PacmanQAgent(QLearningAgent):
@@ -176,7 +227,7 @@ class ApproximateQAgent(PacmanQAgent):
     [Enter a description of what you did here.]
     """
     """ YOUR CODE HERE """
-    util.raiseNotDefined()
+    return None
     """ END CODE """
 
   def update(self, state, action, nextState, reward):
@@ -187,7 +238,7 @@ class ApproximateQAgent(PacmanQAgent):
     [Enter a description of what you did here.]
     """
     """ YOUR CODE HERE """
-    util.raiseNotDefined()
+    return None
     """ END CODE """
 
   def final(self, state):
@@ -197,5 +248,6 @@ class ApproximateQAgent(PacmanQAgent):
 
     # did we finish training?
     if self.episodesSoFar == self.numTraining:
-      # you might want to print your weights here for debugging
-      util.raiseNotDefined()
+        # you might want to print your weights here for debugging
+        #util.raiseNotDefined()
+        return None
