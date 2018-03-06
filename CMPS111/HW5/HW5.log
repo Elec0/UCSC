@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.19)  27 FEB 2018 14:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.19)  28 FEB 2018 19:46
 entering extended mode
 **./HW5.tex
 (HW5.tex
@@ -275,21 +275,32 @@ G,.JBIG2,.JB2,.eps]
 \c@lstlisting=\count122
  [1
 
-{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}] (HW5.aux) ) 
+{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 43--84
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 43--84
+
+ []
+
+[2] [3] (HW5.aux) ) 
 Here is how much of TeX's memory you used:
- 4487 strings out of 493333
- 65809 string characters out of 3139194
- 137434 words of memory out of 3000000
- 7984 multiletter control sequences out of 15000+200000
- 6514 words of font info for 24 fonts, out of 3000000 for 9000
+ 4506 strings out of 493333
+ 66014 string characters out of 3139194
+ 143434 words of memory out of 3000000
+ 7996 multiletter control sequences out of 15000+200000
+ 9933 words of font info for 36 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,6n,32p,231b,219s stack positions out of 5000i,500n,10000p,200000b,50000s
-<D:/Program Fi
-les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><D:/Program Files/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb>
-Output written on HW5.pdf (1 page, 25963 bytes).
+ 39i,6n,32p,313b,219s stack positions out of 5000i,500n,10000p,200000b,50000s
+<D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
+cmbx12.pfb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.p
+fb><D:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><D:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb>
+Output written on HW5.pdf (3 pages, 54957 bytes).
 PDF statistics:
- 14 PDF objects out of 1000 (max. 8388607)
+ 28 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

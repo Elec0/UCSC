@@ -19,18 +19,68 @@
 	\maketitle
 	
 	\section*{Question 1}
-
+	32-bit processor, 8 KB ($2^{13}$) pages. The number of linear page table entries if virtual addresses are 48-bit.
+	
+	$$ 2^{48} / 2^{13} = 2^{35} \text{ linear page table entries} $$
 	
 	
 	\section*{Question 2}
+	
 
 	
 	\section*{Question 3}
+	Yes, they can synchronize. If a kernel-level thread blocks, the kernel can just take it off the CPU and run something else. If the threads are instead user-level ones, when one of the threads blocks with a semaphore the kernel thinks the whole process is blocked and it doesn't get run again. So no.
+
 
 	\section*{Question 4}
-
+	\subsection*{(a)}
+	They had to have the CPU ask for an I/O read, and the CPU was then occupied for the entire duration of the task.
 	
-	\section*{Question 5}	
-
+	\subsection*{(b)}
+	The lack of DMA meant that the CPU was required to wait on every I/O call, which decreased it's speed dramatically and effectively made the multiprogramming pointless.
 	
+	\section*{Question 5}
+	The number of page faults actually goes up from 9 to 10.
+	\\\\
+	With 3 page frames: \\
+	\begin{tabular}[c]{| l | l | l |}
+		\hline
+		Resource & Page Frames & \# of page faults \\
+		\hline
+		1 & 100 & 1 \\
+		2 & 120 & 2 \\
+		3 & 123 & 3 \\
+		4 & 423 & 4 \\
+		1 & 413 & 5 \\
+		2 & 412 & 6 \\
+		5 & 512 & 7 \\
+		1 & 512 & 7 \\
+		2 & 512 & 7 \\
+		3 & 532 & 8 \\
+		4 & 534 & 9 \\
+		5 & 534 & 9 \\
+		\hline
+	\end{tabular}
+	\\\\
+	With 4 page frames: \\
+	\begin{tabular}[c]{| l | l | l |}
+		\hline
+		Resource & Page Frames & \# of page faults \\
+		\hline
+		1 & 1000 & 1 \\
+		2 & 1200 & 2 \\
+		3 & 1230 & 3 \\
+		4 & 1234 & 4 \\
+		1 & 1234 & 4 \\
+		2 & 1234 & 4 \\
+		5 & 5234 & 5 \\
+		1 & 5134 & 6 \\
+		2 & 5124 & 7 \\
+		3 & 5123 & 8 \\
+		4 & 4123 & 9 \\
+		5 & 4523 & 10 \\
+		\hline
+	\end{tabular}
+
+	This is an example where increasing the number of available page frames increases the page faults, which shows that increasing the page frames does not necessarily decrease page faults in an OS.
 \end{document}
