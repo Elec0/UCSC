@@ -69,7 +69,10 @@ static void
 push_command(const char *cmdline, void **esp)
 {
     printf("Base Address: 0x%08x\n", (unsigned int) *esp);
-
+	
+	// Save the base address
+	char * base = (unsigned int) *esp;
+	
     // Word align with the stack pointer. 
     *esp = (void*) ((unsigned int) (*esp) & 0xfffffffc);
 
@@ -84,8 +87,27 @@ push_command(const char *cmdline, void **esp)
     //
     // If nothing else, it'll remind you what you did when it doesn't work :)
     
+    printf("cmdline: %s\n", (char*)cmdline);
     
+	// Set the null sentinel, argv[1] (since we only have 1 parameter, argv[0])
+    *esp -= 4;
+    *((int*) *esp) = 0;
     
+    // Set argv[0] to the base reference
+    *esp -= 4;
+    *((int*) *esp) = base;
+    
+    // Set argv to the address of argv[0]
+    *esp -= 4;
+    *((int*) *esp) = (*esp) + 4;
+    
+    // Set argc
+    *esp -= 4;
+    *((int*) *esp) = 1; // Count of args
+    
+    // Fake return
+    *esp -= 4;
+    *((int*) *esp) = 0;
 }
 
 /* 
@@ -106,11 +128,16 @@ process_execute(const char *cmdline)
 
     // Create a Kernel Thread for the new process
     tid_t tid = thread_create(cmdline, PRI_DEFAULT, start_process, cmdline_copy);
-
+	
+	// Use a semaphore to synchronize, this is a temporary hack
+	timer_msleep(10);
+	
     // CMPS111 Lab 3 : The "parent" thread immediately returns after creating 
     // the child. To get ANY of the tests passing, you need to synchronise the 
     // activity of the parent and child threads.
+	
 
+	
     return tid;
 }
 
@@ -131,7 +158,6 @@ start_process(void *cmdline)
     pif.eflags = FLAG_IF | FLAG_MBS;
 
     bool success = load(cmdline, &pif.eip, &pif.esp);
-    printf("start_process success: %d\n", success);
     
     if (success) {
         push_command(cmdline, &pif.esp);

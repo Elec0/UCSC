@@ -522,6 +522,7 @@ kernel_thread (thread_func *function, void *aux)
 
   intr_enable ();       /* The scheduler runs with interrupts off. */
   function (aux);       /* Execute the thread function. */
+  // sema_up for synchronization with process.c?
   thread_exit ();       /* If function() returns, kill the thread. */
 }
 
