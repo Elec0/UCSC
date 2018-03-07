@@ -61,12 +61,12 @@ static thread_func start_process NO_RETURN;
 static bool load(const char *cmdline, void (**eip) (void), void **esp);
 
 /*
- * Push the command and arguments found in CMDLINE onto the stack, world 
+ * Push the command and arguments found in CMDLINE onto the stack, word 
  * aligned with the stack pointer ESP. Should only be called after the ELF 
  * format binary has been loaded into the heap by load();
  */
 static void
-push_command(const char *cmdline UNUSED, void **esp)
+push_command(const char *cmdline, void **esp)
 {
     printf("Base Address: 0x%08x\n", (unsigned int) *esp);
 
@@ -83,6 +83,9 @@ push_command(const char *cmdline UNUSED, void **esp)
     // describes what you're doing, and why.
     //
     // If nothing else, it'll remind you what you did when it doesn't work :)
+    
+    
+    
 }
 
 /* 
@@ -128,6 +131,8 @@ start_process(void *cmdline)
     pif.eflags = FLAG_IF | FLAG_MBS;
 
     bool success = load(cmdline, &pif.eip, &pif.esp);
+    printf("start_process success: %d\n", success);
+    
     if (success) {
         push_command(cmdline, &pif.esp);
     }
