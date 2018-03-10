@@ -68,13 +68,10 @@ static bool load(const char *cmdline, void (**eip) (void), void **esp);
 static void
 push_command(const char *cmdline, void **esp)
 {
-    printf("Base Address: 0x%08x\n", (unsigned int) *esp);
+    //printf("Base Address: 0x%08x\n", (unsigned int) *esp);
 	
 	// Save the base address
 	char * base = (unsigned int) *esp;
-	
-    // Word align with the stack pointer. 
-    *esp = (void*) ((unsigned int) (*esp) & 0xfffffffc);
 
     // Some of your CMPS111 Lab 3 code will go here.
     //
@@ -87,26 +84,70 @@ push_command(const char *cmdline, void **esp)
     //
     // If nothing else, it'll remind you what you did when it doesn't work :)
     
-    printf("cmdline: %s\n", (char*)cmdline);
+    //printf("cmdline: %s\n", (char*)cmdline);
     
-	// Set the null sentinel, argv[1] (since we only have 1 parameter, argv[0])
-    *esp -= 4;
+    char *arg_values[255];
+    char *arg_addrs[255];
+    int arg_count = 0;
+    
+    char *param;
+    char *to_parse = cmdline;
+    // https://www.geeksforgeeks.org/strtok-strtok_r-functions-c-examples/
+    while((param = strtok_r(to_parse, " ", &to_parse)))
+    {
+        //printf("%s\n", param);
+        
+        // Go through and save all the values.
+        arg_values[arg_count++] = param;
+    }
+    
+    // Loop through the values backwards so we can add them in the right order because stack
+    for(int i = arg_count - 1; i >= 0; --i)
+    {
+        int length = strlen(arg_values[i]);
+        *esp -= length - 1;
+        
+        //printf("%d: len: %d, v:%s, esp:%x\n", i, length, arg_values[i], (*esp));
+        
+        // Save the addresses so we can put them in later
+        
+        // Put the values of each argument into the esp
+        for(int j = 0; j < length; ++j)
+        {
+            *((char*) *esp) = arg_values[i][j];
+            *esp = *esp + 1; // Apparently you can't do -= with esp. It reset the value to 30-something when I used it.
+        }
+        *((char*) *esp) = '\0';
+        
+        arg_addrs[arg_count - i - 1] = *esp;
+    }
+    
+    printf("%s\n", arg_values[0]);
+    
+    // Word align with the stack pointer. 
+    *esp = (void*) ((unsigned int) (*esp) & 0xfffffffc);
+	
+    // Always a 0 at the end of the pointers
+    *esp = *esp - 4;
     *((int*) *esp) = 0;
     
-    // Set argv[0] to the base reference
-    *esp -= 4;
-    *((int*) *esp) = base;
+    // Go through and put the addresses to the args into the esp
+    for(int i = arg_count - 1; i >= 0; --i)
+    {
+        *esp = *esp - 4;
+        *((int*) *esp) = arg_addrs[i];
+    }
     
-    // Set argv to the address of argv[0]
-    *esp -= 4;
+    // Argv pointer, which is always 4 below the current address
+    *esp = *esp - 4;
     *((int*) *esp) = (*esp) + 4;
     
-    // Set argc
-    *esp -= 4;
-    *((int*) *esp) = 1; // Count of args
+    // Put the arg_count into the 
+    *esp = *esp - 4;
+    *((int*) *esp) = arg_count;
     
-    // Fake return
-    *esp -= 4;
+    // Insert fake return
+    *esp = *esp - 4;
     *((int*) *esp) = 0;
 }
 
