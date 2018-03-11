@@ -68,10 +68,8 @@ static bool load(const char *cmdline, void (**eip) (void), void **esp);
 static void
 push_command(const char *cmdline, void **esp)
 {
-    //printf("Base Address: 0x%08x\n", (unsigned int) *esp);
-	
 	// Save the base address
-	char * base = (unsigned int) *esp;
+	char *base = (unsigned int) *esp;
 
     // Some of your CMPS111 Lab 3 code will go here.
     //
@@ -84,71 +82,71 @@ push_command(const char *cmdline, void **esp)
     //
     // If nothing else, it'll remind you what you did when it doesn't work :)
     
-    //printf("cmdline: %s\n", (char*)cmdline);
-    
-    char *arg_values[255];
-    char *arg_addrs[255];
+    char *arg_values[256];
+    void *arg_addrs[256];
     int arg_count = 0;
     
-    char *param;
     char *to_parse = cmdline;
-    // https://www.geeksforgeeks.org/strtok-strtok_r-functions-c-examples/
-    while((param = strtok_r(to_parse, " ", &to_parse)))
+    char *token, *save_ptr;
+    
+    for (token = strtok_r (to_parse, " ", &save_ptr); token != NULL; token = strtok_r (NULL, " ", &save_ptr))
     {
-        //printf("%s\n", param);
-        
-        // Go through and save all the values.
-        arg_values[arg_count++] = param;
+        arg_values[arg_count] = token;
+        arg_count++;
+        //printf("Token: %s\n", arg_values[arg_count-1]);
     }
     
-    // Loop through the values backwards so we can add them in the right order because stack
-    for(int i = arg_count - 1; i >= 0; --i)
+    // Loop through the values and add them to the stack
+    for(int i = 0; i < arg_count; ++i)
     {
         int length = strlen(arg_values[i]);
-        *esp -= length - 1;
         
-        //printf("%d: len: %d, v:%s, esp:%x\n", i, length, arg_values[i], (*esp));
-        
-        // Save the addresses so we can put them in later
-        
-        // Put the values of each argument into the esp
-        for(int j = 0; j < length; ++j)
-        {
-            *((char*) *esp) = arg_values[i][j];
-            *esp = *esp + 1; // Apparently you can't do -= with esp. It reset the value to 30-something when I used it.
-        }
+        // Put the end of the string at the top of the stack because stack
+        *esp = *esp - 1;
         *((char*) *esp) = '\0';
         
-        arg_addrs[arg_count - i - 1] = *esp;
+        //printf("esp: %x, %c\n", *esp, *((char*)*esp));
+        
+        // Put the values of each argument into the esp
+        // Need to do them backwards, though
+        for(int j = length - 1; j >= 0; --j)
+        {
+            *esp = *esp - 1;
+            *((char*) *esp) = arg_values[i][j];
+            
+            //printf("esp: %x, %c\n", *esp, *((char*)*esp));
+        }        
+        // Save the addresses so we can put them in later
+        arg_addrs[i] = (void*)*esp;
     }
-    
-    printf("%s\n", arg_values[0]);
     
     // Word align with the stack pointer. 
     *esp = (void*) ((unsigned int) (*esp) & 0xfffffffc);
 	
-    // Always a 0 at the end of the pointers
-    *esp = *esp - 4;
-    *((int*) *esp) = 0;
+    // Null sentinel
+    *esp = (*esp) - 4;
+    *((void**) *esp) = 0;
+    
+    //printf("esp: %x, %c\n", *esp, *((char*)*esp));
     
     // Go through and put the addresses to the args into the esp
     for(int i = arg_count - 1; i >= 0; --i)
     {
-        *esp = *esp - 4;
-        *((int*) *esp) = arg_addrs[i];
+        *esp = (*esp) - 4;
+        *((void**) *esp) = arg_addrs[i];
     }
     
     // Argv pointer, which is always 4 below the current address
-    *esp = *esp - 4;
-    *((int*) *esp) = (*esp) + 4;
+    *esp = (*esp) - 4;
+    *((void**) *esp) = (*esp) + 4;
     
-    // Put the arg_count into the 
-    *esp = *esp - 4;
+    // Put the arg_count
+    *esp = (*esp) - 4;
     *((int*) *esp) = arg_count;
     
     // Insert fake return
-    *esp = *esp - 4;
-    *((int*) *esp) = 0;
+    *esp = (*esp) - 4;
+    *((void**) *esp) = 0;
 }
 
 /* 
@@ -166,12 +164,16 @@ process_execute(const char *cmdline)
         return TID_ERROR;
     
     strlcpy(cmdline_copy, cmdline, PGSIZE);
-
+    
+    // Remove the args from the cmdline
+    char *save_ptr;
+    strtok_r(cmdline, " ", &save_ptr);
+    
     // Create a Kernel Thread for the new process
     tid_t tid = thread_create(cmdline, PRI_DEFAULT, start_process, cmdline_copy);
 	
 	// Use a semaphore to synchronize, this is a temporary hack
-	timer_msleep(10);
+	timer_msleep(30);
 	
     // CMPS111 Lab 3 : The "parent" thread immediately returns after creating 
     // the child. To get ANY of the tests passing, you need to synchronise the 
@@ -197,13 +199,23 @@ start_process(void *cmdline)
     pif.gs = pif.fs = pif.es = pif.ds = pif.ss = SEL_UDSEG;
     pif.cs = SEL_UCSEG;
     pif.eflags = FLAG_IF | FLAG_MBS;
-
-    bool success = load(cmdline, &pif.eip, &pif.esp);
+    
+    // Get the file name from the cmdline (just the first argument)
+    // We need to copy the string because C is special and doesn't do it for us
+    //  Turns out there's a perfectly good example right above this method
+    char *save_ptr;
+    char *file_name = palloc_get_page(0);
+    
+    strlcpy(file_name, cmdline, PGSIZE);
+    file_name = strtok_r(file_name, " ", &save_ptr);
+    
+    bool success = load(file_name, &pif.eip, &pif.esp);
     
     if (success) {
         push_command(cmdline, &pif.esp);
     }
     palloc_free_page(cmdline);
+    palloc_free_page(file_name);
 
     if (!success) {
         thread_exit();
