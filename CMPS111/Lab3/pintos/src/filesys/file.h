@@ -2,6 +2,19 @@
 #define FILESYS_FILE_H
 
 #include "filesys/off_t.h"
+#include <stdbool.h>
+#include "filesys/inode.h"
+
+/* An open file. */
+struct file
+{
+    struct inode *inode;        /* File's inode. */
+    off_t pos;                  /* Current position. */
+    bool deny_write;            /* Has file_deny_write() been called? */
+    int file_num;               /* How to link file pointer to int for userprogs? Used in syscall.c */
+};
+
+int g_file_num;                 /* The global variable to actually keep track of files between processes. */
 
 struct inode;
 

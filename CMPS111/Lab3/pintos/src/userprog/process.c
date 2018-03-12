@@ -170,7 +170,7 @@ process_execute(const char *cmdline)
     tid_t tid = thread_create(cmdline, PRI_DEFAULT, start_process, cmdline_copy);
 	
 	// Use a semaphore to synchronize, this is a temporary hack
-	timer_msleep(30);
+	timer_msleep(100);
 	
     // CMPS111 Lab 3 : The "parent" thread immediately returns after creating 
     // the child. To get ANY of the tests passing, you need to synchronise the 

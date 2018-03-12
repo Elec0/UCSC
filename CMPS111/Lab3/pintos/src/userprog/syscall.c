@@ -55,11 +55,18 @@ static void syscall_handler(struct intr_frame *);
 static void write_handler(struct intr_frame *);
 static void exit_handler(struct intr_frame *);
 static void create_handler(struct intr_frame *);
+static void open_handler(struct intr_frame *);
+static void read_handler(struct intr_frame *);
+static void filesize_handler(struct intr_frame *);
+static void close_handler(struct intr_frame *);
+static struct file * get_file(int fd);
 
 void
 syscall_init (void)
 {
   intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
+  
+  g_file_num = 3;
 }
 
 static void
@@ -84,9 +91,27 @@ syscall_handler(struct intr_frame *f)
     exit_handler(f);
     break;
   
+  // ***** Mine *****
   case SYS_CREATE:
     create_handler(f);
     break;
+    
+  case SYS_OPEN:
+    open_handler(f);
+    break;
+  
+  case SYS_READ:
+    read_handler(f);
+    break;
+    
+  case SYS_FILESIZE:
+    filesize_handler(f);
+    break;
+    
+  case SYS_CLOSE:
+    close_handler(f);
+    break;
+  // ***** End Mine *****
   
   case SYS_WRITE: 
     write_handler(f);
@@ -116,21 +141,32 @@ static void exit_handler(struct intr_frame *f)
 }
 
 /*
- * BUFFER+0 and BUFFER+size should be valid user adresses
+ * BUFFER+0 and BUFFER+size should be valid user addresses
  */
 static uint32_t sys_write(int fd, const void *buffer, unsigned size)
 {
-  umem_check((const uint8_t*) buffer);
-  umem_check((const uint8_t*) buffer + size - 1);
+    ASSERT(fd >= 1);
 
-  int ret = -1;
+    umem_check((const uint8_t*) buffer);
+    umem_check((const uint8_t*) buffer + size - 1);
 
-  if (fd == 1) { // write to stdout
-    putbuf(buffer, size);
-    ret = size;
-  }
+    int ret = -1;
 
-  return (uint32_t) ret;
+    if (fd == 1) { // write to stdout
+        putbuf(buffer, size);
+        ret = size;
+    }
+    else
+    {
+        struct file *f = get_file(fd);
+        
+        if(!f)
+            return -1;
+        
+        ret = file_write(f, buffer, size);
+    }
+
+    return (uint32_t) ret;
 }
 
 static void write_handler(struct intr_frame *f)
@@ -178,7 +214,140 @@ static void create_handler(struct intr_frame *f)
 
 
 /****************** Open Syscall ******************/
+static int sys_open(const char *file_name)
+{
+    ASSERT(g_file_num <= 255);
+    
+    struct file *sys_file;
+    
+    if(!file_name)
+    {
+        return -1;
+    }
+    sys_file = filesys_open(file_name);
+    
+    if(!sys_file)
+    {
+        return -1;
+    }
+    
+    // Increment the g_file_num and assign the file to this process.
+    sys_file->file_num = g_file_num++;
+    
+    struct thread *thr = thread_current();
+    thr->files[sys_file->file_num] = sys_file;
+    
+    // Return the external id
+    return sys_file->file_num;
+}
 
+static void open_handler(struct intr_frame *f)
+{
+    const char *file;
+    
+    umem_read(f->esp + 4, &file, sizeof(file));
+    
+    f->eax = sys_open(file);
+}
 
+/****************** Read Syscall ******************/
+static int sys_read(int fd, void *buffer, unsigned length)
+{
+    struct file *f = get_file(fd);
+    
+    int read; // How much was actually read
+    read = file_read(f, buffer, length);
+    
+    return read;
+}
+
+static void read_handler(struct intr_frame *f)
+{
+    int fd;
+    const void *buffer;
+    unsigned length;
+    
+    umem_read(f->esp + 4, &fd, sizeof(fd));
+    umem_read(f->esp + 8, &buffer, sizeof(buffer));
+    umem_read(f->esp + 12, &length, sizeof(length));
+    
+    f->eax = sys_read(fd, buffer, length);
+}
+
+/****************** Filesize Syscall ******************/
+static int sys_filesize(int fd)
+{
+    ASSERT(fd >= 3);
+    
+    struct file *f = get_file(fd);
+    
+    // File is null
+    if(!f)
+    {
+        return -1;
+    }
+    
+    off_t size;
+    size = file_length(f);
+    
+    return (int) size;
+}
+
+static void filesize_handler(struct intr_frame *f)
+{
+    int fd;
+    
+    umem_read(f->esp + 4, &fd, sizeof(fd));
+    
+    f->eax = sys_filesize(fd);
+}
+
+/****************** Filesize Syscall ******************/
+static void sys_close(int fd)
+{
+    ASSERT(fd >= 3);
+    
+    struct file *f = get_file(fd);
+    
+    // If the file doesn't exist anyway, just stop
+    if(!f)
+    {
+        return;
+    }
+    
+    // Actually close the file
+    file_close(f);
+    
+    // Now clear out the entry in the array
+    struct thread *t = thread_current();
+    t->files[fd] = 0;
+    
+}
+
+static void close_handler(struct intr_frame *f)
+{
+    int fd;
+    
+    umem_read(f->esp + 4, &fd, sizeof(fd));
+    
+    //f->eax = sys_close(fd);
+    sys_close(fd); // close doesn't return anything, do don't put anything in eax?
+}
+
+/**
+    Simple function to turn a file ID int into the file pointer itself.
+**/
+static struct file* get_file(int fd)
+{
+    struct thread *t = thread_current();
+    
+    if(t->files[fd] == 0)
+    {
+        return NULL;
+    }
+    
+    struct file *f = t->files[fd];
+    return f;
+}
 
 
