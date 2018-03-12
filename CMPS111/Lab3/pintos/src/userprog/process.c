@@ -68,9 +68,6 @@ static bool load(const char *cmdline, void (**eip) (void), void **esp);
 static void
 push_command(const char *cmdline, void **esp)
 {
-	// Save the base address
-	char *base = (unsigned int) *esp;
-
     // Some of your CMPS111 Lab 3 code will go here.
     //
     // You'll be doing address arithmetic here and that's one of only a handful 

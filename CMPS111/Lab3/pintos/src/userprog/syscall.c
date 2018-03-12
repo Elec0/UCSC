@@ -54,6 +54,7 @@ static void syscall_handler(struct intr_frame *);
 
 static void write_handler(struct intr_frame *);
 static void exit_handler(struct intr_frame *);
+static void create_handler(struct intr_frame *);
 
 void
 syscall_init (void)
@@ -82,7 +83,11 @@ syscall_handler(struct intr_frame *f)
   case SYS_EXIT: 
     exit_handler(f);
     break;
-      
+  
+  case SYS_CREATE:
+    create_handler(f);
+    break;
+  
   case SYS_WRITE: 
     write_handler(f);
     break;
@@ -140,4 +145,40 @@ static void write_handler(struct intr_frame *f)
 
     f->eax = sys_write(fd, buffer, size);
 }
+
+/****************** Create Syscall ******************/
+
+static bool sys_create (const char *file, off_t size)
+{
+    // If the file is blank
+    if(!file)
+    {    
+        sys_exit(-1);
+        return -1;
+    }
+    
+    bool result;
+    result = filesys_create(file, size, false);
+    
+    return result;
+}
+
+static void create_handler(struct intr_frame *f)
+{
+    const char *file;
+    off_t size;
+    
+    
+    umem_read(f->esp + 4, &file, sizeof(file));
+    umem_read(f->esp + 8, &size, sizeof(size));
+    
+    f->eax = sys_create(file, size);
+    
+}
+
+
+/****************** Open Syscall ******************/
+
+
+
 
