@@ -242,7 +242,7 @@ class Counter(dict):
     if len(x) > len(y):
       x,y = y,x
     for key in x:
-      if key not in y:
+      if key not in y:	
         continue
       sum += x[key] * y[key]      
     return sum
