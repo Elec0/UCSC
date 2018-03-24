@@ -1,0 +1,16 @@
+#A script for running the main/forwarding instances b/c its tedious to type docker run blah blah every time
+if [ $# -eq 0 ] ; then
+echo -e "USAGE:$0 <ip> <port> or <ip> <port> <mainip>"
+fi
+#handles  main instance
+#ex ./node 10.0.0.20 4000
+if [[ $# -eq 2  ]] ; then
+  echo -e "Building main instance with ip $1 litsening on port $2"
+		docker run -p $2:8080 --net=mynet --ip=$1 -e IP=$1 -e PORT=8080 hw2 
+fi
+#handles forwarding instance
+#ex ./node 10.0.0.21 4001 10.0.0.20
+if [[ $# -eq 3  ]] ; then
+  echo -e "Building forwarding instance with ip $1 litsening on port $2"
+		docker run -p $2:8080 --net=mynet --ip=$1 -e IP=$1 -e PORT=8080 -e MAINIP=$3:8080 hw2
+fi

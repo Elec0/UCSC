@@ -1,0 +1,2 @@
+docker build -t hw2 . && python test_hw2.py && docker stop $(docker ps -q)
+

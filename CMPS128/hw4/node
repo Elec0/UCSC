@@ -1,0 +1,32 @@
+#A script for running the main/forwarding instances b/c its tedious to type docker run blah blah every time
+if [ $# -eq 0 ] ; then
+printf "USAGE:$0 <ip> <port> <partition_size> <view>\n"
+fi
+#no need to specify ip port since its just the ip address & the internal port
+#ex ./node 10.0.0.20 8081 2 10.0.0.20,10.0.0.21 
+if [[ $# -eq 4 ]] ; then
+  ip=$4
+  one_ip=""
+  complete_ip_list=""
+  #the for loop takes care of all ip's up to n - 1 so the nth ip is done manually after the for loop
+  for (( i=0; i<${#ip}; i++ )); do
+    if [ "${ip:$i:1}" == "," ] ; then
+	  #printf "${ip:$i:1}" #note to self this is called variable expansion in bash
+	  oneip+=":8080,"
+      complete_ip_list+="$oneip"
+      oneip=""
+	else
+      oneip+="${ip:$i:1}"
+	  #printf "$4"
+	  #printf "${ip:$i:1}"
+	fi
+  done
+  #printf "$oneip\n" #for debugging this script
+  oneip+=":8080" 
+  #printf "oneip: $oneip\n" #for debugging this script
+  complete_ip_list+="$oneip"
+  #printf "complete_ip_list $complete_ip_list\n" #for debugging this script
+  printf "Adding a node to the cluster with ip $1\nlitsening on port $2\nwith view $complete_ip_list\n"
+  docker run -p $2:8080 --net=mynet --ip=$1 -e VIEW="$complete_ip_list" -e K=$3 -e "ip_port"=$1:8080 kvs
+fi
+printf "Written by Arom Zinhart DeGraca\n"

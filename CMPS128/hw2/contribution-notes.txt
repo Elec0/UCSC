@@ -1,0 +1,3 @@
+See the commit history on bitbucket(^_^)
+Part 1 Single-site Key-value store: Arom Zinhart DeGraca
+Part 2 Network of instances with request forwarding: Arom Zinhart DeGraca Aaron Steele Kaio Barbosa

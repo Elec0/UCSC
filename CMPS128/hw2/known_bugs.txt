@@ -1,0 +1,23 @@
+1. Problem: Calls to put on an empty kvs return 1 instead of 0 in the replace field | Solution: called kvs[key] b4 calling key_exists(kvs,key)
+2. Problem: test_a_put_nonexistent_key returns 200 status code | Correct Behavior: return status code 201 | Solution: modify return code in kvs main instance | Solved: Solved
+3. Problem: test_c_get_nonexistent_key returns 200 status code | Correct Behavior: return status code 404 | Solution: modify return code in kvs main instance | Solved: Yes
+4. Problem: test_e_del_nonexistent_key returns 200 status code | Correct Behavior: return status code 404 | Solution: modify return code in kvs main instance | Solved: Yes
+7. Problem: test_g_get_deleted_key returns 200 status code | Correct Behavior: return status code 404 | Solution: modify return code in kvs main instance | Solved: Yes
+8. Problem: test_h_put_deleted_key returns 200 status code | Correct Behavior: return status code 201 | Solution: modify return code in kvs main instance | Solved: Yes
+9. Problem: test_i_put_nonexistent_key returns 200 status code | Correct Behavior: return status code 201 | Solution: modify return code in kvs main instance | Solved: Yes
+10. Problem: test_k_get_nonexistent_key returns 200 status code | Correct Behavior: return status code 201 | Solution: modify return code in kvs main instance | Solved: Yes
+11. Problem: test_m_put_key_too_long returns 200 status code | Correct Behavior: return status code 201 | Solution: modify return code in kvs main instance | Solved: Yes
+12. Problem: test_n_put_key_too_long_on_forwarding_instance returns 200 status code | Correct Behavior: return status code 201 | Solution: modify return code in kvs main instance | Solved: Yes
+13. Problem: test_o_put_key_without_value returns 200 status code | Correct Behavior: return status code 201 | Solution: modify return code in kvs main instance | Solved: Yes
+14. Problem: test_p_put_key_without_value_forwarding_instance returns 200 status code | Correct Behavior: return status code 201 | Solution: modify return code in kvs main instance | Solved: Yes
+15. Problem: test_q_taking_down_secondary_instance has an unknown behavior because it is untested | Correct Behavior: main instance should not be affected | Solution: modify return code in kvs main instance | Solved: Yes
+16. Problem: test_r_taking_down_primary_instance has an unknown behavior because it is untested | Correct Behavior: return in json msg:error & error:service not available  | Solution: code has correct values but untested | Solved: Yes
+17. Problem: tearDown has an unknown behavior because it is untested | Correct Behavior: All nodes dead | Solution: For now test it | Solved: Yes
+
+
+
+
+
+
+
+
