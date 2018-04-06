@@ -1,0 +1,15 @@
+
+.pBlue {
+    color: blue;
+}
+
+.pRed {
+    background-color: red;
+    color: white;
+    font-size: 150%;
+    font-weight: bold;
+}
+
+ol {
+    background-color: yellow;
+}

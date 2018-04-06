@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Amazing Example</title>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <style type='text/css'>
+            #grape {
+                color:red;
+            }
+            #kiwi {
+                color:darkred;
+            }
+            #banana {
+                color: yellow;
+            }
+            #content {
+                margin: 3% 3% 3% 3%;
+                background-color:antiquewhite;
+            }
+        </style>
+    </head>
+    <body>
+        <div id='content'></div>
+        
+        <script type='text/javascript'>
+        var fruits = [
+            {
+                kind: "grape",
+                color: "red",
+                quantity: 12,
+                tasty: true
+            },
+            {
+                kind: "kiwi",
+                color: "brown",
+                quantity: 98,
+                tasty: true
+            },
+            {
+                kind: "banana",
+                color: "yellow",
+                quantity: 0,
+                tasty: true
+            }
+        ];
+
+            for(var i = 0; i < fruits.length; ++i)
+            {
+                var kind = fruits[i].kind;
+                // Writeln doesn't update the DOM so innerHTML is required.
+                document.getElementById('content').innerHTML += "<div id='" + kind + "'>" + fruits[i].quantity + " " + kind + "</div>";
+            }
+        </script>
+    </body>
+</html>
