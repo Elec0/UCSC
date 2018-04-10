@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/lblPow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2^"
+        android:textSize="30sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
+
+    <EditText
+        android:id="@+id/txtPow2"
+        android:layout_width="32dp"
+        android:layout_height="42dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/lblPow2"
+        android:layout_toRightOf="@id/lblPow2"
+        android:layout_alignTop="@id/lblPow2"
+        android:layout_alignBottom="@id/lblPow2"
+        android:ems="10"
+        android:inputType="numberDecimal|numberSigned" />
+
+    <Button
+        android:id="@+id/btnPow2"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
+        android:text="="
+        android:layout_toEndOf="@+id/txtPow2"
+        android:layout_toRightOf="@id/txtPow2"
+        android:layout_alignTop="@id/lblPow2"
+        android:layout_alignBottom="@id/lblPow2"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:id="@+id/lblPow2Output"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/btnPow2"
+        android:layout_toRightOf="@id/btnPow2"
+        android:layout_alignTop="@id/lblPow2"
+        android:layout_alignBottom="@id/lblPow2"
+        android:textSize="30sp"
+        android:text="0.00" />
+</RelativeLayout>
