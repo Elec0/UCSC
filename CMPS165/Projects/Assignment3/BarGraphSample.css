@@ -1,0 +1,23 @@
+body{
+    background-color: #E6E6E6;
+}
+
+p{
+    text-indent: 40px;
+}
+
+/*Add .axis path and .axis line commans as described in the book */
+
+.axis path {
+    color: black;
+}
+
+.axis line {
+    color: black;
+}
+
+.axis text{
+    font: Times;
+    font-size: 12px;
+    font-weight: bold;
+}
