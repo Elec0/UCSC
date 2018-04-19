@@ -1,0 +1,30 @@
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+.grid line {
+  stroke: lightgrey;
+  stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+}
+
+.grid path {
+  stroke-width: 0;
+}
+
+.graph {
+    width: auto;
+    display: inline-block;
+    
+}
+.buttons {
+    display: inline-block;
+    vertical-align: top;
+}
+
+span {
+    overflow: inherit;
+}
