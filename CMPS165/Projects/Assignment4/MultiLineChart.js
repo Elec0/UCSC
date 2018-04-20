@@ -100,8 +100,9 @@ function loadData()
 		
 		city.append("path")
 			.attr("class", "line")
+            .attr("id", function(d) { return d.Country.replace(" ", ""); })
 			.attr("d", function(d) { return line(d.value); })
-			.style("stroke", function(d, i) { console.log(hashString(d.Country)); return zScale( hashString(d.Country) ); })
+			.style("stroke", function(d, i) { return zScale(i); })
 			// Everything below here is for the animation
 			.attr("stroke-dasharray", function() {
 				var totalLength = this.getTotalLength();
@@ -123,6 +124,7 @@ function loadData()
 			.attr("x", 3)
 			.attr("dy", "0.35em")
 			.style("font", "10px sans-serif")
+            .attr("id", function(d) { return d.country.replace(" ", ""); })
 			.text(function(d) { return d.country; });
 
 
@@ -130,20 +132,20 @@ function loadData()
 		d3.selectAll("input[type=checkbox]").on("change", update);
 		
 		function update() 
-		{
-			if(this.checked == false)
-				newData = data.filter(function(d) { return d.Country != "Brazil"; });
-			else
-				newData = data;
-			
-			d3.selectAll(".line")
-				.data(newData);
-				
-			d3.selectAll(".line")
-				//.transition()
-				.attr("d", function(d) { return line(d.value); });
-				//.duration(1000);
-			
+		{	
+            // I was going to try to filter the data and redraw everything based on that
+            // But then I realized it was much easier to just change the opacity of the line and text
+            // and it looked better too, plus I didn't need to change the scaling or anything.
+            d3.select("svg").select("path#" + this.id.replace(" ", ""))
+                .transition()
+                .duration(750)
+                .style("opacity", (this.checked ? 1 : 0));
+            
+            
+            d3.select("svg").select("text#" + this.id.replace(" ", ""))
+                .transition()
+                .duration(750)
+                .style("opacity", (this.checked ? 1 : 0));
 		}
 		
 		/* ***************** */
@@ -183,11 +185,4 @@ function loadData()
 	});
 }
 loadData();
-        
-        
-function hashString(str)
-{
-	sum = str.charCodeAt(0);
-	return sum;
-}
     
