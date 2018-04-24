@@ -98,10 +98,12 @@ function loadData()
 			.append("g")
 			.attr("class", "city");
 		
+		// Animation code taken from https://bl.ocks.org/atomiccc/e559012fa66e51a025eac647aaf1c0fe
 		city.append("path")
 			.attr("class", "line")
             .attr("id", function(d) { return d.Country.replace(" ", ""); })
 			.attr("d", function(d) { return line(d.value); })
+			// Taken from https://bl.ocks.org/mbostock/3884955
 			.style("stroke", function(d, i) { return zScale(i); })
 			// Everything below here is for the animation
 			.attr("stroke-dasharray", function() {
@@ -118,6 +120,7 @@ function loadData()
 				.attr("stroke-dashoffset", 0);
 		
 		// The line lables
+		// Taken from https://bl.ocks.org/mbostock/3884955
 		city.append("text")
 			.datum(function(d, i) { return {country: d.Country, id: i, value: d.value[d.value.length - 1]}; })
 			.attr("transform", function(d) { return "translate(" + xScale(timeParse("2010")) + "," + yScale(d.value) + ")"; })
