@@ -1,0 +1,50 @@
+*****************************************************************************************************
+******************** d3.stratify() Tutorial, by Aaron Steele (atsteele@ucsc.edu) ********************
+******************** Accompanying example code: example.html and example_data.csv *******************
+*****************************************************************************************************
+
+d3.stratify() is an intermediary step to using d3.tree() by converting the given data into a hierarchical format.
+For example, we will be using the following data file to produce a rudimentary family tree:
+
+    name,parent
+    Erik,""
+    Zor,Erik
+    Linda,Erik
+    Victoria,Erik
+    Simone,Victoria
+    Jennifer,Victoria
+    Diane,Linda
+    Phillip,Diane
+    Harry,Zor
+    
+It is important that there is only one root node. D3 will throw an error if it can't figure out the proper
+root node for the given data.
+This data produces the following dictionary:
+
+    0:{name: "Erik", parent: ""}
+    1:{name: "Zor", parent: "Erik"}
+    2:{name: "Linda", parent: "Erik"}
+    3:{name: "Victoria", parent: "Erik"}
+    4:{name: "Simone", parent: "Victoria"}
+    5:{name: "Jennifer", parent: "Victoria"}
+    6:{name: "Diane", parent: "Linda"}
+    7:{name: "Phillip", parent: "Diane"}
+    8:{name: "Harry", parent: "Zor"}
+    
+It is now easy to see how the data in this form can be converted into a tree-structure, or used like it is.
+We use the command like so:
+
+    var strat = d3.stratify()
+        .id(function(d) { return d.name; })
+        .parentId(function(d) { return d.parent; });
+        
+parentId is a d3 specified property, whereas d.name and d.parent are the values specified in our csv file. 
+Stratify can only handle one parent, so using it for an actual family tree visualizer is probably not the best
+option, but for an example it works fine.
+
+The next step for actually displaying the stratified data in a tree format is to use the .tree() command, which
+is simple to do:
+
+    var root = tree(strat);
+    
+Which is then easy to work with in the standard d3.tree() methods .link() and .descendants().

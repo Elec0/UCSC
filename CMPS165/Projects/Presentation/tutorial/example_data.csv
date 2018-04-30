@@ -1,0 +1,10 @@
+name,parent
+Erik,""
+Zor,Erik
+Linda,Erik
+Victoria,Erik
+Simone,Victoria
+Jennifer,Victoria
+Diane,Linda
+Phillip,Diane
+Harry,Zor

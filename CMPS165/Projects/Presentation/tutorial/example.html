@@ -1,0 +1,58 @@
+<html>
+<body>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <svg width="960" height="1060"></svg>
+    <script type="text/javascript">
+    var margin = {top: 50, right: 70, bottom: 150, left: 50},
+        width = 800 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+
+    var svg = d3.select("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        
+        // Stratifying the data for use in a tree
+        // Must be outside the .csv function.
+        var strat = d3.stratify()
+            .id(function(d) { return d.name; })
+            .parentId(function(d) { return d.parent; });
+        
+        var tree = d3.tree();
+        
+        d3.csv("example_data.csv", function(data) {
+            console.log(data);
+            
+            // Stratify the data
+            var root_strat = strat(data);
+            console.log(root_strat);
+            
+            // Now treeify the data
+            var root_tree = tree(root_strat);
+            console.log(root_tree);
+            
+            // Draw the lines between the relations
+            // .links() returns a source and target for each link.
+            svg.selectAll(".path").data(root_tree.links()).enter()
+                .append("line")
+                .style("stroke", "black")
+                .attr("x1", function(d) {return d.source.x*width; })
+                .attr("y1", function(d) {return d.source.y*height; })
+                .attr("x2", function(d) {return d.target.x*width; })
+                .attr("y2", function(d) {return d.target.y*height; })
+            
+            // Display the actual names
+            // For this we use .descendants(), which gives the nodes in order as they go down the tree
+            // We position with the default .x and .y attributes given to us
+            svg.selectAll(".node").data(root_tree.descendants()).enter()
+                .append("text")
+                .attr("transform", function(d) { return "translate(" + (width * d.x) + "," + (height * d.y) + ")"; })
+                .text(function(d) { return d.id; });
+            
+        });
+    </script>
+</body>
+
+</html>
