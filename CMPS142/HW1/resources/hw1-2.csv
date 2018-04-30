@@ -1,0 +1,8 @@
+Gender,Height,Preference
+M,lt6.1,Q
+F,lt6.1,K
+M,lt6.9,K
+M,lt6.9,Q
+F,lt6.9,Q
+M,lt6.9,Q
+M,geq6.9,K
