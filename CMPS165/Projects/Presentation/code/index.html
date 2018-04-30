@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<!-- WEBLINK LOCATION: https://bl.ocks.org/mbostock/4063550 -->
+
+
 <!-- This html structure is actually awful and I don't even know how it works it's so bad. But whatever. -->
 <meta charset="utf-8">
 <style>
@@ -37,44 +40,65 @@
         height = +svg.attr("height"),
         g = svg.append("g").attr("transform", "translate(" + (width / 2 + 40) + "," + (height / 2 + 90) + ")");
 
-    
+    // Defining the stratify method with relevant parameters
+    // The parent Id is defined by all the elements BEFORE the last .xyz
     var stratify = d3.stratify()
         .parentId(function(d) { return d.id.substring(0, d.id.lastIndexOf(".")); });
 
+    // Tree-ifying the stratified data
+    // The size of the tree is a circle (2PI), with radius of 500 pixels
     var tree = d3.tree()
         .size([2 * Math.PI, 500])
         .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
 
+    // Parse the data to visualize
     d3.csv("flare.csv", function(error, data) {
       if (error) throw error;
 
-      var root = tree(stratify(data));
+        // Make the data hierarchical and turn that into a tree format
+        var root = tree(stratify(data));
+        console.log(root);
 
-      var link = g.selectAll(".link")
-        .data(root.links())
-        .enter().append("path")
-          .attr("class", "link")
-          .attr("d", d3.linkRadial()
-              .angle(function(d) { return d.x; })
-              .radius(function(d) { return d.y; }));
+        // Get the link relations from the tree structure
+        // Then draw the path from each source to targets
+        // The path'd d attribute can be simplified by using d3.linkRadial()
+        // which creates a new link generator that uses radial tangents.
+        var link = g.selectAll(".link")
+            .data(root.links())
+            .enter().append("path")
+            .attr("class", "link")
+            .attr("d", d3.linkRadial()
+                .angle(function(d) { return d.x; })
+                .radius(function(d) { return d.y; }));
 
-      var node = g.selectAll(".node")
-        .data(root.descendants())
-        .enter().append("g")
-          .attr("class", function(d) { return "node" + (d.children ? " node--internal" : " node--leaf"); })
-          .attr("transform", function(d) { return "translate(" + radialPoint(d.x, d.y) + ")"; });
+        // Create the container to place the circles and text for each element at
+        // We use .descendants() to get the relevant data from the tree.
+        // The class is picked between node--internal and node--leaf, which is self-explanatory
+        // The node is placed on the graph with the transformation function radialPoint().
+        var node = g.selectAll(".node")
+            .data(root.descendants())
+            .enter().append("g")
+            .attr("class", function(d) { return "node" + (d.children ? " node--internal" : " node--leaf"); })
+            .attr("transform", function(d) { return "translate(" + radialPoint(d.x, d.y) + ")"; });
+        
+        // Draw a circle with radius 2.5 in the node we just created
+        node.append("circle")
+            .attr("r", 2.5);
 
-      node.append("circle")
-          .attr("r", 2.5);
-
-      node.append("text")
-          .attr("dy", "0.31em")
-          .attr("x", function(d) { return d.x < Math.PI === !d.children ? 6 : -6; })
-          .attr("text-anchor", function(d) { return d.x < Math.PI === !d.children ? "start" : "end"; })
-          .attr("transform", function(d) { return "rotate(" + (d.x < Math.PI ? d.x - Math.PI / 2 : d.x + Math.PI / 2) * 180 / Math.PI + ")"; })
-          .text(function(d) { return d.id.substring(d.id.lastIndexOf(".") + 1); });
+        // Draw the text into the node.
+        // The x attribute is nudged by +-6 depending on where the label is at on the circle, just to make things more readable
+        // The same thing for the text-anchor
+        // The most challenging part of this bit is the transform code, which rotates the text to a certain angle based on 
+        // it's location on the circle.
+        node.append("text")
+            .attr("dy", "0.31em")
+            .attr("x", function(d) { return d.x < Math.PI === !d.children ? 6 : -6; })
+            .attr("text-anchor", function(d) { return d.x < Math.PI === !d.children ? "start" : "end"; })
+            .attr("transform", function(d) { return "rotate(" + (d.x < Math.PI ? d.x - Math.PI / 2 : d.x + Math.PI / 2) * 180 / Math.PI + ")"; })
+            .text(function(d) { return d.id.substring(d.id.lastIndexOf(".") + 1); });
     });
 
+    // This function converts a x,y point from cartesian coordinates into radial coordinates.
     function radialPoint(x, y) {
       return [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x)];
     }
