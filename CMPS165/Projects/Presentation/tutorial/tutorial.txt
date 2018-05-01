@@ -5,11 +5,11 @@
 
 d3.stratify() is an intermediary step to using d3.tree() by converting the given data into a hierarchical format.
 For example, we will be using the following data file to produce a rudimentary family tree:
-
     name,parent
+
     Erik,""
     Zor,Erik
-    Linda,Erik
+    Linda,Erik  
     Victoria,Erik
     Simone,Victoria
     Jennifer,Victoria
