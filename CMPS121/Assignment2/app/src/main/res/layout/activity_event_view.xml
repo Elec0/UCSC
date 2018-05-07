@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EventViewActivity"
+    tools:ignore="RtlHardcoded" >
+
+    <ScrollView
+        android:id="@+id/scrollEventLog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- TITLES -->
+            <TextView
+                android:id="@+id/lblLogTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="@dimen/LogLabelMarginTop"
+                android:layout_marginBottom="@dimen/LogLabelMarginBot"
+                android:layout_marginLeft="@dimen/LogLabelMarginLeft"
+                android:layout_marginRight="@dimen/LogLabelMarginRight"
+                android:text="@string/title" />
+
+            <TextView
+                android:id="@+id/lblLogTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblLogTitle"
+                android:layout_marginTop="@dimen/LogLabelMarginTop"
+                android:layout_marginBottom="@dimen/LogLabelMarginBot"
+                android:layout_marginLeft="@dimen/LogLabelMarginLeft"
+                android:layout_marginRight="@dimen/LogLabelMarginRight"
+                android:text="@string/time" />
+
+            <TextView
+                android:id="@+id/lblLogDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblLogTime"
+                android:layout_marginTop="@dimen/LogLabelMarginTop"
+                android:layout_marginBottom="@dimen/LogLabelMarginBot"
+                android:layout_marginLeft="@dimen/LogLabelMarginLeft"
+                android:layout_marginRight="@dimen/LogLabelMarginRight"
+                android:text="@string/date" />
+
+            <TextView
+                android:id="@+id/lblLogGPS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblLogDate"
+                android:layout_marginTop="@dimen/LogLabelMarginTop"
+                android:layout_marginBottom="@dimen/LogLabelMarginBot"
+                android:layout_marginLeft="@dimen/LogLabelMarginLeft"
+                android:layout_marginRight="@dimen/LogLabelMarginRight"
+                android:text="@string/gps" />
+
+            <TextView
+                android:id="@+id/lblLogEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblLogGPS"
+                android:layout_marginTop="@dimen/LogLabelMarginTop"
+                android:layout_marginBottom="@dimen/LogLabelMarginBot"
+                android:layout_marginLeft="@dimen/LogLabelMarginLeft"
+                android:layout_marginRight="@dimen/LogLabelMarginRight"
+                android:text="@string/event" />
+
+            <!-- VALUES -->
+            <TextView
+                android:id="@+id/lblLogTitleVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/lblLogTitle"
+                android:layout_alignTop="@id/lblLogTitle"
+                android:layout_marginTop="@dimen/LogValueMarginTop"
+                android:layout_marginBottom="@dimen/LogValueMarginBot"
+                android:layout_marginLeft="@dimen/LogValueMarginLeft"
+                android:layout_marginRight="@dimen/LogValueMarginRight"
+                android:text="PLACEHOLDER TITLE" />
+
+            <TextView
+                android:id="@+id/lblLogTimeVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/lblLogTime"
+                android:layout_alignTop="@id/lblLogTime"
+                android:layout_marginTop="@dimen/LogValueMarginTop"
+                android:layout_marginBottom="@dimen/LogValueMarginBot"
+                android:layout_marginLeft="@dimen/LogValueMarginLeft"
+                android:layout_marginRight="@dimen/LogValueMarginRight"
+                android:text="PLACEHOLDER TIME" />
+
+            <TextView
+                android:id="@+id/lblLogDateVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/lblLogDate"
+                android:layout_alignTop="@id/lblLogDate"
+                android:layout_marginTop="@dimen/LogValueMarginTop"
+                android:layout_marginBottom="@dimen/LogValueMarginBot"
+                android:layout_marginLeft="@dimen/LogValueMarginLeft"
+                android:layout_marginRight="@dimen/LogValueMarginRight"
+                android:text="PLACEHOLDER DATE" />
+
+            <TextView
+                android:id="@+id/lblLogGPSVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/lblLogGPS"
+                android:layout_alignTop="@id/lblLogGPS"
+                android:layout_marginTop="@dimen/LogValueMarginTop"
+                android:layout_marginBottom="@dimen/LogValueMarginBot"
+                android:layout_marginLeft="@dimen/LogValueMarginLeft"
+                android:layout_marginRight="@dimen/LogValueMarginRight"
+                android:text="PLACEHOLDER GPS" />
+
+            <TextView
+                android:id="@+id/lblLogEventVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/lblLogEvent"
+                android:layout_alignTop="@id/lblLogEvent"
+                android:layout_marginTop="@dimen/LogValueMarginTop"
+                android:layout_marginBottom="@dimen/LogValueMarginBot"
+                android:layout_marginLeft="@dimen/LogValueMarginLeft"
+                android:layout_marginRight="@dimen/LogValueMarginRight"
+                android:text="PLACEHODLER EVENT" />
+
+            <!-- End Values -->
+            <Button
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:text="DELETE" />
+
+
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

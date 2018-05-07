@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="LogLabelMarginTop">10dp</dimen>
+    <dimen name="LogLabelMarginBot">10dp</dimen>
+    <dimen name="LogLabelMarginLeft">10dp</dimen>
+    <dimen name="LogLabelMarginRight">10dp</dimen>
+
+    <dimen name="LogValueMarginTop">0dp</dimen>
+    <dimen name="LogValueMarginBot">10dp</dimen>
+    <dimen name="LogValueMarginLeft">10dp</dimen>
+    <dimen name="LogValueMarginRight">10dp</dimen>
+</resources>
