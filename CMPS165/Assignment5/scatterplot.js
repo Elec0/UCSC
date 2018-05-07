@@ -14,7 +14,12 @@ var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .attr("id", "mainG")
+    .append("g")
+    .attr("id", "dotRender");
+
+var svgAxis = d3.select("#mainG");
 
 //Define Scales
 // X scale is GDP
@@ -30,7 +35,7 @@ var yScale = d3.scaleLinear()
 
 var zoom = d3.zoom()
     .scaleExtent([1, 40])
-    .translateExtent([[-100, -100], [width + 90, height + 100]])
+    //.translateExtent([[-100, -100], [width + 90, height + 100]])
     .on("zoom", zoomed);
 
 //Define Axis
@@ -133,12 +138,12 @@ function handleMouseOver(d) {
         .text("Total: " + d.ec + " trillion BTUs");
 }
 
-function handleMouseOut(d) {
+function handleMouseOut() {
     svg.select("#tooltip").remove();
 }
 
 //x-axis
-var sXAxis = svg.append("g")
+var sXAxis = svgAxis.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis);
@@ -146,86 +151,79 @@ var sXAxis = svg.append("g")
 
 
 //Y-axis
-var sYAxis = svg.append("g")
+var sYAxis = svgAxis.append("g")
     .attr("class", "y axis")
     .call(yAxis);
 //    .text(")");
 
 
 // The graph label
-svg.append("text")
+svgAxis.append("text")
     .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
     .attr("transform", "translate(-35, "+(height/2)+")rotate(-90)")  // text is drawn off the screen top left, move down and out and rotate
     .text("Energy Consumption per Capita (in Million BTUs per person")
     .attr("font-size", "12px");
 
 // The x axis label
-svg.append("text")
+svgAxis.append("text")
     .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
     .attr("transform", "translate(" + (width/2) + ", " + (height+30) + ")")  // text is drawn off the screen top left, move down and out and rotate
     .text("GDP (in Trillion US Dollars) in 2010")
     .attr("font-size", "12px");
 
  // draw legend colored rectangles
-svg.append("rect")
+svgAxis.append("rect")
     .attr("x", width-250)
     .attr("y", height-190)
-    .attr("width", 220)
-    .attr("height", 180)
+    .attr("width", 180)
+    .attr("height", 70)
     .attr("fill", "lightgrey")
     .style("stroke-size", "1px");
 
-svg.append("circle")
-    .attr("r", 5)
+svgAxis.append("circle")
+    .attr("r", Math.sqrt(1))
     .attr("cx", width-100)
     .attr("cy", height-175)
-    .style("fill", "white");
+    .style("fill", "green");
 
-svg.append("circle")
-    .attr("r", 15.8)
+svgAxis.append("circle")
+    .attr("r", Math.sqrt(10))
     .attr("cx", width-100)
-    .attr("cy", height-150)
-    .style("fill", "white");
+    .attr("cy", height-160)
+    .style("fill", "green");
 
-svg.append("circle")
-    .attr("r", 50)
+svgAxis.append("circle")
+    .attr("r", Math.sqrt(100))
     .attr("cx", width-100)
-    .attr("cy", height-80)
-    .style("fill", "white");
+    .attr("cy", height-135)
+    .style("fill", "green");
 
-svg.append("text")
+svgAxis.append("text")
     .attr("class", "label")
-    .attr("x", width -150)
+    .attr("x", width-150)
     .attr("y", height-172)
     .style("text-anchor", "end")
-    .text(" 1 Trillion BTUs");
+    .text(" 1 Million BTUs");
 
-svg.append("text")
+svgAxis.append("text")
     .attr("class", "label")
-    .attr("x", width -150)
-    .attr("y", height-147)
+    .attr("x", width-150)
+    .attr("y", height-155)
     .style("text-anchor", "end")
-    .text(" 10 Trillion BTUs");
+    .text(" 10 Million BTUs");
 
-svg.append("text")
+svgAxis.append("text")
     .attr("class", "label")
-    .attr("x", width -150)
-    .attr("y", height-77)
+    .attr("x", width-150)
+    .attr("y", height-135)
     .style("text-anchor", "end")
-    .text(" 100 Trillion BTUs");
+    .text(" 100 Million BTUs");
 
- svg.append("text")
-    .attr("class", "label")
-    .attr("x", width -150)
-    .attr("y", height-15)
-    .style("text-anchor", "middle")
-    .style("fill", "Green") 
-    .attr("font-size", "16px")
-    .text("Total Energy Consumption");
 
 // https://bl.ocks.org/mbostock/db6b4335bf1662b413e7968910104f0f
 function zoomed() {
-    svg.attr("transform", d3.event.transform);
+    d3.select("#dotRender").attr("transform", d3.event.transform);
+    
     sXAxis.call(xAxis.scale(d3.event.transform.rescaleX(xScale)));
     sYAxis.call(yAxis.scale(d3.event.transform.rescaleY(yScale)));
 }
