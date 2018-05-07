@@ -1,8 +1,10 @@
 <resources>
-    <string name="app_name">Assignment 2</string>
+    <string name="app_name">Event Logging</string>
     <string name="title">Title:</string>
     <string name="time">Time:</string>
     <string name="date">Date:</string>
     <string name="gps">GPS:</string>
     <string name="event">Event:</string>
+    <string name="event_description">Event Description:</string>
+    <string name="enter">ENTER</string>
 </resources>

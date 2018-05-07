@@ -1,9 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EventAddActivity">
+    tools:context=".EventAddActivity"
+    tools:ignore="RtlHardcoded">
 
-</android.support.constraint.ConstraintLayout>
+    <ScrollView
+        android:id="@+id/scrollEventAdd"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:id="@+id/relativeEventAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/lblAddTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/AddLabelMarginTop"
+                android:layout_marginBottom="@dimen/AddLabelMarginBot"
+                android:layout_marginLeft="@dimen/AddLabelMarginLeft"
+                android:layout_marginRight="@dimen/AddLabelMarginRight"
+                android:text="@string/title" />
+
+            <EditText
+                android:id="@+id/txtAddTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblAddTitle"
+                android:ems="10"
+                android:inputType="text"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/lblAddEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtAddTitle"
+                android:layout_marginTop="@dimen/AddLabelMarginTop"
+                android:layout_marginBottom="@dimen/AddLabelMarginBot"
+                android:layout_marginLeft="@dimen/AddLabelMarginLeft"
+                android:layout_marginRight="@dimen/AddLabelMarginRight"
+                android:text="@string/event_description" />
+
+            <EditText
+                android:id="@+id/txtAddEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblAddEvent"
+                android:ems="10"
+                android:inputType="text"
+                android:text="" />
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:text="@string/enter" />
+        </RelativeLayout>
+
+    </ScrollView>
+</LinearLayout>
