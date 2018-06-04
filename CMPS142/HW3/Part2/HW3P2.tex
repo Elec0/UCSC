@@ -1,0 +1,89 @@
+% Headers
+\documentclass[12pt]{article}
+\usepackage{graphics}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{fancyvrb}
+\usepackage{enumitem}
+\usepackage{pgfplots}
+\usepackage{tikz}
+
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+\title{\textbf{CMPS 142 Machine Learning\\ Spring 2018, Homework \#3 Part 2}}
+\date{}
+\author{Aaron Steele, atsteele@ucsc.edu\\
+	Tommy Tran, ttran56@ucsc.edu}
+
+\begin{document}
+	
+	\maketitle	
+	\section*{2.1 Logistic Regression}
+	\begin{enumerate}
+		\item Length of the weight vector: 1364
+		\item Norm of the learned weights = 35.9868
+		\item Accuracy = 0.9818
+		\item P, R, and F1 score of the positive class=0.8902 0.9829 0.9343
+		\item P, R, and F1 score of the negative class=0.9973 0.9816 0.9894
+		\item \begin{verbatim}
+		Confusion Matrix
+		576	10
+		71	3802
+		\end{verbatim}
+		
+		\item Accuracy = 0.9560
+		\item P, R, and F1 score of the positive class=0.8111 0.9068 0.8563 \\
+		P, R, and F1 score of the negative class=0.9839 0.9643 0.9740
+	
+		\item \begin{verbatim}
+		Confusion Matrix
+		146	15
+		34	920
+		\end{verbatim}
+		
+		\item 
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines = left,
+				xlabel = Iteration,
+				ylabel = Log Likelihood
+				]
+				
+				\addplot[line width=1pt,solid,color=blue] 
+				table[x=iteration,y=lik,col sep=comma]{LogLikelihoodData.csv};
+			\end{axis}
+		\end{tikzpicture}
+		
+		\item There are a lot more negative instances than positive ones. We could reduce the number of negative instances to account for the imbalance, or we could try using a different algorithm of some kind.
+	\end{enumerate}
+	
+	\section*{2.2 Logistic Regression with a Bias Term}
+	\begin{enumerate}
+		\item Length of the weight vector: 1365
+		\item \begin{verbatim}
+		Confusion Matrix
+		144	17
+		2	952
+		\end{verbatim}
+		\item The accuracy on the test set is 99\% with the bias, and 95\% without, so it does seem helpful. Although the train accuracy is 99\%, so it seems as though there might be some overfitting going on.
+	\end{enumerate}
+	
+	\section*{2.3 L2-Regularized Logistic Regression}
+	\begin{enumerate}
+		\item Length of the weight vector = 1364
+		\item \begin{verbatim}
+		Confusion Matrix
+		147	14
+		33	921
+		\end{verbatim}
+		\item In 2.3 the training set accuracy goes down from 98\% to 97\%, but the test set accuracy goes up slightly. This implies that the amount of overfitting has decreased with the L2-regularization, which is the entire point.
+		
+		\item Norm of the learned weights = 26.1916\\
+		This value is quite a bit less than the one from 2.1. This says that the overall values of the weights have decreased, which is what we're going for with regularization, penalizing high weights.
+	\end{enumerate}
+\end{document}

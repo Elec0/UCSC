@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.DoubleStream;
 
 public class LogisticRegression {
 
@@ -16,18 +17,25 @@ public class LogisticRegression {
 	/** the number of iterations */
 	private int ITERATIONS = 200;
 
-	/** TODO: Constructor initializes the weight vector. Initialize it by setting it to the 0 vector. **/
 	public LogisticRegression(int n) { // n is the number of weights to be learned
-		weights = new double[n]; // Java defaults to initializing primitive arrays to 0s
+		weights = new double[n]; // Java defaults to initializing primitive arrays to all 0's
 	}
 
-	/** TODO: Implement the function that returns the L2 norm of the weight vector **/
-	private double weightsL2Norm(){
-		return 0;
+	/***
+	 * Implement the function that returns the L2 norm of the weight vector
+	 * The L2 norm is sqrt(x[i]^2)
+	 *
+	 * @return
+	 */
+	private double weightsL2Norm() {
+		double sum = 0;
+		for(int i = 0; i < weights.length; ++i) {
+			sum += Math.pow(weights[i], 2);
+		}
+		return Math.sqrt(sum);
 	}
 
 	/**
-	 *
 	 * @param z = W0 + W1*Feat1 + W2*Feat2 [...]
 	 * @return The probability that z is of class 1
 	 */
@@ -39,12 +47,10 @@ public class LogisticRegression {
 	/** Takes a test instance as input and outputs the probability of the label being 1 **/
 	/** This function should call sigmoid() **/
 	private double probPred1(double[] x) {
-		double z = weights[0]; // I believe that the 0th weight is the bias term.
-		// We don't use it here yet but this should make the future easier.
-
+		double z = 0;
 		// Now calculate z for the sigmoid function
 		// z = W0 + W1*Feat1 + W2*Feat2 [...]
-		for(int i = 1; i < x.length; ++i) {
+		for(int i = 0; i < x.length; ++i) {
 			z += weights[i] * x[i];
 		}
 		return sigmoid(z);
@@ -62,14 +68,49 @@ public class LogisticRegression {
 			return 0;
 	}
 
-	/** This function takes a test set as input, call the predict() to predict a label for it, and prints the accuracy, P, R, and F1 score of the positive class and negative class and the confusion matrix **/
+	/** This function takes a test set as input, call the predict() to predict a label for it, and prints the accuracy, P, R, and F1 score
+	 * 	of the positive class and negative class and the confusion matrix **/
 	public void printPerformance(List<LRInstance> testInstances) {
 		double acc = 0;
 		double p_pos = 0, r_pos = 0, f_pos = 0;
 		double p_neg = 0, r_neg = 0, f_neg = 0;
 		int TP=0, TN=0, FP=0, FN=0; // TP = True Positives, TN = True Negatives, FP = False Positives, FN = False Negatives
 
-		// TODO: write code here to compute the above mentioned variables
+		// Loop over all the instances
+		for(LRInstance instance : testInstances) {
+			// Get the predicted label
+			int predLabel = predict(instance.x);
+
+			if(predLabel == instance.label) {
+				// If the prediction was correct, increment the True variables
+				if(predLabel == 0)
+					TN++;
+				else
+					TP++;
+			}
+			else {
+				// If the prediction was incorrect, increment the False variables
+				if(predLabel == 0)
+					FN++;
+				else
+					FP++;
+			}
+		}
+
+		// Calculate the accuracy from the number of correctly ID'd instances
+		acc = (TP + TN) / (double)(TP + TN + FP + FN);
+
+		// Calculate the precision and recall for the positive classes
+		p_pos = TP / (double)(TP + FP);
+		r_pos = TP / (double)(TP + FN);
+		// Same but for negative classes
+		p_neg = TN / (double)(TN + FN);
+		r_neg = TN / (double)(TN + FP);
+
+
+		// Calculate the F1 scores
+		f_pos = 2 * ((p_pos * r_pos) / (p_pos + r_pos));
+		f_neg = 2 * ((p_neg * r_neg) / (p_neg + r_neg));
 
 		System.out.println("Accuracy="+acc);
 		System.out.println("P, R, and F1 score of the positive class=" + p_pos + " " + r_pos + " " + f_pos);
@@ -82,16 +123,37 @@ public class LogisticRegression {
 	/** Train the Logistic Regression using Stochastic Gradient Ascent **/
 	/** Also compute the log-likelihood of the data in this function **/
 	public void train(List<LRInstance> instances) {
+		int instLabelSum = 0;
+		for(LRInstance inst : instances) {
+			instLabelSum += inst.label;
+		}
+
 		for (int n = 0; n < ITERATIONS; n++) {
 			double lik = 0.0; // Stores log-likelihood of the training data for this iteration
 			for (int i=0; i < instances.size(); i++) {
-				// TODO: Train the model
+				// Train the data
+				// Use gradient ascent to maximize the log likelihood
+				double[] curX = instances.get(i).x;
+				double predErr =  instances.get(i).label - probPred1(instances.get(i).x);
 
-				// TODO: Compute the log-likelihood of the data here. Remember to take logs when necessary
+				// Loop through the features
+				for(int k = 0; k < weights.length; ++k) {
+					// Update the weights according to the gradient ascent formula
+					weights[k] = weights[k] + rate * curX[k] * predErr;
+				}
+
+				// Compute the log-likelihood of the data here. Remember to take logs when necessary
+				// Calculate the sum of weights * features that we need twice ahead of time
+				double weightedSum = 0;
+				for(int k = 0; k < weights.length; ++k) {
+					weightedSum += weights[k] * curX[k];
+				}
+				lik = instLabelSum * weightedSum - Math.log(1 + Math.exp(weightedSum));
 			}
 			System.out.println("iteration: " + n + " lik: " + lik);
 		}
 	}
+
 
 	public static class LRInstance {
 		public int label; // Label of the instance. Can be 0 or 1
@@ -136,8 +198,8 @@ public class LogisticRegression {
 
 
 	public static void main(String... args) throws FileNotFoundException {
-		List<LRInstance> trainInstances = readDataSet("FilesForHW3Part2/HW3_TianyiLuo_train.csv");
-		List<LRInstance> testInstances = readDataSet("FilesForHW3Part2/HW3_TianyiLuo_test.csv");
+		List<LRInstance> trainInstances = readDataSet("HW3_TianyiLuo_train.csv");
+		List<LRInstance> testInstances = readDataSet("HW3_TianyiLuo_test.csv");
 
 
 		// create an instance of the classifier
