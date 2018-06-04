@@ -1,0 +1,96 @@
+% Headers
+\documentclass[12pt]{article}
+\usepackage{graphics}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{fancyvrb}
+\usepackage{enumitem}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{decorations.markings}
+
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+\title{\textbf{CMPS 142 Machine Learning\\ Spring 2018, Homework \#2}}
+\date{}
+\author{Aaron Steele, atsteele@ucsc.edu\\
+	Tommy Tran, ttran56@ucsc.edu}
+
+\begin{document}
+	
+	\maketitle
+	
+	\section*{Problem 2: Kernels and SVMs}
+    \subsection*{1}
+    This data is not linearly separable. If we convert it to the form $f(x) = x^2$, though, it becomes linearly separable.
+    
+    \begin{tikzpicture}
+	\begin{axis}[
+	axis lines = left,
+	xlabel = $x$,
+	ylabel = $y$,
+	xmin=-2.5,xmax=2.5,
+	ymax=4.5
+	]
+	
+	\addplot[color=red,mark=x] coordinates{
+	    (-2, 4)
+	    (-1, 1)
+	    (0, 0)
+	    (1, 1)
+	    (2, 4)
+	};
+	\addplot[color=blue] coordinates {
+	    (-2.5, 2)
+	    (2.5, 2)
+	};
+	\end{axis}
+	\end{tikzpicture}
+    
+    \subsubsection*{2}
+    The hard-margin hyperplanes are at y=4 and y=1, visualized in blue.
+    
+    \begin{tikzpicture}
+	\begin{axis}[
+	axis lines = left,
+	xlabel = $x$,
+	ylabel = $y$,
+	xmin=-2.5,xmax=2.5,
+	ymax=4.5
+	]
+	
+	\addplot[color=red,mark=x] coordinates{
+	    (-2, 4)
+	    (-1, 1)
+	    (0, 0)
+	    (1, 1)
+	    (2, 4)
+	};
+	\addplot[color=blue] coordinates {
+	    (-2.5, 4)
+	    (2.5, 4)
+	};
+	\addplot[color=blue] coordinates {
+	    (-2.5, 1)
+	    (2.5, 1)
+    };
+	\end{axis}
+	\end{tikzpicture}
+    
+    \subsubsection*{3}
+    Translating this decision boundary back into 1D space it would have to be four vertical lines, one at -2, one at -1, one at 1, and the last at 2. This is the only way to project the margins given in the 2D graph onto the 1D one. 
+    
+    \subsubsection*{4}
+    This kernel function must be a linear one, given that the boundaries are lines in the higher-dimensional space.
+    
+    The kernel function should be the same one discussed in class, namely
+    $$ \phi(x).\phi(z) = (x \cdot z)^2 $$
+    Which translates into the kernel function
+    $$ K(x,z) = (x \cdot z)^2 $$
+    
+\end{document}
